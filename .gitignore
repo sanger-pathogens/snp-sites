@@ -1,0 +1,4 @@
+*.o
+gubbins
+*.phylip
+*.vcf
