@@ -116,7 +116,7 @@ void alternative_bases(char reference_base, char * bases_for_snp, char alt_bases
 	int num_alt_bases = 0;
 	for(i=0; i< number_of_samples; i++ )
 	{
-		if((bases_for_snp[i] != reference_base) && (bases_for_snp[i] != '-'))
+		if((bases_for_snp[i] != reference_base) && (bases_for_snp[i] != '-') && (toupper(bases_for_snp[i]) != 'N') )
 		{
 			if(check_if_char_in_string(alt_bases, bases_for_snp[i], num_alt_bases) == 0)
 			{
@@ -156,7 +156,7 @@ void output_vcf_row_samples_bases(FILE * vcf_file_pointer, char reference_base, 
 	
 	for(i=0; i < number_of_samples ; i++ )
 	{
-		if((bases_for_snp[i] == reference_base) || (bases_for_snp[i] == '-'))
+		if((bases_for_snp[i] == reference_base) || (bases_for_snp[i] == '-') || (toupper(bases_for_snp[i]) == 'N') )
 		{
 			fprintf( vcf_file_pointer, "." );	
 		}
