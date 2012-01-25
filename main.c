@@ -20,36 +20,59 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+#include <unistd.h>
 #include "snp_sites.h"
 
 #define MAX_FILENAME_SIZE 250
 
 static void print_usage()
 {
-	printf("Find SNP sites from a multi fasta alignment file (which can be gzipped)\n");
-	printf("./snp_sites file.aln\n");
-	printf("./snp_sites file.aln.gz\n\n");
-	
-	printf("SNP sites are outputted in the following formats: Multi fasta alignment, phylip, VCF \n\n");
+	printf("Usage: snp_sites [-mvph] <file>\n");
+	printf("This program finds snp sites from a multi fasta alignment file.\n");
+	printf(" -m		output a multi fasta alignment file (default)\n");
+	printf(" -v		output a VCF file\n");
+	printf(" -p		output a phylip file\n");
+	printf(" -h		this help message\n");
+	printf(" <file>		input alignment file which can optionally be gzipped\n");
 }
 
-int main (int argc, const char * argv[]) {
+int main (int argc, char **argv) {
 	char multi_fasta_filename[MAX_FILENAME_SIZE];
-
-  if(argc <=1)
+	int c;
+	int index;
+  int output_multi_fasta_file = 0;
+  int output_vcf_file = 0;
+  int output_phylip_file = 0;
+	
+	 while ((c = getopt (argc, argv, "mvp:")) != -1)
+      switch (c)
+        {
+        case 'm':
+          output_multi_fasta_file = 1;
+          break;
+        case 'v':
+          output_vcf_file = 1;
+          break;
+        case 'p':
+          output_phylip_file = 1;
+          break;
+        case 'h':
+          print_usage();
+          return 0;
+      default:
+        output_multi_fasta_file = 1;
+      }
+  
+  if(optind < argc)
   {
-    print_usage();
-  }
-	else if(strcmp(argv[1], "--help") == 0)
-  {
-	  print_usage();
+    strcpy(multi_fasta_filename,argv[optind]);
+		generate_snp_sites(multi_fasta_filename, output_multi_fasta_file, output_vcf_file, output_phylip_file);
   }
   else
   {
-    strcpy(multi_fasta_filename,argv[1]);
-		generate_snp_sites(multi_fasta_filename);
+    print_usage();
   }
-
     
 	return 0;
 }

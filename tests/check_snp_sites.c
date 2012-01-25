@@ -9,7 +9,7 @@
 
 START_TEST (valid_alignment_with_one_line_per_sequence)
 {
-  generate_snp_sites("data/alignment_file_one_line_per_sequence.aln");
+  generate_snp_sites("data/alignment_file_one_line_per_sequence.aln",1,1,1);
   fail_unless( compare_files("data/alignment_file_one_line_per_sequence.aln.vcf", "alignment_file_one_line_per_sequence.aln.vcf" ) == 1, "Invalid VCF file for 1 line per seq" );
   fail_unless( compare_files("data/alignment_file_one_line_per_sequence.aln.phylip", "alignment_file_one_line_per_sequence.aln.phylip" ) == 1, "Invalid Phylip file for 1 line per seq" );
   fail_unless( compare_files("data/alignment_file_one_line_per_sequence.aln.snp_sites.aln","alignment_file_one_line_per_sequence.aln.snp_sites.aln" ) == 1 , "Invalid ALN file for 1 line per seq");
@@ -22,7 +22,7 @@ END_TEST
 
 START_TEST (valid_alignment_with_one_line_per_sequence_gzipped)
 {
-  generate_snp_sites("data/alignment_file_one_line_per_sequence.aln.gz");
+  generate_snp_sites("data/alignment_file_one_line_per_sequence.aln.gz",1,1,1);
   fail_unless( compare_files("data/alignment_file_one_line_per_sequence.aln.vcf", "alignment_file_one_line_per_sequence.aln.gz.vcf" ) == 1, "Invalid VCF file for 1 line per seq" );
   fail_unless( compare_files("data/alignment_file_one_line_per_sequence.aln.phylip", "alignment_file_one_line_per_sequence.aln.gz.phylip" ) == 1, "Invalid Phylip file for 1 line per seq" );
   fail_unless( compare_files("data/alignment_file_one_line_per_sequence.aln.snp_sites.aln","alignment_file_one_line_per_sequence.aln.gz.snp_sites.aln" ) == 1 , "Invalid ALN file for 1 line per seq");
@@ -34,7 +34,7 @@ END_TEST
 
 START_TEST (valid_alignment_with_multiple_lines_per_sequence)
 {
-    generate_snp_sites("data/alignment_file_multiple_lines_per_sequence.aln");
+    generate_snp_sites("data/alignment_file_multiple_lines_per_sequence.aln",1,1,1);
     fail_unless( compare_files("data/alignment_file_one_line_per_sequence.aln.vcf", "alignment_file_multiple_lines_per_sequence.aln.vcf" ) == 1, "Invalid VCF file for multiple lines per seq" );
     fail_unless( compare_files("data/alignment_file_one_line_per_sequence.aln.phylip", "alignment_file_multiple_lines_per_sequence.aln.phylip" ) == 1, "Invalid Phylip file for multiple lines per seq" );
     fail_unless( compare_files("data/alignment_file_one_line_per_sequence.aln.snp_sites.aln","alignment_file_multiple_lines_per_sequence.aln.snp_sites.aln" ) == 1 ,"Invalid ALN file for multiple lines per seq");
