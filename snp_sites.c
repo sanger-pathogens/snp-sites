@@ -45,7 +45,7 @@ void build_snp_locations(int snp_locations[], char reference_sequence[])
 }
 
 
-int generate_snp_sites(char filename[])
+int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_vcf_file, int output_phylip_file)
 {
 	int length_of_genome;
 	char * reference_sequence;
@@ -87,10 +87,22 @@ int generate_snp_sites(char filename[])
 	
   char filename_without_directory[MAX_FILENAME_SIZE];
   strip_directory_from_filename(filename, filename_without_directory);
+
 	
-	create_vcf_file(filename_without_directory, snp_locations, number_of_snps, bases_for_snps, sequence_names, number_of_samples);
+	if(output_vcf_file)
+	{
+	  create_vcf_file(filename_without_directory, snp_locations, number_of_snps, bases_for_snps, sequence_names, number_of_samples);
+  }
+  
+  if(output_phylip_file)
+  {
 	create_phylib_of_snp_sites(filename_without_directory, number_of_snps, bases_for_snps, sequence_names, number_of_samples);
-	create_fasta_of_snp_sites(filename_without_directory, number_of_snps, bases_for_snps, sequence_names, number_of_samples);
+  }
+  
+  if((output_multi_fasta_file) || (output_vcf_file ==0 && output_phylip_file == 0 && output_multi_fasta_file == 0))
+  {
+	  create_fasta_of_snp_sites(filename_without_directory, number_of_snps, bases_for_snps, sequence_names, number_of_samples);
+  }
 	
 	free(snp_locations);
 	return 1;
