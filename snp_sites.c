@@ -113,7 +113,7 @@ void strip_directory_from_filename(char * input_filename, char * output_filename
 {
   int i;
   int end_index = 0;
-  int last_forward_slash_index = 0;
+  int last_forward_slash_index = -1;
   for(i = 0; i< MAX_FILENAME_SIZE; i++)
   {
     if(input_filename[i] == '/')

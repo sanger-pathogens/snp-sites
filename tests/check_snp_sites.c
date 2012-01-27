@@ -128,6 +128,23 @@ START_TEST (sample_names_from_alignment_file)
 }
 END_TEST
 
+START_TEST (check_strip_directory_from_filename_without_directory)
+{
+	char *input_filename_without_directory =  "my_file_name.aln";
+	char output_filename[30];
+	strip_directory_from_filename(input_filename_without_directory, output_filename);
+	fail_unless( strcmp(input_filename_without_directory, output_filename) ==0 );
+}
+END_TEST
+
+START_TEST (check_strip_directory_from_filename_with_directory)
+{
+	char *input_filename_without_directory =  "/some/directory/name/my_file_name.aln";
+	char output_filename[30];
+	strip_directory_from_filename(input_filename_without_directory, output_filename);
+	fail_unless( strcmp("my_file_name.aln", output_filename) ==0 );
+}
+END_TEST
 
 Suite * snp_sites_suite (void)
 {
@@ -142,6 +159,8 @@ Suite * snp_sites_suite (void)
   tcase_add_test (tc_alignment_file, number_of_snps_detected_small);
   tcase_add_test (tc_alignment_file, number_of_snps_detected);
   tcase_add_test (tc_alignment_file, sample_names_from_alignment_file);
+  tcase_add_test (tc_alignment_file, check_strip_directory_from_filename_without_directory);
+	tcase_add_test (tc_alignment_file, check_strip_directory_from_filename_with_directory);
   suite_add_tcase (s, tc_alignment_file);
 
   TCase *tc_snp_sites = tcase_create ("snp_sites");
@@ -153,6 +172,8 @@ Suite * snp_sites_suite (void)
 
   return s;
 }
+
+
 
 
 
