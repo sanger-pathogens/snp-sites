@@ -27,6 +27,6 @@ void output_vcf_row(FILE * vcf_file_pointer, char * bases_for_snp, int snp_locat
 void output_vcf_row_samples_bases(FILE * vcf_file_pointer, char reference_base, char * bases_for_snp, int number_of_samples);
 void alternative_bases(char reference_base, char * bases_for_snp, char alt_bases[], int number_of_samples);
 int check_if_char_in_string(char search_string[], char target_char, int search_string_length);
-
+#define MAX_FILENAME_SIZE 250
 
 #endif
