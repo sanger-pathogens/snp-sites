@@ -28,24 +28,26 @@
 
 static void print_usage()
 {
-	printf("Usage: snp_sites [-mvph] <file>\n");
+	printf("Usage: snp_sites [-mvph] [-o output_filename] <file>\n");
 	printf("This program finds snp sites from a multi fasta alignment file.\n");
 	printf(" -m		output a multi fasta alignment file (default)\n");
 	printf(" -v		output a VCF file\n");
 	printf(" -p		output a phylip file\n");
+	printf(" -o		specify an output filename\n");
 	printf(" -h		this help message\n");
 	printf(" <file>		input alignment file which can optionally be gzipped\n");
 }
 
 int main (int argc, char **argv) {
 	char multi_fasta_filename[MAX_FILENAME_SIZE];
+	char *output_filename;
 	int c;
 	int index;
   int output_multi_fasta_file = 0;
   int output_vcf_file = 0;
   int output_phylip_file = 0;
 	
-	 while ((c = getopt (argc, argv, "mvp:")) != -1)
+	 while ((c = getopt (argc, argv, "mvpo:")) != -1)
       switch (c)
         {
         case 'm':
@@ -57,6 +59,9 @@ int main (int argc, char **argv) {
         case 'p':
           output_phylip_file = 1;
           break;
+	      case 'o':
+	        output_filename = optarg;
+	        break;
         case 'h':
           print_usage();
           return 0;
@@ -67,7 +72,7 @@ int main (int argc, char **argv) {
   if(optind < argc)
   {
     strcpy(multi_fasta_filename,argv[optind]);
-		generate_snp_sites(multi_fasta_filename, output_multi_fasta_file, output_vcf_file, output_phylip_file);
+		generate_snp_sites(multi_fasta_filename, output_multi_fasta_file, output_vcf_file, output_phylip_file, output_filename);
   }
   else
   {
