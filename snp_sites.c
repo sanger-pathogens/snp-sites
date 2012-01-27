@@ -45,7 +45,7 @@ void build_snp_locations(int snp_locations[], char reference_sequence[])
 }
 
 
-int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_vcf_file, int output_phylip_file)
+int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_vcf_file, int output_phylip_file, char output_filename[])
 {
 	int length_of_genome;
 	char * reference_sequence;
@@ -85,23 +85,51 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 	
 	get_bases_for_each_snp(filename, snp_locations, bases_for_snps, length_of_genome, number_of_snps);
 	
-  char filename_without_directory[MAX_FILENAME_SIZE];
-  strip_directory_from_filename(filename, filename_without_directory);
-
+	char output_filename_base[MAX_FILENAME_SIZE];
+	char filename_without_directory[MAX_FILENAME_SIZE];
+	strip_directory_from_filename(filename, filename_without_directory);
+	strcpy(output_filename_base,filename_without_directory );
+	
+	if(output_filename != NULL && *output_filename != '\0')
+	{
+	  strcpy(output_filename_base, output_filename);
+	}
 	
 	if(output_vcf_file)
 	{
-	  create_vcf_file(filename_without_directory, snp_locations, number_of_snps, bases_for_snps, sequence_names, number_of_samples);
+		char * vcf_output_filename;
+		vcf_output_filename = malloc(MAX_FILENAME_SIZE*sizeof(char));
+		strcpy(vcf_output_filename,output_filename_base);
+		if((output_vcf_file + output_phylip_file + output_multi_fasta_file) > 1 || (output_filename == NULL || *output_filename == '\0') )
+		{
+			vcf_output_filename = strcat(vcf_output_filename, ".vcf");
+		}
+		
+	  create_vcf_file(vcf_output_filename, snp_locations, number_of_snps, bases_for_snps, sequence_names, number_of_samples);
   }
   
   if(output_phylip_file)
   {
-	create_phylib_of_snp_sites(filename_without_directory, number_of_snps, bases_for_snps, sequence_names, number_of_samples);
+		char *phylip_output_filename;
+		phylip_output_filename = malloc(MAX_FILENAME_SIZE*sizeof(char));
+		strcpy(phylip_output_filename,output_filename_base);
+		if((output_vcf_file + output_phylip_file + output_multi_fasta_file) > 1 || (output_filename == NULL || *output_filename == '\0') )
+		{
+			phylip_output_filename = strcat(phylip_output_filename, ".phylip");
+		}
+	  create_phylib_of_snp_sites(phylip_output_filename, number_of_snps, bases_for_snps, sequence_names, number_of_samples);
   }
   
   if((output_multi_fasta_file) || (output_vcf_file ==0 && output_phylip_file == 0 && output_multi_fasta_file == 0))
   {
-	  create_fasta_of_snp_sites(filename_without_directory, number_of_snps, bases_for_snps, sequence_names, number_of_samples);
+		char *multi_fasta_output_filename;
+		multi_fasta_output_filename = malloc(MAX_FILENAME_SIZE*sizeof(char));
+		strcpy(multi_fasta_output_filename,output_filename_base);
+		if((output_vcf_file + output_phylip_file + output_multi_fasta_file) > 1 || (output_filename == NULL || *output_filename == '\0') )
+		{
+			multi_fasta_output_filename = strcat(multi_fasta_output_filename, ".snp_sites.aln");
+		}
+	  create_fasta_of_snp_sites(multi_fasta_output_filename, number_of_snps, bases_for_snps, sequence_names, number_of_samples);
   }
 	
 	free(snp_locations);
@@ -113,7 +141,7 @@ void strip_directory_from_filename(char * input_filename, char * output_filename
 {
   int i;
   int end_index = 0;
-  int last_forward_slash_index = 0;
+  int last_forward_slash_index = -1;
   for(i = 0; i< MAX_FILENAME_SIZE; i++)
   {
     if(input_filename[i] == '/')

@@ -1,2 +1,4 @@
 *.o
 gubbins
+snp_sites
+tests/check_snp_sites

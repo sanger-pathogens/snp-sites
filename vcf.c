@@ -32,10 +32,10 @@ void create_vcf_file(char filename[], int snp_locations[],int number_of_snps, ch
 {
 	FILE *vcf_file_pointer;
 	char * base_filename;
-	base_filename = (char *) malloc(256*sizeof(char));
+	base_filename = (char *) malloc(MAX_FILENAME_SIZE*sizeof(char));
 	strcpy(base_filename, filename);
 	
-	vcf_file_pointer=fopen(strcat(base_filename,".vcf"), "w");
+	vcf_file_pointer=fopen(base_filename, "w");
 	output_vcf_header(vcf_file_pointer,sequence_names, number_of_samples);
 	output_vcf_snps(vcf_file_pointer, bases_for_snps, snp_locations, number_of_snps, number_of_samples);
   fclose(vcf_file_pointer);
