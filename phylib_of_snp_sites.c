@@ -47,8 +47,6 @@ void create_phylib_of_snp_sites(char filename[], int number_of_snps, char ** bas
 		for(snp_counter=0; snp_counter< number_of_snps; snp_counter++)
 		{
 			fprintf( fasta_file_pointer, "%c", bases_for_snps[snp_counter][sample_counter]);
-			// Need to flush to stop wierd EOF on Linux
-			fflush(fasta_file_pointer);
 		}
 		fprintf( fasta_file_pointer, "\n");
 	}
