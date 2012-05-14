@@ -114,6 +114,38 @@ int genome_length(char filename[])
 }
 
 
+void check_sequences_are_the_same_length(char filename[])
+{
+	int length_of_genome = 0 ;
+	int i = 0;
+	int l;
+
+	gzFile fp;
+	kseq_t *seq;
+	
+	fp = gzopen(filename, "r");
+	seq = kseq_init(fp);
+
+  while ((l = kseq_read(seq)) >= 0) 
+  {
+    if(i == 0)
+    {
+      length_of_genome = seq->seq.l;
+    }
+
+    if(seq->seq.l != length_of_genome)
+    {
+			printf("Alignment %s contains sequences of unequal length. Expected length is %d but got %d in sequence %s\n",filename, length_of_genome, seq->seq.l,seq->name.s);
+			exit(EXIT_FAILURE);
+    }
+		i++;
+  }
+
+	kseq_destroy(seq);
+	gzclose(fp);
+}
+
+
 int number_of_sequences_in_file(char filename[])
 {
   int number_of_sequences = 0;
