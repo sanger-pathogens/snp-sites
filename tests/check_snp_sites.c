@@ -91,6 +91,11 @@ START_TEST (valid_with_phylip_outputted_with_custom_name)
 }
 END_TEST
 
+START_TEST (invalid_with_uneven_file_lengths)
+{
+	    generate_snp_sites("data/uneven_alignment.aln",1,0,0,"");
+}
+END_TEST
 
 
 START_TEST (valid_with_all_outputted_with_custom_name)
@@ -220,6 +225,7 @@ Suite * snp_sites_suite (void)
   tcase_add_test (tc_snp_sites, valid_with_all_outputted_with_custom_name);
 	tcase_add_test (tc_snp_sites, valid_with_only_aln_file_output_default);
 	tcase_add_test (tc_snp_sites, valid_with_phylip_outputted_with_custom_name);
+	tcase_add_exit_test(tc_snp_sites, invalid_with_uneven_file_lengths,EXIT_FAILURE);
   suite_add_tcase (s, tc_snp_sites);
 
   return s;
