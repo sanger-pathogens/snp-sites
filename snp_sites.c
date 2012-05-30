@@ -54,9 +54,6 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 	int number_of_samples;
 	int i;
 	
-	// Check the input file is okay
-	check_sequences_are_the_same_length(filename);
-	
 	length_of_genome = genome_length(filename);
 	reference_sequence = (char *) malloc(length_of_genome*sizeof(char));
 	
