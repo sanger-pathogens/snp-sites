@@ -32,7 +32,7 @@ int number_of_samples_from_parse_phylip();
 void get_sample_names_from_parse_phylip(char ** sample_names);
 void filter_sequence_bases_and_rotate(char * reference_bases, char ** filtered_bases_for_snps, int number_of_filtered_snps);
 
-#define MAX_READ_BUFFER 1048576
+#define MAX_READ_BUFFER 65536
 #define MAX_SAMPLE_NAME_SIZE 1024
 
 #endif

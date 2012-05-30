@@ -67,6 +67,7 @@ void get_bases_for_each_snp(char filename[], int snp_locations[], char ** bases_
   int l;
   int i = 0;
   int sequence_number = 0;
+	int length_of_genome_found =0;
 	
 	gzFile fp;
 	kseq_t *seq;
@@ -82,11 +83,21 @@ void get_bases_for_each_snp(char filename[], int snp_locations[], char ** bases_
   
 	while ((l = kseq_read(seq)) >= 0) 
 	{
-    
+    if(sequence_number == 0)
+    {
+      length_of_genome_found = seq->seq.l;
+    }
     for(i = 0; i< number_of_snps; i++)
 		{
 			bases_for_snps[i][sequence_number] = toupper(((char *) seq->seq.s)[snp_locations[i]]);
 		}
+		
+		if(seq->seq.l != length_of_genome_found)
+    {
+			printf("Alignment %s contains sequences of unequal length. Expected length is %d but got %d in sequence %s\n",filename, length_of_genome_found, seq->seq.l,seq->name.s);
+			exit(EXIT_FAILURE);
+    }
+		
     sequence_number++;
   }
 
@@ -111,38 +122,6 @@ int genome_length(char filename[])
 	kseq_destroy(seq);
 	gzclose(fp);
 	return length_of_genome;
-}
-
-
-void check_sequences_are_the_same_length(char filename[])
-{
-	int length_of_genome = 0 ;
-	int i = 0;
-	int l;
-
-	gzFile fp;
-	kseq_t *seq;
-	
-	fp = gzopen(filename, "r");
-	seq = kseq_init(fp);
-
-  while ((l = kseq_read(seq)) >= 0) 
-  {
-    if(i == 0)
-    {
-      length_of_genome = seq->seq.l;
-    }
-
-    if(seq->seq.l != length_of_genome)
-    {
-			printf("Alignment %s contains sequences of unequal length. Expected length is %d but got %d in sequence %s\n",filename, length_of_genome, seq->seq.l,seq->name.s);
-			exit(EXIT_FAILURE);
-    }
-		i++;
-  }
-
-	kseq_destroy(seq);
-	gzclose(fp);
 }
 
 
