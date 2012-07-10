@@ -173,14 +173,13 @@ typedef struct __kstring_t {
 		int c;															\
 		kstream_t *ks = seq->f;											\
 		if (seq->last_char == 0) { /* then jump to the next header line */ \
-			while ((c = ks_getc(ks)) != -1 && c != '>' && c != '@');	\
+			while ((c = ks_getc(ks)) != -1 && c != '>' );	\
 			if (c == -1) return -1; /* end of file */					\
 			seq->last_char = c;											\
 		} /* the first header char has been read */						\
 		seq->comment.l = seq->seq.l = seq->qual.l = 0;					\
 		if (ks_getuntil(ks, 0, &seq->name, &c) < 0) return -1;			\
-		if (c != '\n') ks_getuntil(ks, '\n', &seq->comment, 0);			\
-		while ((c = ks_getc(ks)) != -1 && c != '>' && c != '+' && c != '@') { \
+		while ((c = ks_getc(ks)) != -1 && c != '>' ) { \
 			if (isgraph(c)) { /* printable non-space character */		\
 				if (seq->seq.l + 1 >= seq->seq.m) { /* double the memory */ \
 					seq->seq.m = seq->seq.l + 2;						\
