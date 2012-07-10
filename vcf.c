@@ -77,7 +77,7 @@ void output_vcf_row(FILE * vcf_file_pointer, char * bases_for_snp, int snp_locat
 	fprintf( vcf_file_pointer, "1\t");
 	
 	// Position
-	fprintf( vcf_file_pointer, "%d\t", (int) snp_location );	
+	fprintf( vcf_file_pointer, "%d\t", (int) snp_location +1 );	
 	
 	//ID
 	fprintf( vcf_file_pointer, ".\t");
