@@ -94,7 +94,8 @@ void get_bases_for_each_snp(char filename[], int snp_locations[], char ** bases_
 		
 		if(seq->seq.l != length_of_genome_found)
     {
-			printf("Alignment %s contains sequences of unequal length. Expected length is %d but got %d in sequence %s\n",filename, length_of_genome_found, seq->seq.l,seq->name.s);
+			fprintf(stderr, "Alignment %s contains sequences of unequal length. Expected length is %d but got %d in sequence %s\n\n",filename, length_of_genome_found, seq->seq.l,seq->name.s);
+			fflush(stderr);
 			exit(EXIT_FAILURE);
     }
 		
