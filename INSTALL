@@ -1,0 +1,15 @@
+== Installing from a git checkout ==
+$ autoreconf -i
+$ ./configure
+$ su -
+$ make
+$ make install
+
+== Installing from a released source tarball ==
+
+$ tar xzvf snp_sites-1.0.tar.gz
+$ cd snp_sites-1.0
+$ ./configure
+$ make
+$ su -
+$ make install

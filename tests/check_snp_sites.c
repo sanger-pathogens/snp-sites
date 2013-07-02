@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <check.h>
+#include "check_snp_sites.h"
 #include "../snp_sites.h"
 #include "../alignment_file.h"
 	
@@ -272,17 +273,5 @@ int compare_files(char expected_output_filename[],char actual_output_filename[] 
   free(actual_buffer);
   
   return 0;
-}
-
-
-int main (void)
-{
-  int number_failed;
-  Suite *s = snp_sites_suite ();
-  SRunner *sr = srunner_create (s);
-  srunner_run_all (sr, CK_NORMAL);
-  number_failed = srunner_ntests_failed (sr);
-  srunner_free (sr);
-  return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
 
