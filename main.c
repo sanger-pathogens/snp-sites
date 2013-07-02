@@ -23,6 +23,7 @@
 #include <ctype.h>
 #include <unistd.h>
 #include "snp_sites.h"
+#include "string_cat.h"
 
 #define MAX_FILENAME_SIZE 250
 
@@ -39,7 +40,7 @@ static void print_usage()
 }
 
 int main (int argc, char **argv) {
-	char multi_fasta_filename[MAX_FILENAME_SIZE];
+	char multi_fasta_filename[MAX_FILENAME_SIZE] = {""};
 	char *output_filename;
 	int c;
 	int index;
@@ -71,7 +72,7 @@ int main (int argc, char **argv) {
   
   if(optind < argc)
   {
-    strcpy(multi_fasta_filename,argv[optind]);
+    memcpy(multi_fasta_filename, argv[optind], size_of_string(argv[optind]) +1);
 		generate_snp_sites(multi_fasta_filename, output_multi_fasta_file, output_vcf_file, output_phylip_file, output_filename);
   }
   else

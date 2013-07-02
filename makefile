@@ -1,5 +1,8 @@
-gubbins: alignment_file.o main.o  vcf.o phylib_of_snp_sites.o snp_sites.o fasta_of_snp_sites.o parse_phylip.o
-	gcc -o snp_sites alignment_file.o main.o  vcf.o phylib_of_snp_sites.o snp_sites.o fasta_of_snp_sites.o parse_phylip.o -lm -lz
+gubbins: alignment_file.o main.o  vcf.o phylib_of_snp_sites.o snp_sites.o fasta_of_snp_sites.o parse_phylip.o string_cat.o
+	gcc -o snp_sites alignment_file.o main.o  vcf.o phylib_of_snp_sites.o snp_sites.o fasta_of_snp_sites.o parse_phylip.o string_cat.o -lm -lz
+
+string_cat.o: string_cat.c
+	gcc -c string_cat.c
 
 alignment_file.o: alignment_file.c
 	gcc -c alignment_file.c
