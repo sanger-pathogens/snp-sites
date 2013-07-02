@@ -55,6 +55,8 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 	int number_of_samples;
 	int i;
 	
+
+	
 	length_of_genome = genome_length(filename);
 	reference_sequence = (char *) calloc(length_of_genome,sizeof(char));
 	
@@ -91,53 +93,51 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 	strip_directory_from_filename(filename, filename_without_directory);
 	memcpy(output_filename_base,filename_without_directory, size_of_string(filename_without_directory)+1 );
 	
-	
 	if(output_filename != NULL && *output_filename != '\0')
 	{
 		memcpy(output_filename_base,output_filename, size_of_string(output_filename)+1 );
 	}
-	
+
 	if(output_vcf_file)
 	{
 		char * vcf_output_filename;
 		vcf_output_filename = calloc(MAX_FILENAME_SIZE,sizeof(char));
+		memcpy(vcf_output_filename, output_filename_base, (MAX_FILENAME_SIZE)*sizeof(char));
 		if((output_vcf_file + output_phylip_file + output_multi_fasta_file) > 1 || (output_filename == NULL || *output_filename == '\0') )
 		{
-			memcpy(vcf_output_filename, output_filename_base, (MAX_FILENAME_SIZE)*sizeof(char));
 			char extension[5] = {".vcf"};
 			concat_strings_created_with_malloc(vcf_output_filename,extension);
 		}
 		
 	  create_vcf_file(vcf_output_filename, snp_locations, number_of_snps, bases_for_snps, sequence_names, number_of_samples);
   }
-  
+
   if(output_phylip_file)
   {
 		char *phylip_output_filename;
 		phylip_output_filename = calloc(MAX_FILENAME_SIZE,sizeof(char));
+		memcpy(phylip_output_filename, output_filename_base, (MAX_FILENAME_SIZE)*sizeof(char));
 		if((output_vcf_file + output_phylip_file + output_multi_fasta_file) > 1 || (output_filename == NULL || *output_filename == '\0') )
 		{
-			memcpy(phylip_output_filename, output_filename_base, (MAX_FILENAME_SIZE)*sizeof(char));
 			char extension[10] = {".phylip"};
 			concat_strings_created_with_malloc(phylip_output_filename,extension);
 		}
 	  create_phylib_of_snp_sites(phylip_output_filename, number_of_snps, bases_for_snps, sequence_names, number_of_samples);
   }
-  
+
   if((output_multi_fasta_file) || (output_vcf_file ==0 && output_phylip_file == 0 && output_multi_fasta_file == 0))
   {
 		char *multi_fasta_output_filename;
 		multi_fasta_output_filename = calloc(MAX_FILENAME_SIZE,sizeof(char));
+		memcpy(multi_fasta_output_filename, output_filename_base, (MAX_FILENAME_SIZE)*sizeof(char));
 		if((output_vcf_file + output_phylip_file + output_multi_fasta_file) > 1 || (output_filename == NULL || *output_filename == '\0') )
 		{
-			
-			memcpy(multi_fasta_output_filename, output_filename_base, (MAX_FILENAME_SIZE)*sizeof(char));
 			char extension[20] = {".snp_sites.aln"};
 			concat_strings_created_with_malloc(multi_fasta_output_filename,extension);
 		}
 	  create_fasta_of_snp_sites(multi_fasta_output_filename, number_of_snps, bases_for_snps, sequence_names, number_of_samples);
   }
-	
+
 	free(snp_locations);
 	return 1;
 }

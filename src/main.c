@@ -41,7 +41,8 @@ static void print_usage()
 
 int main (int argc, char **argv) {
 	char multi_fasta_filename[MAX_FILENAME_SIZE] = {""};
-	char *output_filename;
+	char output_filename[MAX_FILENAME_SIZE] = {""};
+
 	int c;
 	int index;
   int output_multi_fasta_file = 0;
@@ -61,7 +62,7 @@ int main (int argc, char **argv) {
           output_phylip_file = 1;
           break;
 	      case 'o':
-	        output_filename = optarg;
+          memcpy(output_filename, optarg, size_of_string(optarg) +1);
 	        break;
         case 'h':
           print_usage();
