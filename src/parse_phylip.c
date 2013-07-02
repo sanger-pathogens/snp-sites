@@ -23,6 +23,7 @@
 #include <string.h>
 #include "parse_phylip.h"
 #include "alignment_file.h"
+#include "string_cat.h"
 
 int num_samples;
 int num_snps;
@@ -39,8 +40,16 @@ void get_sequence_for_sample_name(char * sequence_bases, char * sample_name)
 {
 	int sequence_index;
 	sequence_index = find_sequence_index_from_sample_name( sample_name);
-	strcpy(sequence_bases, sequences[sequence_index]);
+	if(sequence_index < 0)
+	{
+    printf("Couldnt find sequence name %s with index %d\n", sample_name,sequence_index);
+	  exit(1);
+  }
+
+	memcpy(sequence_bases, sequences[sequence_index], size_of_string(sequences[sequence_index]) +1);
 }
+
+
 
 int does_column_contain_snps(int snp_column, char reference_base)
 {
@@ -70,10 +79,11 @@ void get_sample_names_from_parse_phylip(char ** sample_names)
 	int i;
 	for(i = 0; i< num_samples; i++)
 	{
-		sample_names[i] =  (char *) malloc(MAX_SAMPLE_NAME_SIZE*sizeof(char));
-		strcpy(sample_names[i], phylip_sample_names[i]);
+		sample_names[i] =  (char *) calloc(MAX_SAMPLE_NAME_SIZE,sizeof(char));
+		memcpy(sample_names[i], phylip_sample_names[i], size_of_string(phylip_sample_names[i]) +1);
 	}
 }
+
 	
 
 void filter_sequence_bases_and_rotate(char * reference_bases, char ** filtered_bases_for_snps, int number_of_filtered_snps)
@@ -82,7 +92,7 @@ void filter_sequence_bases_and_rotate(char * reference_bases, char ** filtered_b
 	
 	for(j = 0; j < number_of_filtered_snps; j++)
 	{
-		filtered_bases_for_snps[j] = (char *) malloc(num_samples*sizeof(char));
+		filtered_bases_for_snps[j] = (char *) calloc(num_samples,sizeof(char));
 	}
 		
 	for(i = 0; i < num_samples; i++)
@@ -136,31 +146,30 @@ void load_sequences_from_phylib_file(char phylip_filename[])
 void load_sequences_from_phylib(FILE * phylip_file_pointer)
 {	
 	rewind(phylip_file_pointer);
-	char line_buffer[MAX_READ_BUFFER] = {0}; 
+	char * line_buffer = (char *) calloc(MAX_READ_BUFFER,sizeof(char));
 	int i;
 	
 	// The first line contains the number of samples and snps
-	strcpy(line_buffer,"");
-	read_line(line_buffer, phylip_file_pointer);
+	line_buffer[0] = '\0';
+	line_buffer = read_line(line_buffer, phylip_file_pointer);
 	
 	num_samples = get_number_of_samples_from_phylip(line_buffer);
 	num_snps = get_number_of_snps_from_phylip(line_buffer);
 	
-
-	sequences = (char **) malloc(num_samples*sizeof(char *));
-	phylip_sample_names = (char **) malloc(num_samples*sizeof(char *));
+	sequences = (char **) calloc(num_samples,sizeof(char *));
+	phylip_sample_names = (char **) calloc(num_samples,sizeof(char *));
 	
 	for(i = 0; i < num_samples; i++)
 	{
-		sequences[i] = (char *) malloc(num_snps*sizeof(char));
-		phylip_sample_names[i] = (char *) malloc(MAX_SAMPLE_NAME_SIZE*sizeof(char));
+		sequences[i] = (char *) calloc(num_snps,sizeof(char));
+		phylip_sample_names[i] = (char *) calloc(MAX_SAMPLE_NAME_SIZE,sizeof(char));
 	}
 	
 	int sample_counter = 0;
 
 	do{
-		strcpy(line_buffer,""); 
-		read_line(line_buffer, phylip_file_pointer);
+		line_buffer[0] = '\0';
+		line_buffer = read_line(line_buffer, phylip_file_pointer);
 		
 		if(line_buffer[0] == '\0')
 		{

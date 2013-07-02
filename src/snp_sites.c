@@ -27,6 +27,7 @@
 #include "snp_sites.h"
 #include "phylib_of_snp_sites.h"
 #include "parse_phylip.h"
+#include "string_cat.h"
 
 
 void build_snp_locations(int snp_locations[], char reference_sequence[])
@@ -54,13 +55,15 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 	int number_of_samples;
 	int i;
 	
+
+	
 	length_of_genome = genome_length(filename);
-	reference_sequence = (char *) malloc(length_of_genome*sizeof(char));
+	reference_sequence = (char *) calloc(length_of_genome,sizeof(char));
 	
 	build_reference_sequence(reference_sequence,filename);
 	number_of_snps = detect_snps(reference_sequence, filename, length_of_genome);
 	
-	snp_locations = (int *) malloc(number_of_snps*sizeof(int));
+	snp_locations = (int *) calloc(number_of_snps,sizeof(int));
 	build_snp_locations(snp_locations, reference_sequence);
 	free(reference_sequence);
 	
@@ -71,7 +74,7 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 	sequence_names[number_of_samples-1] = '\0';
 	for(i = 0; i < number_of_samples; i++)
 	{
-		sequence_names[i] = malloc(MAX_SAMPLE_NAME_SIZE*sizeof(char));
+		sequence_names[i] = calloc(MAX_SAMPLE_NAME_SIZE,sizeof(char));
 	}
 	
 	get_sample_names_for_header(filename, sequence_names, number_of_samples);
@@ -80,7 +83,7 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 	
 	for(i = 0; i < number_of_snps; i++)
 	{
-		bases_for_snps[i] = malloc(number_of_samples*sizeof(char));
+		bases_for_snps[i] = calloc(number_of_samples,sizeof(char));
 	}
 	
 	get_bases_for_each_snp(filename, snp_locations, bases_for_snps, length_of_genome, number_of_snps);
@@ -88,50 +91,53 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 	char output_filename_base[MAX_FILENAME_SIZE];
 	char filename_without_directory[MAX_FILENAME_SIZE];
 	strip_directory_from_filename(filename, filename_without_directory);
-	strcpy(output_filename_base,filename_without_directory );
+	memcpy(output_filename_base,filename_without_directory, size_of_string(filename_without_directory)+1 );
 	
 	if(output_filename != NULL && *output_filename != '\0')
 	{
-	  strcpy(output_filename_base, output_filename);
+		memcpy(output_filename_base,output_filename, size_of_string(output_filename)+1 );
 	}
-	
+
 	if(output_vcf_file)
 	{
 		char * vcf_output_filename;
-		vcf_output_filename = malloc(MAX_FILENAME_SIZE*sizeof(char));
-		strcpy(vcf_output_filename,output_filename_base);
+		vcf_output_filename = calloc(MAX_FILENAME_SIZE,sizeof(char));
+		memcpy(vcf_output_filename, output_filename_base, (MAX_FILENAME_SIZE)*sizeof(char));
 		if((output_vcf_file + output_phylip_file + output_multi_fasta_file) > 1 || (output_filename == NULL || *output_filename == '\0') )
 		{
-			vcf_output_filename = strcat(vcf_output_filename, ".vcf");
+			char extension[5] = {".vcf"};
+			concat_strings_created_with_malloc(vcf_output_filename,extension);
 		}
 		
 	  create_vcf_file(vcf_output_filename, snp_locations, number_of_snps, bases_for_snps, sequence_names, number_of_samples);
   }
-  
+
   if(output_phylip_file)
   {
 		char *phylip_output_filename;
-		phylip_output_filename = malloc(MAX_FILENAME_SIZE*sizeof(char));
-		strcpy(phylip_output_filename,output_filename_base);
+		phylip_output_filename = calloc(MAX_FILENAME_SIZE,sizeof(char));
+		memcpy(phylip_output_filename, output_filename_base, (MAX_FILENAME_SIZE)*sizeof(char));
 		if((output_vcf_file + output_phylip_file + output_multi_fasta_file) > 1 || (output_filename == NULL || *output_filename == '\0') )
 		{
-			phylip_output_filename = strcat(phylip_output_filename, ".phylip");
+			char extension[10] = {".phylip"};
+			concat_strings_created_with_malloc(phylip_output_filename,extension);
 		}
 	  create_phylib_of_snp_sites(phylip_output_filename, number_of_snps, bases_for_snps, sequence_names, number_of_samples);
   }
-  
+
   if((output_multi_fasta_file) || (output_vcf_file ==0 && output_phylip_file == 0 && output_multi_fasta_file == 0))
   {
 		char *multi_fasta_output_filename;
-		multi_fasta_output_filename = malloc(MAX_FILENAME_SIZE*sizeof(char));
-		strcpy(multi_fasta_output_filename,output_filename_base);
+		multi_fasta_output_filename = calloc(MAX_FILENAME_SIZE,sizeof(char));
+		memcpy(multi_fasta_output_filename, output_filename_base, (MAX_FILENAME_SIZE)*sizeof(char));
 		if((output_vcf_file + output_phylip_file + output_multi_fasta_file) > 1 || (output_filename == NULL || *output_filename == '\0') )
 		{
-			multi_fasta_output_filename = strcat(multi_fasta_output_filename, ".snp_sites.aln");
+			char extension[20] = {".snp_sites.aln"};
+			concat_strings_created_with_malloc(multi_fasta_output_filename,extension);
 		}
 	  create_fasta_of_snp_sites(multi_fasta_output_filename, number_of_snps, bases_for_snps, sequence_names, number_of_samples);
   }
-	
+
 	free(snp_locations);
 	return 1;
 }
