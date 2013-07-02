@@ -75,12 +75,6 @@ void get_bases_for_each_snp(char filename[], int snp_locations[], char ** bases_
 	fp = gzopen(filename, "r");
 	seq = kseq_init(fp);
 
-	// initialise the strings in the array
-	for(i = 0; i < number_of_snps; i++)
-	{
-		strcpy(bases_for_snps[i], "");
-	}
-  
 	while ((l = kseq_read(seq)) >= 0) 
 	{
     if(sequence_number == 0)
@@ -106,10 +100,14 @@ void get_bases_for_each_snp(char filename[], int snp_locations[], char ** bases_
 	gzclose(fp);
 }
 
-
 int genome_length(char filename[])
 {
 	int length_of_genome;
+	
+	if( access( filename, F_OK ) == -1 ) {
+		printf("Cannot calculate genome_length because file '%s' doesnt exist\n",filename);
+		exit(0);
+  }
 
 	gzFile fp;
 	kseq_t *seq;
@@ -206,19 +204,22 @@ int detect_snps(char reference_sequence[], char filename[], int length_of_genome
 	return number_of_snps;
 }
 
-int read_line(char sequence[], FILE * pFilePtr)
+
+char * read_line(char sequence[], FILE * pFilePtr)
 {
-    
     char *pcRes         = NULL;  
-    int   lineLength    = 0; 
-	char current_line_buffer[MAX_READ_BUFFER] = {0};
+    long   lineLength    = 0; 
+	  char current_line_buffer[MAX_READ_BUFFER] = {0};
 	
 	
     while((pcRes = fgets(current_line_buffer, sizeof(current_line_buffer), pFilePtr))  != NULL){
-        //append string to line buffer
-        strcat(sequence, current_line_buffer);
-        strcpy(current_line_buffer, "");
-        lineLength = strlen(sequence) - 1;
+	      if(size_of_string(sequence) > 0)
+	      {
+	    			sequence = realloc(sequence, sizeof(char)*(size_of_string(sequence) + size_of_string(current_line_buffer) + 2) );
+        }
+				concat_strings_created_with_malloc(sequence,current_line_buffer);
+				current_line_buffer[0] = '\0';
+        lineLength = size_of_string(sequence);
         //if end of line character is found then exit from loop
 		
         if((sequence)[lineLength] == '\n' || (sequence)[lineLength] == '\0'){
@@ -227,7 +228,7 @@ int read_line(char sequence[], FILE * pFilePtr)
     }
 	 
 	 
-    return 1;
+    return sequence;
 }
 
 
@@ -243,13 +244,14 @@ void get_sample_names_for_header(char filename[], char ** sequence_names, int nu
 	seq = kseq_init(fp);
   
 	while ((l = kseq_read(seq)) >= 0) {
-	  strcpy(sequence_names[i], seq->name.s);
+		memcpy(sequence_names[i], seq->name.s, size_of_string(seq->name.s)+1);
     i++;
 	}
 	kseq_destroy(seq);
 	gzclose(fp);
 
 }
+
 
 char filter_invalid_characters(char input_char)
 {
