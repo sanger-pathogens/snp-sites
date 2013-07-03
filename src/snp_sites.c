@@ -110,6 +110,7 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 		}
 		
 	  create_vcf_file(vcf_output_filename, snp_locations, number_of_snps, bases_for_snps, sequence_names, number_of_samples);
+		free(vcf_output_filename);
   }
 
   if(output_phylip_file)
@@ -123,6 +124,7 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 			concat_strings_created_with_malloc(phylip_output_filename,extension);
 		}
 	  create_phylib_of_snp_sites(phylip_output_filename, number_of_snps, bases_for_snps, sequence_names, number_of_samples);
+		free(phylip_output_filename);
   }
 
   if((output_multi_fasta_file) || (output_vcf_file ==0 && output_phylip_file == 0 && output_multi_fasta_file == 0))
