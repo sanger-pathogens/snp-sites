@@ -58,12 +58,12 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 
 	
 	length_of_genome = genome_length(filename);
-	reference_sequence = (char *) calloc(length_of_genome,sizeof(char));
+	reference_sequence = (char *) calloc((length_of_genome +1),sizeof(char));
 	
 	build_reference_sequence(reference_sequence,filename);
 	number_of_snps = detect_snps(reference_sequence, filename, length_of_genome);
 	
-	snp_locations = (int *) calloc(number_of_snps,sizeof(int));
+	snp_locations = (int *) calloc((number_of_snps+1),sizeof(int));
 	build_snp_locations(snp_locations, reference_sequence);
 	free(reference_sequence);
 	
@@ -83,7 +83,7 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 	
 	for(i = 0; i < number_of_snps; i++)
 	{
-		bases_for_snps[i] = calloc(number_of_samples,sizeof(char));
+		bases_for_snps[i] = calloc(number_of_samples+1 ,sizeof(char));
 	}
 	
 	get_bases_for_each_snp(filename, snp_locations, bases_for_snps, length_of_genome, number_of_snps);
@@ -136,9 +136,21 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 			concat_strings_created_with_malloc(multi_fasta_output_filename,extension);
 		}
 	  create_fasta_of_snp_sites(multi_fasta_output_filename, number_of_snps, bases_for_snps, sequence_names, number_of_samples);
+	  free(multi_fasta_output_filename);
   }
 
+  // free memory
 	free(snp_locations);
+	for(i = 0; i < number_of_samples; i++)
+	{
+		free(sequence_names[i]);
+	}
+	for(i = 0; i < number_of_snps; i++)
+	{
+		free(bases_for_snps[i]);
+	}
+	
+
 	return 1;
 }
 

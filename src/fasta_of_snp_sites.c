@@ -45,4 +45,5 @@ void create_fasta_of_snp_sites(char filename[], int number_of_snps, char ** base
 		fprintf( fasta_file_pointer, "\n");
 	}
   fclose(fasta_file_pointer);
+	free(base_filename);
 }
