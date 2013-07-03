@@ -1,6 +1,6 @@
 /*
  *  Wellcome Trust Sanger Institute
- *  Copyright (C) 2011  Wellcome Trust Sanger Institute
+ *  Copyright (C) 2013  Wellcome Trust Sanger Institute
  *  
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License

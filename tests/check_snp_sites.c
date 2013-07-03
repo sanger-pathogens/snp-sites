@@ -1,3 +1,21 @@
+/*
+ *  Wellcome Trust Sanger Institute
+ *  Copyright (C) 2013  Wellcome Trust Sanger Institute
+ *  
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or (at your option) any later version.
+ *  
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *  
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -232,6 +250,7 @@ Suite * snp_sites_suite (void)
 	tcase_add_test (tc_snp_sites, valid_with_only_aln_file_output_default);
 	tcase_add_test (tc_snp_sites, valid_with_phylip_outputted_with_custom_name);
 	tcase_add_exit_test(tc_snp_sites, invalid_with_uneven_file_lengths,EXIT_FAILURE);
+	remove("uneven_alignment.aln.snp_sites.aln");
   suite_add_tcase (s, tc_snp_sites);
 
   return s;
