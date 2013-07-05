@@ -1,5 +1,5 @@
 # ship these headers in the "make dist" target
-dist_data_DATA = alignment_file.h  vcf.h phylib_of_snp_sites.h snp_sites.h fasta_of_snp_sites.h parse_phylip.h string_cat.h 
+dist_data_DATA = alignment_file.h  vcf.h phylib_of_snp_sites.h snp_sites.h fasta_of_snp_sites.h parse_phylip.h string_cat.h kseq.h
 
 # snp_sites is our top level progra
 bin_PROGRAMS = snp_sites
