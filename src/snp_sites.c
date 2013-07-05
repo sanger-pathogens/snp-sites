@@ -1,6 +1,6 @@
 /*
  *  Wellcome Trust Sanger Institute
- *  Copyright (C) 2011  Wellcome Trust Sanger Institute
+ *  Copyright (C) 2013  Wellcome Trust Sanger Institute
  *  
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -16,6 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
 
 
 #include <stdio.h>
@@ -110,6 +111,7 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 		}
 		
 	  create_vcf_file(vcf_output_filename, snp_locations, number_of_snps, bases_for_snps, sequence_names, number_of_samples);
+		free(vcf_output_filename);
   }
 
   if(output_phylip_file)
@@ -123,6 +125,7 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 			concat_strings_created_with_malloc(phylip_output_filename,extension);
 		}
 	  create_phylib_of_snp_sites(phylip_output_filename, number_of_snps, bases_for_snps, sequence_names, number_of_samples);
+		free(phylip_output_filename);
   }
 
   if((output_multi_fasta_file) || (output_vcf_file ==0 && output_phylip_file == 0 && output_multi_fasta_file == 0))

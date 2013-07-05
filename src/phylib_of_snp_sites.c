@@ -1,6 +1,6 @@
 /*
  *  Wellcome Trust Sanger Institute
- *  Copyright (C) 2011  Wellcome Trust Sanger Institute
+ *  Copyright (C) 2013  Wellcome Trust Sanger Institute
  *  
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -16,6 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
 
 
 #include <stdio.h>
@@ -35,9 +36,6 @@ void create_phylib_of_snp_sites(char filename[], int number_of_snps, char ** bas
 	memcpy(base_filename, filename, MAX_FILENAME_SIZE*sizeof(char));
 	fasta_file_pointer = fopen(base_filename, "w");
 	
-	
-	fasta_file_pointer = fopen(base_filename, "w");
-	
 	fprintf( fasta_file_pointer, "%d %d\n", number_of_samples, number_of_snps);
 	
 	for(sample_counter=0; sample_counter< number_of_samples; sample_counter++)
@@ -53,4 +51,5 @@ void create_phylib_of_snp_sites(char filename[], int number_of_snps, char ** bas
 		fprintf( fasta_file_pointer, "\n");
 	}
   fclose(fasta_file_pointer);
+	free(base_filename);
 }
