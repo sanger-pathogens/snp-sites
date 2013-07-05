@@ -1,3 +1,8 @@
+SNP Sites
+=====
+This program finds snp sites from a multi fasta alignment file.
+
+
 Usage: snp_sites [-mvph] [-o output_filename] <file>
 This program finds snp sites from a multi fasta alignment file.
  -m		output a multi fasta alignment file (default)

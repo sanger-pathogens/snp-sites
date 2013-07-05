@@ -1,6 +1,6 @@
 /*
  *  Wellcome Trust Sanger Institute
- *  Copyright (C) 2011  Wellcome Trust Sanger Institute
+ *  Copyright (C) 2013  Wellcome Trust Sanger Institute
  *  
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -16,6 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
 
 
 #include <stdio.h>
@@ -39,6 +40,7 @@ void create_vcf_file(char filename[], int snp_locations[],int number_of_snps, ch
 	output_vcf_header(vcf_file_pointer,sequence_names, number_of_samples);
 	output_vcf_snps(vcf_file_pointer, bases_for_snps, snp_locations, number_of_snps, number_of_samples);
   fclose(vcf_file_pointer);
+	free(base_filename);
 }
 
 void output_vcf_snps(FILE * vcf_file_pointer, char ** bases_for_snps, int * snp_locations, int number_of_snps, int number_of_samples)
