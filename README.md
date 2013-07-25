@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/sanger-pathogens/snp_sites.png?branch=master)](https://travis-ci.org/sanger-pathogens/snp_sites)
 SNP Sites
 =====
 This program finds snp sites from a multi fasta alignment file.
