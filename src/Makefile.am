@@ -4,7 +4,7 @@ dist_data_DATA = alignment_file.h  vcf.h phylib_of_snp_sites.h snp_sites.h fasta
 # snp_sites is our top level progra
 bin_PROGRAMS = snp_sites
 snp_sites_SOURCES = main.c
-snp_sites_LDADD=-lm libsnp_sites.la -lz
+snp_sites_LDADD=-lm libsnp_sites.la -lz -lpthread -lrt
 
 # libsnp_sites.so is our library
 lib_LTLIBRARIES = libsnp_sites.la
@@ -19,4 +19,4 @@ run_all_tests_SOURCES = \
 	../tests/helper_methods.c \
 	../tests/run_all_tests.c
 run_all_tests_CFLAGS = -I../tests
-run_all_tests_LDADD = -lm -lcheck libsnp_sites.la -lz
+run_all_tests_LDADD = -lm -lcheck libsnp_sites.la -lz -lpthread -lrt
