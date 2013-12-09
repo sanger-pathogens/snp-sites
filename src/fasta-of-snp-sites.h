@@ -18,16 +18,9 @@
  */
 
 
-#ifndef _VCF_H_
-#define _VCF_H_
+#ifndef _FASTA_OF_SNP_SITES_
+#define _FASTA_OF_SNP_SITES_
 
-void output_vcf_header( FILE * vcf_file_pointer, char ** sequence_names, int number_of_samples);
-void create_vcf_file(char filename[], int snp_locations[], int number_of_snps, char ** bases_for_snps, char ** sequence_names, int number_of_samples);
-void output_vcf_snps(FILE * vcf_file_pointer, char ** bases_for_snps, int * snp_locations, int number_of_snps, int number_of_samples);
-void output_vcf_row(FILE * vcf_file_pointer, char * bases_for_snp, int snp_location, int number_of_samples);
-void output_vcf_row_samples_bases(FILE * vcf_file_pointer, char reference_base, char * bases_for_snp, int number_of_samples);
-void alternative_bases(char reference_base, char * bases_for_snp, char alt_bases[], int number_of_samples);
-int check_if_char_in_string(char search_string[], char target_char, int search_string_length);
+void create_fasta_of_snp_sites(char filename[], int number_of_snps, char ** bases_for_snps, char ** sequence_names, int number_of_samples);
 #define MAX_FILENAME_SIZE 250
-
 #endif

@@ -1,22 +1,22 @@
 # ship these headers in the "make dist" target
-dist_data_DATA = alignment_file.h  vcf.h phylib_of_snp_sites.h snp_sites.h fasta_of_snp_sites.h parse_phylip.h string_cat.h kseq.h
+dist_data_DATA = alignment-file.h  vcf.h phylib-of-snp-sites.h snp-sites.h fasta-of-snp-sites.h parse-phylip.h string-cat.h kseq.h
 
 # snp_sites is our top level progra
-bin_PROGRAMS = snp_sites
+bin_PROGRAMS = snp-sites
 snp_sites_SOURCES = main.c
-snp_sites_LDADD=-lm libsnp_sites.la -lz -lpthread -lrt
+snp_sites_LDADD=-lm libsnp-sites.la -lz -lpthread -lrt
 
 # libsnp_sites.so is our library
-lib_LTLIBRARIES = libsnp_sites.la
-libsnp_sites_la_SOURCES = alignment_file.c vcf.c phylib_of_snp_sites.c snp_sites.c fasta_of_snp_sites.c parse_phylip.c string_cat.c
+lib_LTLIBRARIES = libsnp-sites.la
+libsnp_sites_la_SOURCES = alignment-file.c vcf.c phylib-of-snp-sites.c snp-sites.c fasta-of-snp-sites.c parse-phylip.c string-cat.c
 libsnp_sites_la_LDFLAGS= -version-info 1:0
 
 # "make check" target
 TESTS = $(check_PROGRAMS)
-check_PROGRAMS = run_all_tests
+check_PROGRAMS = run-all-tests
 run_all_tests_SOURCES = \
-	../tests/check_snp_sites.c \
-	../tests/helper_methods.c \
-	../tests/run_all_tests.c
+	../tests/check-snp-sites.c \
+	../tests/helper-methods.c \
+	../tests/run-all-tests.c
 run_all_tests_CFLAGS = -I../tests
-run_all_tests_LDADD = -lm -lcheck libsnp_sites.la -lz -lpthread -lrt
+run_all_tests_LDADD = -lm -lcheck libsnp-sites.la -lz -lpthread -lrt

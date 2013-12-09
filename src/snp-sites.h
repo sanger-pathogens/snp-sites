@@ -18,16 +18,16 @@
  */
 
 
-#ifndef _VCF_H_
-#define _VCF_H_
+#ifndef _SNP_SITES_H_
+#define _SNP_SITES_H_
 
-void output_vcf_header( FILE * vcf_file_pointer, char ** sequence_names, int number_of_samples);
-void create_vcf_file(char filename[], int snp_locations[], int number_of_snps, char ** bases_for_snps, char ** sequence_names, int number_of_samples);
-void output_vcf_snps(FILE * vcf_file_pointer, char ** bases_for_snps, int * snp_locations, int number_of_snps, int number_of_samples);
-void output_vcf_row(FILE * vcf_file_pointer, char * bases_for_snp, int snp_location, int number_of_samples);
-void output_vcf_row_samples_bases(FILE * vcf_file_pointer, char reference_base, char * bases_for_snp, int number_of_samples);
-void alternative_bases(char reference_base, char * bases_for_snp, char alt_bases[], int number_of_samples);
-int check_if_char_in_string(char search_string[], char target_char, int search_string_length);
+void build_snp_locations(int snp_locations[], char reference_sequence[]);
+int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_vcf_file, int output_phylip_file, char output_filename[]);
+int refilter_existing_snps(char * reference_bases, int number_of_snps, char ** column_names, int number_of_columns,int * snp_locations, int * filtered_snp_locations);
+void remove_filtered_snp_locations(int * filtered_snp_locations, int * snp_locations, int number_of_snps);
+void strip_directory_from_filename(char * input_filename, char * output_filename);
+
 #define MAX_FILENAME_SIZE 250
+#define MAX_SAMPLE_NAME_SIZE 1024
 
 #endif

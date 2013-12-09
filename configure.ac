@@ -1,4 +1,4 @@
-AC_INIT([snp_sites], [1])
+AC_INIT([snp-sites], [1])
 AM_INIT_AUTOMAKE([foreign])
 AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_HEADERS([config.h])   
