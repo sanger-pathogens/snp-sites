@@ -21,7 +21,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <check.h>
-#include "check_snp_sites.h"
+#include "check-snp-sites.h"
 
 
 

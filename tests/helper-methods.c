@@ -24,7 +24,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <errno.h>
-#include "helper_methods.h"
+#include "helper-methods.h"
 
 
 int compare_files(char expected_output_filename[],char actual_output_filename[] )

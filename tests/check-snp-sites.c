@@ -25,10 +25,10 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <errno.h>
-#include "check_snp_sites.h"
-#include "snp_sites.h"
-#include "alignment_file.h"
-#include "helper_methods.h"
+#include "check-snp-sites.h"
+#include "snp-sites.h"
+#include "alignment-file.h"
+#include "helper-methods.h"
 
 START_TEST (valid_alignment_with_one_line_per_sequence)
 {
