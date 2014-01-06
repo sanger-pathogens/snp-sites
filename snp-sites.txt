@@ -1,0 +1,50 @@
+SNP-SITESDOC(1)
+==============
+:doctype: manpage
+
+
+NAME
+----
+snp-sites - finds snp sites from a multi fasta alignment file
+
+SYNOPSIS
+--------
+snp_sites [-mvph] [-o output_filename] [input file]
+
+DESCRIPTION
+-----------
+This application takes in a multi fasta alignment, finds all the SNP sites, then outputs the SNP sites in the following formats:
+
+a multi fasta alignment, VCF, relaxed phylip format.
+
+OPTIONS
+-------
+*-m*::
+	Output a multi fasta alignment file (default)
+
+*-v*::
+	Output a VCF file
+
+*-p*::
+	Output a phylip file
+
+*-o*::
+	Specify an output filename
+
+*-h*::
+	This document
+
+EXAMPLES
+--------
+snp-sites my-alignment.aln
+
+snp-sites my-gzipped-alignment.aln.gz
+
+AUTHOR
+------
+Snp-sites was originally written by Andrew Page (ap13@sanger.ac.uk)
+
+COPYING
+-------
+Wellcome Trust Sanger Institute Copyright (C) 2013 Wellcome Trust Sanger Institute
+This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
