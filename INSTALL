@@ -1,8 +1,8 @@
 == Installing from a git checkout ==
 $ autoreconf -i
 $ ./configure
-$ su -
 $ make
+$ su -
 $ make install
 
 == Installing from a released source tarball ==

@@ -1,5 +1,13 @@
 # ship these headers in the "make dist" target
-dist_data_DATA = alignment-file.h  vcf.h phylib-of-snp-sites.h snp-sites.h fasta-of-snp-sites.h parse-phylip.h string-cat.h kseq.h
+
+#This is how the header files were originaly being installed.
+#dist_data_DATA = alignment-file.h  vcf.h phylib-of-snp-sites.h snp-sites.h fasta-of-snp-sites.h parse-phylip.h string-cat.h kseq.h
+
+#The problem with the above is that the header files end up in /usr/share, which is far from ideal.
+#They should all be installed to /usr/include/snp-sites/.
+#Having spoken to John Marshall, this is how it should be done
+snpsitesincludedir=$(includedir)/snp-sites
+snpsitesinclude_HEADERS=alignment-file.h  vcf.h phylib-of-snp-sites.h snp-sites.h fasta-of-snp-sites.h parse-phylip.h string-cat.h kseq.h
 
 
 # snp_sites is our top level progra
