@@ -53,6 +53,9 @@ AACCGGTT
 >another_comparison_sequence
 AACCGCTT
 
+For more examples, visit:
+https://github.com/sanger-pathogens/snp_sites/tree/master/tests/data
+
 AUTHOR
 ------
 snp-sites was originally written by Andrew Page (ap13@sanger.ac.uk)
