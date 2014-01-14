@@ -13,7 +13,7 @@ snp_sites [-mvph] [-o output_filename] [input file]
 
 DESCRIPTION
 -----------
-This application takes in a multi fasta alignment, finds all the SNP sites, then outputs the SNP sites in the following formats:
+This application takes in a multi fasta alignment, finds all the SNP sites, then outputs the SNP sites in either of the following formats:
 
 a multi fasta alignment, VCF, relaxed phylip format.
 
@@ -40,9 +40,22 @@ snp-sites my-alignment.aln
 
 snp-sites my-gzipped-alignment.aln.gz
 
+
+FORMAT OF THE INPUT FILE
+------------------------
+
+Input files should look like this:
+
+>reference_sequence
+aaccggtt
+>comparison_sequence
+AACCGGTT
+>another_comparison_sequence
+AACCGCTT
+
 AUTHOR
 ------
-Snp-sites was originally written by Andrew Page (ap13@sanger.ac.uk)
+snp-sites was originally written by Andrew Page (ap13@sanger.ac.uk)
 
 COPYING
 -------
