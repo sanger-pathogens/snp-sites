@@ -22,9 +22,10 @@
 
 #include "kseq.h"
 
-int detect_snps(char reference_sequence[],  char filename[], int length_of_genome);
+int detect_snps(char reference_sequence[],  char filename[], size_t length_of_genome);
 int line_length(FILE * alignment_file_pointer);
 int build_reference_sequence(char reference_sequence[], char filename[]);
+int build_reference_sequence_and_truncate(char reference_sequence[], char filename[], size_t buffer_length);
 void advance_to_sequence(FILE * alignment_file_pointer);
 void advance_to_sequence_name(FILE * alignment_file_pointer);
 int genome_length(char filename[]);
@@ -32,7 +33,7 @@ char * read_line(char sequence[], FILE * pFilePtr);
 int number_of_sequences_in_file(char filename[]);
 void get_sample_names_for_header(char filename[], char ** sequence_names, int number_of_samples);
 char filter_invalid_characters(char input_char);
-void get_bases_for_each_snp(char filename[], int snp_locations[], char ** bases_for_snps, int length_of_genome, int number_of_snps);
+void get_bases_for_each_snp(char filename[], int snp_locations[], char ** bases_for_snps, size_t length_of_genome, int number_of_snps);
 
 
 #define MAX_READ_BUFFER 65536

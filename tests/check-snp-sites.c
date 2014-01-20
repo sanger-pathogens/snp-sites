@@ -30,6 +30,10 @@
 #include "alignment-file.h"
 #include "helper-methods.h"
 
+/*Defining constant values for the reference sequence lengths*/
+#define actual_ref_seq_length1 2002; //Former was 2001
+#define actual_ref_seq_length2 10;   //Former was 9
+
 START_TEST (valid_alignment_with_one_line_per_sequence)
 {
   generate_snp_sites("../tests/data/alignment_file_one_line_per_sequence.aln",1,1,1,"");
@@ -161,25 +165,25 @@ END_TEST
 
 START_TEST (valid_initial_reference_sequence)
 {
-  char actual_reference_sequence[2001];
+  char actual_reference_sequence[actual_ref_seq_length1];
   char *expected_reference_sequence = "-------------------------CTATATAGAGATCTTTTTATTAGATCTACTATTAAGGAGCAGGATCTTTGTGGATAAGTGAAAAATGATCAACAAGATCATGCGATTCAGAAGGATCAGATCGTGTGATCAACCACTGATCTGTTCAAGGATTAGCTGGGATCAAAAACCTATGTTATACACAGCCACCTTGGGATCTAAAACTTGTTATATGGATAACTATAGGAAGATCACCGGATAATCGTATAGTTATCCACATGAGATTTGATTGAAAAAGCATCAATCAATTTTTTCACTACCGTTAAATTTATCCACAATCCAAAAAAAAGAGCGGCATTAAGCCGCTCTGCATGGAATAGGTCATTATTTAGAAGCGATTGATGACGCGTTTGAGCCAAGCTTCAGCGGCATCTTCAGGCACTGGGTGCTCTTGTACATCGATGGTAAAGCAGTTGGCCAGAGGTTTAGCACCAATATCCCCCAGCAGCTGATAGGCATGTTTACCTGCCGCGCAGAAAGTATCGTAGCTTGAATCACCAATCGCGACCACGGCATAACGTAGTGCAGAGGTATTCGGTGGTGTATTCTGCAGAGCCTGAATAAAGGGCTGGATATTATCCGGGTACTCACCAGCCCCGTGGGTTGAGGTGATGATCAGCCAAGTCCCTTTAGCAGGGATCTCACTCATGTTGGGCTGGTTATGAATTTTGGTGTCAAAGCCTTGTTCTTGCAGTAAATCACTCAGGTGGTCACCCACATATTCCGCACCGCCTAGGGTGCTGCCAGTAATGATATGAATCATAGCGTTACTCTATTTCCCAATACAGAATGATGAAAAAATGCGGCCAAGCAGATCATCGGAGCTGAACTCGCCCGTAATTTCGTTAAGGTGTTGCTGGGCTATACGCAGCTCTTCGGCGAGGATTTCTCCGGCCATATAGCCTTCAAGTTGTTGCTGGCCAATCGCTAAGTGCTCTGCGGCTCGCTCTAGGGCATCGAGATGACGGCGGCGTGCCATAAAGCCACCTTCCTGATTGCCTGAAAAACCCATGCACTCTTTGAGGTGCTGACGCAAGGCATCGACCCCTTGGCCTGTTTTGGCTGATAGGCGGATCAAGGTGGGTTGATTAACATGGCAGATCCCAAGGGGCTCACCAGTTTGATCGGCTTTATTACGGATCACAGTGATCCCAATATTCTCTGGCAGTTTGTCAACAAAATCAGGCCAGATGTCCTGTGGATCGGTGGCCTCTGTGGTGGTGCCATCGACCATAAACAGTACGCGATCGGCTTGGCGGATCTCTTCCCATGCGCGCTCAATACCAATTTTTTCTACCGCATCAGAAGCGTCTCGTAGTCCCGCAGTATCGATGATGTGCAGCGGCATCCCATCAATATGGATATGCTCACGCAGAACATCACGGGTGGTACCGGCAATGTCGGTAACGATGGCAGACTCTTTACCTGAAAGCGCATTGAGTAGGCTCGATTTACCCGCATTAGGACGCCCAGCAATCACCACCTTCATCCCTTCGCGCATAATGGCGCCTTGGTTGGCTTCACGGCGCACTGCGGCAAGATTATCTATGATGGTTTGCAGATCAGCGGAAACCTTACCATCGGCCAGAAAATCGATCTCTTCTTCTGGGAAATCAATTGCGGCTTCAACATAGATGCGCAGGTGAATCAGCGATTCCACCAAGGTATGGATGCGTTTAGAAAACTCGCCTTGCAGTGATTGCAGCGCGGATTTCGCGGCTTGCTCAGAGCTGGCATCAATCAGGTCTGCGATGGCTTCCGCTTGGGTTAAATCCATCTTGTCATTGAGGAAAGCGCGTTCTGAGAATTCACCGGGACGGGCTGGGCGCACTCCTTTAATCTGCAAAATACGGCGGATCAGCATATCCATGACGACCGGGCCACCGTGACCTTGCAGCTCAAGCACATCTTCACCGGTAAATGAATGAGGATTGGGGAAAAACAGCGCAATGCCTTG";
-  build_reference_sequence(actual_reference_sequence, "../tests/data/alignment_file_multiple_lines_per_sequence.aln") ;
+  build_reference_sequence_and_truncate(actual_reference_sequence, "../tests/data/alignment_file_multiple_lines_per_sequence.aln",actual_ref_seq_length1) ;
   fail_unless( strcmp(actual_reference_sequence,expected_reference_sequence) == 0 );
 }
 END_TEST  
 
 START_TEST (number_of_snps_detected)
 {
-  char actual_reference_sequence[2001];
-  build_reference_sequence(actual_reference_sequence, "../tests/data/alignment_file_multiple_lines_per_sequence.aln") ;
+  char actual_reference_sequence[actual_ref_seq_length1];
+  build_reference_sequence_and_truncate(actual_reference_sequence, "../tests/data/alignment_file_multiple_lines_per_sequence.aln",actual_ref_seq_length1);
   fail_unless(  detect_snps(actual_reference_sequence, "../tests/data/alignment_file_multiple_lines_per_sequence.aln", 2000) == 5);
 }
 END_TEST
 
 START_TEST (number_of_snps_detected_small)
 {
-  char actual_reference_sequence[9];
-  build_reference_sequence(actual_reference_sequence, "../tests/data/small_alignment.aln");
+  char actual_reference_sequence[actual_ref_seq_length2];
+  build_reference_sequence(actual_reference_sequence, "../tests/data/small_alignment.aln",actual_ref_seq_length2);
   fail_unless(  detect_snps(actual_reference_sequence, "../tests/data/small_alignment.aln", 8) == 1);
 }
 END_TEST
@@ -208,6 +212,7 @@ START_TEST (check_strip_directory_from_filename_without_directory)
 {
 	char *input_filename_without_directory =  "my_file_name.aln";
 	char output_filename[30];
+	memset(output_filename,'\0',30);
 	strip_directory_from_filename(input_filename_without_directory, output_filename);
 	fail_unless( strcmp(input_filename_without_directory, output_filename) ==0 );
 }
@@ -217,6 +222,7 @@ START_TEST (check_strip_directory_from_filename_with_directory)
 {
 	char *input_filename_without_directory =  "/some/directory/name/my_file_name.aln";
 	char output_filename[30];
+	memset(output_filename,'\0',30);
 	strip_directory_from_filename(input_filename_without_directory, output_filename);
 	fail_unless( strcmp("my_file_name.aln", output_filename) ==0 );
 }

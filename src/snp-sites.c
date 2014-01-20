@@ -49,14 +49,12 @@ void build_snp_locations(int snp_locations[], char reference_sequence[])
 
 int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_vcf_file, int output_phylip_file, char output_filename[])
 {
-	int length_of_genome;
+	size_t length_of_genome;
 	char * reference_sequence;
 	int number_of_snps;
 	int * snp_locations;
 	int number_of_samples;
 	int i;
-	
-
 	
 	length_of_genome = genome_length(filename);
 	reference_sequence = (char *) calloc((length_of_genome +1),sizeof(char));
