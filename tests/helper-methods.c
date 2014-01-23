@@ -43,14 +43,14 @@ int compare_files(char expected_output_filename[],char actual_output_filename[] 
   numbytes = ftell(expected_output_fh);
   fseek(expected_output_fh, 0L, SEEK_SET);	
   expected_buffer = (char*)calloc(numbytes, sizeof(char));	
-  fread(expected_buffer, sizeof(char), numbytes, expected_output_fh);
+  fsize_expected = fread(expected_buffer, sizeof(char), numbytes, expected_output_fh);
   fclose(expected_output_fh);
   
   fseek(actual_output_fh, 0L, SEEK_END);
   numbytes = ftell(actual_output_fh);
   fseek(actual_output_fh, 0L, SEEK_SET);	
   actual_buffer = (char*)calloc(numbytes, sizeof(char));	
-  fread(actual_buffer, sizeof(char), numbytes, actual_output_fh);
+  fsize_actual = fread(actual_buffer, sizeof(char), numbytes, actual_output_fh);
   fclose(actual_output_fh);
   
   if(strcmp(expected_buffer,actual_buffer) == 0)
