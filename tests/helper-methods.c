@@ -35,6 +35,9 @@ int compare_files(char expected_output_filename[],char actual_output_filename[] 
   char    *expected_buffer;
   char    *actual_buffer;
   long    numbytes;
+
+  size_t fsize_expected;
+  size_t fsize_actual;
   
   expected_output_fh = fopen(expected_output_filename, "r");
   actual_output_fh = fopen(actual_output_filename, "r");
