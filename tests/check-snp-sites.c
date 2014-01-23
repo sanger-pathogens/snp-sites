@@ -31,8 +31,8 @@
 #include "helper-methods.h"
 
 /*Defining constant values for the reference sequence lengths*/
-#define actual_ref_seq_length1 2002 //Former was 2001
-#define actual_ref_seq_length2 10   //Former was 9
+#define actual_ref_seq_length1 2001 //Former was 2001
+#define actual_ref_seq_length2 9  //Former was 9
 
 START_TEST (valid_alignment_with_one_line_per_sequence)
 {
