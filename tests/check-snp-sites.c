@@ -176,7 +176,7 @@ END_TEST
 START_TEST (number_of_snps_detected)
 {
   char actual_reference_sequence[2001];
-  build_reference_sequence_and_truncate(actual_reference_sequence, "../tests/data/alignment_file_multiple_lines_per_sequence.aln",actual_ref_seq_length1);
+  build_reference_sequence_and_truncate(actual_reference_sequence, "../tests/data/alignment_file_multiple_lines_per_sequence.aln",2001);
   fail_unless(  detect_snps(actual_reference_sequence, "../tests/data/alignment_file_multiple_lines_per_sequence.aln", 2000) == 5);
 }
 END_TEST
@@ -184,7 +184,7 @@ END_TEST
 START_TEST (number_of_snps_detected_small)
 {
   char actual_reference_sequence[8];
-  build_reference_sequence_and_truncate(actual_reference_sequence, "../tests/data/small_alignment.aln",actual_ref_seq_length2);
+  build_reference_sequence_and_truncate(actual_reference_sequence, "../tests/data/small_alignment.aln",8);
   fail_unless(  detect_snps(actual_reference_sequence, "../tests/data/small_alignment.aln", 8) == 1);
 }
 END_TEST
