@@ -162,7 +162,12 @@ int build_reference_sequence_and_truncate(char reference_sequence[], char filena
   seq = kseq_init(fp);
   kseq_read(seq);
 
-  for(i = 0; i < seq->seq.l - 1; i++)
+  length_of_genome = seq->seq.l;
+  //printf("%zd\n", length_of_genome);
+  //printf("%zd\n", buffer_length);
+
+
+  for(i = 0; i < seq->seq.l ; i++)
     {
       if( buffer_length != 0  && i >= buffer_length - 1 )
 	  break;
@@ -170,6 +175,7 @@ int build_reference_sequence_and_truncate(char reference_sequence[], char filena
       reference_sequence[i] = toupper(seq->seq.s[i]);
     }
   reference_sequence[i] = '\0';
+  //printf("%s\n", reference_sequence);
   kseq_destroy(seq);
   gzclose(fp);
   return 1;
