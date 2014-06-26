@@ -4,7 +4,7 @@ SNP Sites
 This program finds snp sites from a multi fasta alignment file.
 
 
-Usage: snp_sites [-mvph] [-o output_filename] <file>
+Usage: snp-sites [-mvph] [-o output_filename] <file>
 This program finds snp sites from a multi fasta alignment file.
  -m		output a multi fasta alignment file (default)
  -v		output a VCF file
@@ -22,9 +22,9 @@ relaxed phylip format.
 
 Example usage:
 
-snp_sites my_alignment.aln
+snp-sites my_alignment.aln
 
-snp_sites my_gzipped_alignment.aln.gz
+snp-sites my_gzipped_alignment.aln.gz
 
 
 Multi Fasta Alignment
