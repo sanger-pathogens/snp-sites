@@ -27,8 +27,6 @@
 #include "alignment-file.h"
 #include "snp-sites.h"
 
-const int MAXIMUM_NUMBER_OF_ALT_BASES = 30;
-
 void create_vcf_file(char filename[], int snp_locations[],int number_of_snps, char ** bases_for_snps, char ** sequence_names, int number_of_samples)
 {
 	FILE *vcf_file_pointer;
@@ -143,6 +141,33 @@ void alternative_bases(char reference_base, char * bases_for_snp, char alt_bases
 	{
 		alt_bases[num_alt_bases] = '\0';
 	}
+}
+
+char * format_alternative_bases(char * alt_bases)
+{
+	char * formatted_alt_bases = malloc(MAXIMUM_NUMBER_OF_ALT_BASES*2*sizeof(char));
+	int i;
+	for (i = 0; i < MAXIMUM_NUMBER_OF_ALT_BASES; i++)
+	{
+		if (alt_bases[i] == '\0')
+		{
+			if (i == 0)
+			{
+				formatted_alt_bases[0] = '\0';
+			}
+			else
+			{
+				formatted_alt_bases[i*2 - 1] = '\0';
+			}
+			break;
+		}
+		else
+		{
+			formatted_alt_bases[i*2] = alt_bases[i];
+			formatted_alt_bases[i*2 + 1] = ',';
+		}
+	}
+	return formatted_alt_bases;
 }
 
 int check_if_char_in_string(char search_string[], char target_char, int search_string_length)

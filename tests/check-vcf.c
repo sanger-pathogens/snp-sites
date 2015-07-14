@@ -21,28 +21,40 @@
 #include <stdlib.h>
 #include <string.h>
 #include <check.h>
-#include "check-snp-sites.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <errno.h>
 #include "check-vcf.h"
+#include "vcf.h"
 
-
-
-int main (void)
+void check_format_alternative_bases(char * test_case, char * expected_result)
 {
-  int number_failed;
-  Suite *s;
-  SRunner *sr;
-
-  s = snp_sites_suite ();
-  sr = srunner_create (s);
-  srunner_run_all (sr, CK_NORMAL);
-  number_failed = srunner_ntests_failed (sr);
-  srunner_free (sr);
-
-  s = vcf_suite ();
-  sr = srunner_create (s);
-  srunner_run_all (sr, CK_NORMAL);
-  number_failed += srunner_ntests_failed (sr);
-  srunner_free (sr);
-
-  return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+  char * result;
+  result = format_alternative_bases(test_case);
+  ck_assert_str_eq(result, expected_result);
+  free(result);
 }
+
+START_TEST (format_alternative_bases_test)
+{
+  check_format_alternative_bases("", "");
+  check_format_alternative_bases("A", "A");
+  check_format_alternative_bases("AC", "A,C");
+  check_format_alternative_bases("ACT", "A,C,T");
+}
+END_TEST
+
+Suite * vcf_suite (void)
+{
+  Suite *s = suite_create ("Creating_VCF_file");
+
+  TCase *tc_vcf_file = tcase_create ("vcf_file");
+  tcase_add_test (tc_vcf_file, format_alternative_bases_test);
+  suite_add_tcase (s, tc_vcf_file);
+
+  return s;
+}
+
+
+
