@@ -45,12 +45,43 @@ START_TEST (format_alternative_bases_test)
 }
 END_TEST
 
+void check_format_allele_index(char test_base, char reference_base, char alt_bases_array[], char expected_result_array[])
+{
+  char * result;
+  char * alt_bases = malloc(50*sizeof(char));
+  strcpy(alt_bases, alt_bases_array);
+  char * expected_result = malloc(20*sizeof(char));
+  strcpy(expected_result, expected_result_array);
+  result = format_allele_index(test_base, reference_base, alt_bases);
+  ck_assert_str_eq(result, expected_result);
+  free(result);
+  free(alt_bases);
+  free(expected_result);
+}
+
+START_TEST (format_allele_index_test)
+{
+  check_format_allele_index('A', 'A', "", "0");
+  check_format_allele_index('A', 'A', "C", "0");
+  check_format_allele_index('A', 'A', "CA", "0");
+
+  check_format_allele_index('A', 'C', "A", "1");
+  check_format_allele_index('A', 'C', "GA", "2");
+
+  check_format_allele_index('A', 'C', "", ".");
+  check_format_allele_index('A', 'C', "G", ".");
+
+  check_format_allele_index('A', 'B', "CDEFGHIJKLMNOPAQRST", "15");
+}
+END_TEST
+
 Suite * vcf_suite (void)
 {
   Suite *s = suite_create ("Creating_VCF_file");
 
   TCase *tc_vcf_file = tcase_create ("vcf_file");
   tcase_add_test (tc_vcf_file, format_alternative_bases_test);
+  tcase_add_test (tc_vcf_file, format_allele_index_test);
   suite_add_tcase (s, tc_vcf_file);
 
   return s;

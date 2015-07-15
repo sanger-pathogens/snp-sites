@@ -136,6 +136,35 @@ void alternative_bases(char reference_base, char * bases_for_snp, char alt_bases
 	alt_bases[num_alt_bases] = '\0';
 }
 
+char * format_allele_index(char base, char reference_base, char * alt_bases)
+{
+	int maximum_format_length = (int) log10((double) MAXIMUM_NUMBER_OF_ALT_BASES) + 1;
+	char * result = malloc((maximum_format_length + 1)*sizeof(char));
+	int index;
+	if (reference_base == base)
+	{
+		sprintf(result, "0");
+	}
+	else
+	{
+		sprintf(result, ".");
+		for (index = 1; index<MAXIMUM_NUMBER_OF_ALT_BASES; index++)
+		{
+			if (alt_bases[index-1] == base)
+			{
+				sprintf(result, "%i", index);
+				break;
+			}
+			if (alt_bases[index-1] == '\0')
+			{
+				sprintf(result, ".");
+				break;
+			}
+		}
+	}
+	return result;
+}
+
 char * format_alternative_bases(char * alt_bases)
 {
 	char * formatted_alt_bases = malloc(MAXIMUM_NUMBER_OF_ALT_BASES*2*sizeof(char));
