@@ -89,7 +89,9 @@ void output_vcf_row(FILE * vcf_file_pointer, char * bases_for_snp, int snp_locat
 	// Need to look through list and find unique characters
 	
 	alternative_bases(reference_base, bases_for_snp, alt_bases, number_of_samples);
-	fprintf( vcf_file_pointer, "%s\t", alt_bases);
+	char * alternative_bases_string = format_alternative_bases(alt_bases);
+	fprintf( vcf_file_pointer, "%s\t", alternative_bases_string );
+	free(alternative_bases_string);
 	
 	// QUAL
 	fprintf( vcf_file_pointer, ".\t");
@@ -128,19 +130,10 @@ void alternative_bases(char reference_base, char * bases_for_snp, char alt_bases
 				}
 				alt_bases[num_alt_bases] = bases_for_snp[i];
 				num_alt_bases++;
-				alt_bases[num_alt_bases] = ',';
-				num_alt_bases++;
 			}
 		}
 	}
-	if(num_alt_bases > 0 && alt_bases[num_alt_bases-1] == ',')
-	{
-		alt_bases[num_alt_bases-1] = '\0';
-	}
-	else
-	{
-		alt_bases[num_alt_bases] = '\0';
-	}
+	alt_bases[num_alt_bases] = '\0';
 }
 
 char * format_alternative_bases(char * alt_bases)
