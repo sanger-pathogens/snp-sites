@@ -72,6 +72,10 @@ START_TEST (format_allele_index_test)
   check_format_allele_index('A', 'C', "G", ".");
 
   check_format_allele_index('A', 'B', "CDEFGHIJKLMNOPAQRST", "15");
+
+  check_format_allele_index('-', 'A', "C", "0");
+  check_format_allele_index('N', 'A', "C", "0");
+  check_format_allele_index('n', 'A', "C", "0");
 }
 END_TEST
 

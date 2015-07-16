@@ -54,7 +54,7 @@ void output_vcf_header( FILE * vcf_file_pointer, char ** sequence_names, int num
 {
 	int i;
 	fprintf( vcf_file_pointer, "##fileformat=VCFv4.1\n" );	
-	fprintf( vcf_file_pointer, "##INFO=<ID=AB,Number=1,Type=String,Description=\"Alt Base\">\n" );
+	fprintf( vcf_file_pointer, "##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">\n" );	
 	fprintf( vcf_file_pointer, "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\t" );
 	
 	for(i=0; i<number_of_samples; i++)
@@ -99,14 +99,14 @@ void output_vcf_row(FILE * vcf_file_pointer, char * bases_for_snp, int snp_locat
 	// FILTER
 	fprintf( vcf_file_pointer, ".\t");
 	
-	// FORMAT
-	fprintf( vcf_file_pointer, "AB\t");
-	
 	// INFO
 	fprintf( vcf_file_pointer, ".\t");
 	
+	// FORMAT
+	fprintf( vcf_file_pointer, "GT\t");
+	
 	// Bases for each sample
-	output_vcf_row_samples_bases(vcf_file_pointer, reference_base, bases_for_snp, number_of_samples );
+	output_vcf_row_samples_bases(vcf_file_pointer, reference_base, alt_bases, bases_for_snp, number_of_samples );
 	
 	fprintf( vcf_file_pointer, "\n");	
 }
@@ -141,7 +141,7 @@ char * format_allele_index(char base, char reference_base, char * alt_bases)
 	int maximum_format_length = (int) log10((double) MAXIMUM_NUMBER_OF_ALT_BASES) + 1;
 	char * result = malloc((maximum_format_length + 1)*sizeof(char));
 	int index;
-	if (reference_base == base)
+	if (reference_base == base || toupper(base) == 'N' || base == '-')
 	{
 		sprintf(result, "0");
 	}
@@ -157,7 +157,6 @@ char * format_allele_index(char base, char reference_base, char * alt_bases)
 			}
 			if (alt_bases[index-1] == '\0')
 			{
-				sprintf(result, ".");
 				break;
 			}
 		}
@@ -205,20 +204,16 @@ int check_if_char_in_string(char search_string[], char target_char, int search_s
 	return 0;
 }
 
-void output_vcf_row_samples_bases(FILE * vcf_file_pointer, char reference_base, char * bases_for_snp, int number_of_samples)
+void output_vcf_row_samples_bases(FILE * vcf_file_pointer, char reference_base, char * alt_bases, char * bases_for_snp, int number_of_samples)
 {
 	int i;
+	char * format;
 	
 	for(i=0; i < number_of_samples ; i++ )
 	{
-		if((bases_for_snp[i] == reference_base) || (bases_for_snp[i] == '-') || (toupper(bases_for_snp[i]) == 'N') )
-		{
-			fprintf( vcf_file_pointer, "." );	
-		}
-		else
-		{
-			fprintf( vcf_file_pointer, "%c", (char) bases_for_snp[i] );	
-		}
+		format = format_allele_index(bases_for_snp[i], reference_base, alt_bases);
+		fprintf( vcf_file_pointer, "%s", format);	
+		free(format);
 		if(i+1 != number_of_samples)
 		{
 			fprintf( vcf_file_pointer, "\t");
