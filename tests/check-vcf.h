@@ -17,32 +17,14 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <check.h>
-#include "check-snp-sites.h"
-#include "check-vcf.h"
+#ifndef _CHECK_VCF_H_
+#define _CHECK_VCF_H_
+
+void check_alternative_bases(char, char *, int, char *);
+void check_format_alternative_bases(char *, char *);
+void check_format_allele_index(char, char, char *, char *);
+Suite * vcf_suite (void);
+#endif
 
 
 
-int main (void)
-{
-  int number_failed;
-  Suite *s;
-  SRunner *sr;
-
-  s = snp_sites_suite ();
-  sr = srunner_create (s);
-  srunner_run_all (sr, CK_NORMAL);
-  number_failed = srunner_ntests_failed (sr);
-  srunner_free (sr);
-
-  s = vcf_suite ();
-  sr = srunner_create (s);
-  srunner_run_all (sr, CK_NORMAL);
-  number_failed += srunner_ntests_failed (sr);
-  srunner_free (sr);
-
-  return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
-}

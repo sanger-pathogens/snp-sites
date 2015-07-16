@@ -26,8 +26,7 @@
 #include "vcf.h"
 #include "alignment-file.h"
 #include "snp-sites.h"
-
-
+#include <assert.h>
 
 void create_vcf_file(char filename[], int snp_locations[],int number_of_snps, char ** bases_for_snps, char ** sequence_names, int number_of_samples)
 {
@@ -56,7 +55,7 @@ void output_vcf_header( FILE * vcf_file_pointer, char ** sequence_names, int num
 {
 	int i;
 	fprintf( vcf_file_pointer, "##fileformat=VCFv4.1\n" );	
-	fprintf( vcf_file_pointer, "##INFO=<ID=AB,Number=1,Type=String,Description=\"Alt Base\">\n" );
+	fprintf( vcf_file_pointer, "##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">\n" );	
 	fprintf( vcf_file_pointer, "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\t" );
 	
 	for(i=0; i<number_of_samples; i++)
@@ -69,7 +68,6 @@ void output_vcf_header( FILE * vcf_file_pointer, char ** sequence_names, int num
 void output_vcf_row(FILE * vcf_file_pointer, char * bases_for_snp, int snp_location, int number_of_samples)
 {
 	char reference_base =  bases_for_snp[0];
-	char alt_bases[30];
 	if(reference_base == '\0')
 	{
 		return;	
@@ -90,8 +88,10 @@ void output_vcf_row(FILE * vcf_file_pointer, char * bases_for_snp, int snp_locat
 	// ALT
 	// Need to look through list and find unique characters
 	
-	alternative_bases(reference_base, bases_for_snp, alt_bases, number_of_samples);
-	fprintf( vcf_file_pointer, "%s\t", alt_bases);
+	char * alt_bases = alternative_bases(reference_base, bases_for_snp, number_of_samples);
+	char * alternative_bases_string = format_alternative_bases(alt_bases);
+	fprintf( vcf_file_pointer, "%s\t", alternative_bases_string );
+	free(alternative_bases_string);
 	
 	// QUAL
 	fprintf( vcf_file_pointer, ".\t");
@@ -99,44 +99,83 @@ void output_vcf_row(FILE * vcf_file_pointer, char * bases_for_snp, int snp_locat
 	// FILTER
 	fprintf( vcf_file_pointer, ".\t");
 	
-	// FORMAT
-	fprintf( vcf_file_pointer, "AB\t");
-	
 	// INFO
 	fprintf( vcf_file_pointer, ".\t");
 	
+	// FORMAT
+	fprintf( vcf_file_pointer, "GT\t");
+	
 	// Bases for each sample
-	output_vcf_row_samples_bases(vcf_file_pointer, reference_base, bases_for_snp, number_of_samples );
+	output_vcf_row_samples_bases(vcf_file_pointer, reference_base, alt_bases, bases_for_snp, number_of_samples );
+	free(alt_bases);
 	
 	fprintf( vcf_file_pointer, "\n");	
 }
 
 
-void alternative_bases(char reference_base, char * bases_for_snp, char alt_bases[], int number_of_samples)
+char * alternative_bases(char reference_base, char * bases_for_snp, int number_of_samples)
 {
 	int i;
 	int num_alt_bases = 0;
+	char * alt_bases = calloc(MAXIMUM_NUMBER_OF_ALT_BASES+1, sizeof(char));
 	for(i=0; i< number_of_samples; i++ )
 	{
 		if((bases_for_snp[i] != reference_base) && (bases_for_snp[i] != '-') && (toupper(bases_for_snp[i]) != 'N') )
 		{
 			if(check_if_char_in_string(alt_bases, bases_for_snp[i], num_alt_bases) == 0)
 			{
+				if (num_alt_bases >= MAXIMUM_NUMBER_OF_ALT_BASES)
+				{
+					fprintf(stderr, "Unexpectedly large number of alternative bases found between sequences.  Please check input file is not corrupted\n\n");
+					fflush(stderr);
+					exit(EXIT_FAILURE);
+				}
 				alt_bases[num_alt_bases] = bases_for_snp[i];
-				num_alt_bases++;
-				alt_bases[num_alt_bases] = ',';
 				num_alt_bases++;
 			}
 		}
 	}
-	if(num_alt_bases > 0 && alt_bases[num_alt_bases-1] == ',')
+	return alt_bases;
+}
+
+char * format_allele_index(char base, char reference_base, char * alt_bases)
+{
+	int length_of_alt_bases = strlen(alt_bases);
+	assert(length_of_alt_bases < 100);
+	char * result = calloc(3, sizeof(char));
+	int index;
+	if (reference_base == base || toupper(base) == 'N' || base == '-')
 	{
-		alt_bases[num_alt_bases-1] = '\0';
+		sprintf(result, "0");
 	}
 	else
 	{
-		alt_bases[num_alt_bases] = '\0';
+		sprintf(result, ".");
+		for (index = 1; index <= length_of_alt_bases; index++)
+		{
+			if (alt_bases[index-1] == base)
+			{
+				sprintf(result, "%i", index);
+				break;
+			}
+		}
 	}
+	return result;
+}
+
+char * format_alternative_bases(char * alt_bases)
+{
+	int number_of_alt_bases = strlen(alt_bases);
+	assert( number_of_alt_bases < MAXIMUM_NUMBER_OF_ALT_BASES );
+	char * formatted_alt_bases = calloc(number_of_alt_bases*2 + 1, sizeof(char));
+	int i;
+	formatted_alt_bases[0] = alt_bases[0];
+	for (i = 1; i < number_of_alt_bases; i++)
+	{
+		formatted_alt_bases[i*2 - 1] = ',';
+		formatted_alt_bases[i*2] = alt_bases[i];
+	}
+	return formatted_alt_bases;
 }
 
 int check_if_char_in_string(char search_string[], char target_char, int search_string_length)
@@ -152,20 +191,16 @@ int check_if_char_in_string(char search_string[], char target_char, int search_s
 	return 0;
 }
 
-void output_vcf_row_samples_bases(FILE * vcf_file_pointer, char reference_base, char * bases_for_snp, int number_of_samples)
+void output_vcf_row_samples_bases(FILE * vcf_file_pointer, char reference_base, char * alt_bases, char * bases_for_snp, int number_of_samples)
 {
 	int i;
+	char * format;
 	
 	for(i=0; i < number_of_samples ; i++ )
 	{
-		if((bases_for_snp[i] == reference_base) || (bases_for_snp[i] == '-') || (toupper(bases_for_snp[i]) == 'N') )
-		{
-			fprintf( vcf_file_pointer, "." );	
-		}
-		else
-		{
-			fprintf( vcf_file_pointer, "%c", (char) bases_for_snp[i] );	
-		}
+		format = format_allele_index(bases_for_snp[i], reference_base, alt_bases);
+		fprintf( vcf_file_pointer, "%s", format);	
+		free(format);
 		if(i+1 != number_of_samples)
 		{
 			fprintf( vcf_file_pointer, "\t");
