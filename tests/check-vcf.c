@@ -45,18 +45,12 @@ START_TEST (format_alternative_bases_test)
 }
 END_TEST
 
-void check_format_allele_index(char test_base, char reference_base, char alt_bases_array[], char expected_result_array[])
+void check_format_allele_index(char test_base, char reference_base, char * alt_bases, char * expected_result)
 {
   char * result;
-  char * alt_bases = malloc(50*sizeof(char));
-  strcpy(alt_bases, alt_bases_array);
-  char * expected_result = malloc(20*sizeof(char));
-  strcpy(expected_result, expected_result_array);
   result = format_allele_index(test_base, reference_base, alt_bases);
   ck_assert_str_eq(result, expected_result);
   free(result);
-  free(alt_bases);
-  free(expected_result);
 }
 
 START_TEST (format_allele_index_test)
