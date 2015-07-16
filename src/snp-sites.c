@@ -108,7 +108,7 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 			concat_strings_created_with_malloc(vcf_output_filename,extension);
 		}
 		
-	  create_vcf_file(vcf_output_filename, snp_locations, number_of_snps, bases_for_snps, sequence_names, number_of_samples);
+	  create_vcf_file(vcf_output_filename, snp_locations, number_of_snps, bases_for_snps, sequence_names, number_of_samples, length_of_genome);
 		free(vcf_output_filename);
   }
 
