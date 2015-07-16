@@ -28,6 +28,20 @@
 #include "check-vcf.h"
 #include "vcf.h"
 
+void check_alternative_bases(char reference_base, char * bases_for_snp, int number_of_samples, char * expected_result)
+{
+  char * result;
+  result = alternative_bases(reference_base, bases_for_snp, number_of_samples);
+  ck_assert_str_eq(result, expected_result);
+  free(result);
+}
+
+START_TEST (alternative_bases_test)
+{
+  check_alternative_bases('A', "AGCT-nN", 6, "GCT");
+}
+END_TEST
+
 void check_format_alternative_bases(char * test_case, char * expected_result)
 {
   char * result;
@@ -78,6 +92,7 @@ Suite * vcf_suite (void)
   Suite *s = suite_create ("Creating_VCF_file");
 
   TCase *tc_vcf_file = tcase_create ("vcf_file");
+  tcase_add_test (tc_vcf_file, alternative_bases_test);
   tcase_add_test (tc_vcf_file, format_alternative_bases_test);
   tcase_add_test (tc_vcf_file, format_allele_index_test);
   suite_add_tcase (s, tc_vcf_file);

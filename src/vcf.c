@@ -26,6 +26,7 @@
 #include "vcf.h"
 #include "alignment-file.h"
 #include "snp-sites.h"
+#include <assert.h>
 
 void create_vcf_file(char filename[], int snp_locations[],int number_of_snps, char ** bases_for_snps, char ** sequence_names, int number_of_samples)
 {
@@ -67,7 +68,6 @@ void output_vcf_header( FILE * vcf_file_pointer, char ** sequence_names, int num
 void output_vcf_row(FILE * vcf_file_pointer, char * bases_for_snp, int snp_location, int number_of_samples)
 {
 	char reference_base =  bases_for_snp[0];
-	char alt_bases[MAXIMUM_NUMBER_OF_ALT_BASES];
 	if(reference_base == '\0')
 	{
 		return;	
@@ -88,7 +88,7 @@ void output_vcf_row(FILE * vcf_file_pointer, char * bases_for_snp, int snp_locat
 	// ALT
 	// Need to look through list and find unique characters
 	
-	alternative_bases(reference_base, bases_for_snp, alt_bases, number_of_samples);
+	char * alt_bases = alternative_bases(reference_base, bases_for_snp, number_of_samples);
 	char * alternative_bases_string = format_alternative_bases(alt_bases);
 	fprintf( vcf_file_pointer, "%s\t", alternative_bases_string );
 	free(alternative_bases_string);
@@ -107,22 +107,24 @@ void output_vcf_row(FILE * vcf_file_pointer, char * bases_for_snp, int snp_locat
 	
 	// Bases for each sample
 	output_vcf_row_samples_bases(vcf_file_pointer, reference_base, alt_bases, bases_for_snp, number_of_samples );
+	free(alt_bases);
 	
 	fprintf( vcf_file_pointer, "\n");	
 }
 
 
-void alternative_bases(char reference_base, char * bases_for_snp, char alt_bases[], int number_of_samples)
+char * alternative_bases(char reference_base, char * bases_for_snp, int number_of_samples)
 {
 	int i;
 	int num_alt_bases = 0;
+	char * alt_bases = calloc(MAXIMUM_NUMBER_OF_ALT_BASES+1, sizeof(char));
 	for(i=0; i< number_of_samples; i++ )
 	{
 		if((bases_for_snp[i] != reference_base) && (bases_for_snp[i] != '-') && (toupper(bases_for_snp[i]) != 'N') )
 		{
 			if(check_if_char_in_string(alt_bases, bases_for_snp[i], num_alt_bases) == 0)
 			{
-				if (num_alt_bases > MAXIMUM_NUMBER_OF_ALT_BASES - 2)
+				if (num_alt_bases >= MAXIMUM_NUMBER_OF_ALT_BASES)
 				{
 					fprintf(stderr, "Unexpectedly large number of alternative bases found between sequences.  Please check input file is not corrupted\n\n");
 					fflush(stderr);
@@ -133,13 +135,14 @@ void alternative_bases(char reference_base, char * bases_for_snp, char alt_bases
 			}
 		}
 	}
-	alt_bases[num_alt_bases] = '\0';
+	return alt_bases;
 }
 
 char * format_allele_index(char base, char reference_base, char * alt_bases)
 {
-	int maximum_format_length = (int) log10((double) MAXIMUM_NUMBER_OF_ALT_BASES) + 1;
-	char * result = malloc((maximum_format_length + 1)*sizeof(char));
+	int length_of_alt_bases = strlen(alt_bases);
+	assert(length_of_alt_bases < 100);
+	char * result = calloc(3, sizeof(char));
 	int index;
 	if (reference_base == base || toupper(base) == 'N' || base == '-')
 	{
@@ -148,15 +151,11 @@ char * format_allele_index(char base, char reference_base, char * alt_bases)
 	else
 	{
 		sprintf(result, ".");
-		for (index = 1; index<MAXIMUM_NUMBER_OF_ALT_BASES; index++)
+		for (index = 1; index <= length_of_alt_bases; index++)
 		{
 			if (alt_bases[index-1] == base)
 			{
 				sprintf(result, "%i", index);
-				break;
-			}
-			if (alt_bases[index-1] == '\0')
-			{
 				break;
 			}
 		}
@@ -166,27 +165,15 @@ char * format_allele_index(char base, char reference_base, char * alt_bases)
 
 char * format_alternative_bases(char * alt_bases)
 {
-	char * formatted_alt_bases = malloc(MAXIMUM_NUMBER_OF_ALT_BASES*2*sizeof(char));
+	int number_of_alt_bases = strlen(alt_bases);
+	assert( number_of_alt_bases < MAXIMUM_NUMBER_OF_ALT_BASES );
+	char * formatted_alt_bases = calloc(number_of_alt_bases*2 + 1, sizeof(char));
 	int i;
-	for (i = 0; i < MAXIMUM_NUMBER_OF_ALT_BASES; i++)
+	formatted_alt_bases[0] = alt_bases[0];
+	for (i = 1; i < number_of_alt_bases; i++)
 	{
-		if (alt_bases[i] == '\0')
-		{
-			if (i == 0)
-			{
-				formatted_alt_bases[0] = '\0';
-			}
-			else
-			{
-				formatted_alt_bases[i*2 - 1] = '\0';
-			}
-			break;
-		}
-		else
-		{
-			formatted_alt_bases[i*2] = alt_bases[i];
-			formatted_alt_bases[i*2 + 1] = ',';
-		}
+		formatted_alt_bases[i*2 - 1] = ',';
+		formatted_alt_bases[i*2] = alt_bases[i];
 	}
 	return formatted_alt_bases;
 }
