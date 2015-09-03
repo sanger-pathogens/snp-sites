@@ -57,11 +57,11 @@ void output_vcf_header( FILE * vcf_file_pointer, char ** sequence_names, int num
 	fprintf( vcf_file_pointer, "##fileformat=VCFv4.1\n" );	
 	fprintf( vcf_file_pointer, "##contig=<ID=1,length=%i>\n", length_of_genome );	
 	fprintf( vcf_file_pointer, "##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">\n" );	
-	fprintf( vcf_file_pointer, "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\t" );
+	fprintf( vcf_file_pointer, "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT" );
 	
 	for(i=0; i<number_of_samples; i++)
 	{
-		fprintf( vcf_file_pointer, "%s\t",  sequence_names[i]);
+		fprintf( vcf_file_pointer, "\t%s",  sequence_names[i]);
 	}
 	fprintf( vcf_file_pointer, "\n");
 }
