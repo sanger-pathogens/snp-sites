@@ -29,4 +29,4 @@ run_all_tests_SOURCES = \
 	../tests/helper-methods.c \
 	../tests/run-all-tests.c
 run_all_tests_CFLAGS = -I../tests
-run_all_tests_LDADD = -lm -lcheck libsnp-sites.la -lz -lpthread -lrt
+run_all_tests_LDADD = -lm -lcheck -lsubunit libsnp-sites.la -lz -lpthread -lrt
