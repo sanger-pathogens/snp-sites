@@ -28,6 +28,9 @@
 
 #define MAX_FILENAME_SIZE 250
 
+#define PROGRAM_NAME "snp-sites"
+#define PROGRAM_VERSION "2.0.2"
+
 static void print_usage()
 {
 	printf("Usage: snp_sites [-mvph] [-o output_filename] <file>\n");
@@ -37,7 +40,13 @@ static void print_usage()
 	printf(" -p		output a phylip file\n");
 	printf(" -o		specify an output filename\n");
 	printf(" -h		this help message\n");
+	printf(" -V		print version and exit\n");
 	printf(" <file>		input alignment file which can optionally be gzipped\n");
+}
+
+static void print_version()
+{
+  printf("%s %s\n", PROGRAM_NAME, PROGRAM_VERSION);
 }
 
 int main (int argc, char **argv) {
@@ -50,7 +59,7 @@ int main (int argc, char **argv) {
   int output_vcf_file = 0;
   int output_phylip_file = 0;
 	
-	 while ((c = getopt (argc, argv, "mvpo:")) != -1)
+	 while ((c = getopt (argc, argv, "mvpo:V")) != -1)
       switch (c)
         {
         case 'm':
@@ -59,6 +68,9 @@ int main (int argc, char **argv) {
         case 'v':
           output_vcf_file = 1;
           break;
+        case 'V':
+          print_version();
+          return 0;
         case 'p':
           output_phylip_file = 1;
           break;
