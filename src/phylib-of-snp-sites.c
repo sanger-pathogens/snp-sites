@@ -32,8 +32,8 @@ void create_phylib_of_snp_sites(char filename[], int number_of_snps, char ** bas
 	int snp_counter;
 	char * base_filename;
 	
-	base_filename = (char *) calloc(MAX_FILENAME_SIZE,sizeof(char));
-	memcpy(base_filename, filename, MAX_FILENAME_SIZE*sizeof(char));
+	base_filename = (char *) calloc(FILENAME_MAX,sizeof(char));
+	memcpy(base_filename, filename, FILENAME_MAX*sizeof(char));
 	fasta_file_pointer = fopen(base_filename, "w");
 	
 	fprintf( fasta_file_pointer, "%d %d\n", number_of_samples, number_of_snps);

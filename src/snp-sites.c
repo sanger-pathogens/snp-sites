@@ -87,8 +87,8 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 	
 	get_bases_for_each_snp(filename, snp_locations, bases_for_snps, length_of_genome, number_of_snps);
 	
-	char output_filename_base[MAX_FILENAME_SIZE];
-	char filename_without_directory[MAX_FILENAME_SIZE];
+	char output_filename_base[FILENAME_MAX];
+	char filename_without_directory[FILENAME_MAX];
 	strip_directory_from_filename(filename, filename_without_directory);
 	memcpy(output_filename_base,filename_without_directory, size_of_string(filename_without_directory)+1 );
 	
@@ -100,8 +100,8 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 	if(output_vcf_file)
 	{
 		char * vcf_output_filename;
-		vcf_output_filename = calloc(MAX_FILENAME_SIZE,sizeof(char));
-		memcpy(vcf_output_filename, output_filename_base, (MAX_FILENAME_SIZE)*sizeof(char));
+		vcf_output_filename = calloc(FILENAME_MAX,sizeof(char));
+		memcpy(vcf_output_filename, output_filename_base, (FILENAME_MAX)*sizeof(char));
 		if((output_vcf_file + output_phylip_file + output_multi_fasta_file) > 1 || (output_filename == NULL || *output_filename == '\0') )
 		{
 			char extension[5] = {".vcf"};
@@ -115,8 +115,8 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
   if(output_phylip_file)
   {
 		char *phylip_output_filename;
-		phylip_output_filename = calloc(MAX_FILENAME_SIZE,sizeof(char));
-		memcpy(phylip_output_filename, output_filename_base, (MAX_FILENAME_SIZE)*sizeof(char));
+		phylip_output_filename = calloc(FILENAME_MAX,sizeof(char));
+		memcpy(phylip_output_filename, output_filename_base, (FILENAME_MAX)*sizeof(char));
 		if((output_vcf_file + output_phylip_file + output_multi_fasta_file) > 1 || (output_filename == NULL || *output_filename == '\0') )
 		{
 			char extension[10] = {".phylip"};
@@ -129,8 +129,8 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
   if((output_multi_fasta_file) || (output_vcf_file ==0 && output_phylip_file == 0 && output_multi_fasta_file == 0))
   {
 		char *multi_fasta_output_filename;
-		multi_fasta_output_filename = calloc(MAX_FILENAME_SIZE,sizeof(char));
-		memcpy(multi_fasta_output_filename, output_filename_base, (MAX_FILENAME_SIZE)*sizeof(char));
+		multi_fasta_output_filename = calloc(FILENAME_MAX,sizeof(char));
+		memcpy(multi_fasta_output_filename, output_filename_base, (FILENAME_MAX)*sizeof(char));
 		if((output_vcf_file + output_phylip_file + output_multi_fasta_file) > 1 || (output_filename == NULL || *output_filename == '\0') )
 		{
 			char extension[20] = {".snp_sites.aln"};
@@ -161,7 +161,7 @@ void strip_directory_from_filename(char * input_filename, char * output_filename
   int i;
   int end_index = 0;
   int last_forward_slash_index = -1;
-  for(i = 0; i< MAX_FILENAME_SIZE; i++)
+  for(i = 0; i< FILENAME_MAX; i++)
   {
     if(input_filename[i] == '/')
     {
