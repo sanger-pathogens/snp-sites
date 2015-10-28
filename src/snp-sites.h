@@ -21,13 +21,14 @@
 #ifndef _SNP_SITES_H_
 #define _SNP_SITES_H_
 
+#include <stdio.h>
+
 void build_snp_locations(int snp_locations[], char reference_sequence[]);
 int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_vcf_file, int output_phylip_file, char output_filename[]);
 int refilter_existing_snps(char * reference_bases, int number_of_snps, char ** column_names, int number_of_columns,int * snp_locations, int * filtered_snp_locations);
 void remove_filtered_snp_locations(int * filtered_snp_locations, int * snp_locations, int number_of_snps);
 void strip_directory_from_filename(char * input_filename, char * output_filename);
 
-#define MAX_FILENAME_SIZE 250
 #define MAX_SAMPLE_NAME_SIZE 1024
 
 #endif

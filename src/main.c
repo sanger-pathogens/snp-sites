@@ -26,8 +26,6 @@
 #include "snp-sites.h"
 #include "string-cat.h"
 
-#define MAX_FILENAME_SIZE 250
-
 static void print_usage()
 {
 	printf("Usage: snp_sites [-mvph] [-o output_filename] <file>\n");
@@ -41,8 +39,8 @@ static void print_usage()
 }
 
 int main (int argc, char **argv) {
-	char multi_fasta_filename[MAX_FILENAME_SIZE] = {""};
-	char output_filename[MAX_FILENAME_SIZE] = {""};
+	char multi_fasta_filename[FILENAME_MAX] = {""};
+	char output_filename[FILENAME_MAX] = {""};
 
 	int c;
 	int index;
