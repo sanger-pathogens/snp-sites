@@ -226,13 +226,13 @@ char * read_line(char sequence[], FILE * pFilePtr)
 	
 	
   while((pcRes = fgets(current_line_buffer, sizeof(current_line_buffer), pFilePtr))  != NULL){
-    if(size_of_string(sequence) > 0)
+    if(strlen(sequence) > 0)
       {
-	sequence = realloc(sequence, sizeof(char)*(size_of_string(sequence) + size_of_string(current_line_buffer) + 2) );
+	sequence = realloc(sequence, sizeof(char)*(strlen(sequence) + strlen(current_line_buffer) + 2) );
       }
-    concat_strings_created_with_malloc(sequence,current_line_buffer);
+    strcat(sequence,current_line_buffer);
     current_line_buffer[0] = '\0';
-    lineLength = size_of_string(sequence);
+    lineLength = strlen(sequence);
     //if end of line character is found then exit from loop
 		
     if((sequence)[lineLength] == '\n' || (sequence)[lineLength] == '\0'){
@@ -257,7 +257,7 @@ void get_sample_names_for_header(char filename[], char ** sequence_names, int nu
 	seq = kseq_init(fp);
   
 	while ((l = kseq_read(seq)) >= 0) {
-		memcpy(sequence_names[i], seq->name.s, size_of_string(seq->name.s)+1);
+		strcpy(sequence_names[i], seq->name.s);
     i++;
 	}
 	kseq_destroy(seq);

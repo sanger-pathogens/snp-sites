@@ -73,7 +73,7 @@ int main (int argc, char **argv) {
           output_phylip_file = 1;
           break;
 	      case 'o':
-          memcpy(output_filename, optarg, size_of_string(optarg) +1);
+          strncpy(output_filename, optarg, FILENAME_MAX);
 	        break;
         case 'h':
           print_usage();
@@ -84,8 +84,8 @@ int main (int argc, char **argv) {
   
   if(optind < argc)
   {
-    memcpy(multi_fasta_filename, argv[optind], size_of_string(argv[optind]) +1);
-		generate_snp_sites(multi_fasta_filename, output_multi_fasta_file, output_vcf_file, output_phylip_file, output_filename);
+    strncpy(multi_fasta_filename, argv[optind], FILENAME_MAX); 
+    generate_snp_sites(multi_fasta_filename, output_multi_fasta_file, output_vcf_file, output_phylip_file, output_filename);
   }
   else
   {

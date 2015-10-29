@@ -29,21 +29,17 @@ void create_fasta_of_snp_sites(char filename[], int number_of_snps, char ** base
 	FILE *fasta_file_pointer;
 	int sample_counter;
 	int snp_counter; 
-	char * base_filename;
-	
-	base_filename = (char *) calloc(FILENAME_MAX,sizeof(char));
-	memcpy(base_filename, filename, FILENAME_MAX*sizeof(char));
-	fasta_file_pointer = fopen(base_filename, "w");
+
+	fasta_file_pointer = fopen(filename, "w");
 	
 	for(sample_counter=0; sample_counter< number_of_samples; sample_counter++)
 	{
 		fprintf( fasta_file_pointer, ">%s\n", sequence_names[sample_counter]);
 		for(snp_counter=0; snp_counter< number_of_snps; snp_counter++)
 		{
-			fprintf( fasta_file_pointer, "%c", bases_for_snps[snp_counter][sample_counter]);
+			fputc( bases_for_snps[snp_counter][sample_counter], fasta_file_pointer );
 		}
 		fprintf( fasta_file_pointer, "\n");
 	}
   fclose(fasta_file_pointer);
-	free(base_filename);
 }

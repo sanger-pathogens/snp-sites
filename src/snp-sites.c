@@ -29,7 +29,7 @@
 #include "phylib-of-snp-sites.h"
 #include "parse-phylip.h"
 #include "string-cat.h"
-
+#include "fasta-of-snp-sites.h"
 
 void build_snp_locations(int snp_locations[], char reference_sequence[])
 {
@@ -90,54 +90,45 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 	char output_filename_base[FILENAME_MAX];
 	char filename_without_directory[FILENAME_MAX];
 	strip_directory_from_filename(filename, filename_without_directory);
-	memcpy(output_filename_base,filename_without_directory, size_of_string(filename_without_directory)+1 );
+	strncpy(output_filename_base, filename_without_directory, FILENAME_MAX);
 	
 	if(output_filename != NULL && *output_filename != '\0')
 	{
-		memcpy(output_filename_base,output_filename, size_of_string(output_filename)+1 );
+		strncpy(output_filename_base, output_filename, FILENAME_MAX);
 	}
 
 	if(output_vcf_file)
 	{
-		char * vcf_output_filename;
-		vcf_output_filename = calloc(FILENAME_MAX,sizeof(char));
-		memcpy(vcf_output_filename, output_filename_base, (FILENAME_MAX)*sizeof(char));
+		char vcf_output_filename[FILENAME_MAX];
+		strncpy(vcf_output_filename, output_filename_base, FILENAME_MAX);
 		if((output_vcf_file + output_phylip_file + output_multi_fasta_file) > 1 || (output_filename == NULL || *output_filename == '\0') )
 		{
-			char extension[5] = {".vcf"};
-			concat_strings_created_with_malloc(vcf_output_filename,extension);
+			strcat(vcf_output_filename, ".vcf");
 		}
 		
 	  create_vcf_file(vcf_output_filename, snp_locations, number_of_snps, bases_for_snps, sequence_names, number_of_samples, length_of_genome);
-		free(vcf_output_filename);
   }
 
   if(output_phylip_file)
   {
-		char *phylip_output_filename;
-		phylip_output_filename = calloc(FILENAME_MAX,sizeof(char));
-		memcpy(phylip_output_filename, output_filename_base, (FILENAME_MAX)*sizeof(char));
+		char phylip_output_filename[FILENAME_MAX];
+		strncpy(phylip_output_filename, output_filename_base, FILENAME_MAX);
 		if((output_vcf_file + output_phylip_file + output_multi_fasta_file) > 1 || (output_filename == NULL || *output_filename == '\0') )
 		{
-			char extension[10] = {".phylip"};
-			concat_strings_created_with_malloc(phylip_output_filename,extension);
+			strcat(phylip_output_filename, ".phylip");
 		}
 	  create_phylib_of_snp_sites(phylip_output_filename, number_of_snps, bases_for_snps, sequence_names, number_of_samples);
-		free(phylip_output_filename);
   }
 
   if((output_multi_fasta_file) || (output_vcf_file ==0 && output_phylip_file == 0 && output_multi_fasta_file == 0))
   {
-		char *multi_fasta_output_filename;
-		multi_fasta_output_filename = calloc(FILENAME_MAX,sizeof(char));
-		memcpy(multi_fasta_output_filename, output_filename_base, (FILENAME_MAX)*sizeof(char));
+		char multi_fasta_output_filename[FILENAME_MAX];
+		strncpy(multi_fasta_output_filename, output_filename_base, FILENAME_MAX);
 		if((output_vcf_file + output_phylip_file + output_multi_fasta_file) > 1 || (output_filename == NULL || *output_filename == '\0') )
 		{
-			char extension[20] = {".snp_sites.aln"};
-			concat_strings_created_with_malloc(multi_fasta_output_filename,extension);
+			strcat(multi_fasta_output_filename, ".snp_sites.aln");
 		}
 	  create_fasta_of_snp_sites(multi_fasta_output_filename, number_of_snps, bases_for_snps, sequence_names, number_of_samples);
-	  free(multi_fasta_output_filename);
   }
 
   // free memory
