@@ -27,29 +27,25 @@
 
 void create_phylib_of_snp_sites(char filename[], int number_of_snps, char ** bases_for_snps, char ** sequence_names, int number_of_samples)
 {
-	FILE *fasta_file_pointer;
+	FILE *phylip_file_pointer;
 	int sample_counter;
 	int snp_counter;
-	char * base_filename;
+
+	phylip_file_pointer = fopen(filename, "w");
 	
-	base_filename = (char *) calloc(FILENAME_MAX,sizeof(char));
-	memcpy(base_filename, filename, FILENAME_MAX*sizeof(char));
-	fasta_file_pointer = fopen(base_filename, "w");
-	
-	fprintf( fasta_file_pointer, "%d %d\n", number_of_samples, number_of_snps);
+	fprintf( phylip_file_pointer, "%d %d\n", number_of_samples, number_of_snps);
 	
 	for(sample_counter=0; sample_counter< number_of_samples; sample_counter++)
 	{
 		// sequence_name can be more than 10 (relaxed phylib format) and contain [\w\s]
 		//TODO check for illegal characters [^\w\s]
-		fprintf( fasta_file_pointer, "%s\t", sequence_names[sample_counter]);
+		fprintf( phylip_file_pointer, "%s\t", sequence_names[sample_counter]);
 		
 		for(snp_counter=0; snp_counter< number_of_snps; snp_counter++)
 		{
-			fprintf( fasta_file_pointer, "%c", bases_for_snps[snp_counter][sample_counter]);
+			fputc( bases_for_snps[snp_counter][sample_counter], phylip_file_pointer);
 		}
-		fprintf( fasta_file_pointer, "\n");
+		fprintf( phylip_file_pointer, "\n");
 	}
-  fclose(fasta_file_pointer);
-	free(base_filename);
+  fclose(phylip_file_pointer);
 }

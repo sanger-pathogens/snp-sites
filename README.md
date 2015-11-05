@@ -10,6 +10,7 @@ This program finds snp sites from a multi fasta alignment file.
  -p		    output a phylip file
  -o		    specify an output filename
  -h		    this help message
+ -V		    print version and exit
  <file>		input alignment file which can optionally be gzipped
 ```
 

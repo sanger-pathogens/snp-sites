@@ -34,6 +34,9 @@ OPTIONS
 *-h*::
 	This document
 
+*-V*::
+	Show version and exit
+
 EXAMPLES
 --------
 snp-sites my-alignment.aln

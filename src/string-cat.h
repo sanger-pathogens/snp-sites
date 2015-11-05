@@ -22,7 +22,6 @@
 #define _STRING_CAT_H_
 
 void concat_strings_created_with_malloc(char *input_string, char *string_to_concat);
-int size_of_string(char *input_string);
 
 #endif
 
