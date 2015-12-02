@@ -121,7 +121,7 @@ char * alternative_bases(char reference_base, char * bases_for_snp, int number_o
 	char * alt_bases = calloc(MAXIMUM_NUMBER_OF_ALT_BASES+1, sizeof(char));
 	for(i=0; i< number_of_samples; i++ )
 	{
-		if((bases_for_snp[i] != reference_base) && (bases_for_snp[i] != '-') && (toupper(bases_for_snp[i]) != 'N') )
+		if(!is_unknown(bases_for_snp[i]) && (bases_for_snp[i] != reference_base))
 		{
 			if(check_if_char_in_string(alt_bases, bases_for_snp[i], num_alt_bases) == 0)
 			{
@@ -145,7 +145,7 @@ char * format_allele_index(char base, char reference_base, char * alt_bases)
 	assert(length_of_alt_bases < 100);
 	char * result = calloc(3, sizeof(char));
 	int index;
-	if (reference_base == base || toupper(base) == 'N' || base == '-')
+	if (reference_base == base || is_unknown(base))
 	{
 		sprintf(result, "0");
 	}

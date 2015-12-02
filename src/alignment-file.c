@@ -181,6 +181,18 @@ int build_reference_sequence_and_truncate(char reference_sequence[], char filena
   return 1;
 }
 
+int is_unknown(char base)
+{
+  switch (toupper(base)) {
+    case 'N':
+    case '-':
+    case '?':
+      return 1;
+    default:
+      return 0;
+  }
+}
+
 int detect_snps(char reference_sequence[], char filename[], size_t length_of_genome)
 {
   int i;
@@ -199,12 +211,12 @@ int detect_snps(char reference_sequence[], char filename[], size_t length_of_gen
     for(i = 0; i < length_of_genome; i++)
       {
 	// If there is an indel in the reference sequence, replace with the first proper base you find
-	if((reference_sequence[i] == '-' && seq->seq.s[i] != '-' ) || (toupper(reference_sequence[i]) == 'N' && seq->seq.s[i] != 'N' ))
+	if(is_unknown(reference_sequence[i]) && !is_unknown(seq->seq.s[i]))
 	  {
 	    reference_sequence[i] = toupper(seq->seq.s[i]);
 	  }
 	
-	if(reference_sequence[i] != '*' && seq->seq.s[i] != '-' && toupper(seq->seq.s[i]) != 'N' && reference_sequence[i] != toupper(seq->seq.s[i]))
+	if(! is_unknown(reference_sequence[i]) && reference_sequence[i] != '*' && ! is_unknown(seq->seq.s[i]) && (reference_sequence[i] != toupper(seq->seq.s[i])))
 	  {
 	    reference_sequence[i] = '*';
 	    number_of_snps++;

@@ -22,6 +22,7 @@
 
 #include "kseq.h"
 
+int is_unknown(char base);
 int detect_snps(char reference_sequence[],  char filename[], size_t length_of_genome);
 int line_length(FILE * alignment_file_pointer);
 int build_reference_sequence(char reference_sequence[], char filename[]);
