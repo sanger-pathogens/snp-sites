@@ -27,7 +27,7 @@ void get_bases_for_each_snp(char filename[], int snp_locations[], char ** bases_
 int get_length_of_genome();
 int get_number_of_samples();
 int get_number_of_snps();
-char * get_sequence_names();
+char ** get_sequence_names();
 int * get_snp_locations();
 
 #define MAX_SAMPLE_NAME_SIZE 2048

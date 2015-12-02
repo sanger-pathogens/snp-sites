@@ -34,7 +34,7 @@ KSEQ_INIT(gzFile, gzread)
 int length_of_genome;
 int number_of_samples;
 int number_of_snps;
-char * sequence_names;
+char ** sequence_names;
 int * snp_locations;
 
 
@@ -53,7 +53,7 @@ int get_number_of_snps()
     return number_of_snps;
 }
 
-char * get_sequence_names()
+char ** get_sequence_names()
 {
     return sequence_names;
 }
@@ -89,7 +89,7 @@ void get_bases_for_each_snp(char filename[], int snp_locations[], char ** bases_
       
       if(seq->seq.l != length_of_genome_found)
 	{
-	  fprintf(stderr, "Alignment %s contains sequences of unequal length. Expected length is %d but got %d in sequence %s\n\n",filename, length_of_genome_found, seq->seq.l,seq->name.s);
+	  fprintf(stderr, "Alignment %s contains sequences of unequal length. Expected length is %i but got %i in sequence %s\n\n",filename, (int) length_of_genome_found, (int) seq->seq.l,seq->name.s);
 	  fflush(stderr);
 	  exit(EXIT_FAILURE);
 	}
@@ -114,7 +114,7 @@ void detect_snps(char filename[])
   kseq_t *first_sequence;
   
   fp = gzopen(filename, "r");
-  first_sequence = seq_init(fp);  
+  seq_init(fp);  
   // First sequence is the reference sequence so skip it
   kseq_read(first_sequence);
   length_of_genome = first_sequence->seq.l;

@@ -94,7 +94,7 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 	free(get_snp_locations());
 	for(i = 0; i < get_number_of_samples(); i++)
 	{
-		free(get_sequence_names().[i]);
+	//	free(get_sequence_names().[i]);
 	}
 	for(i = 0; i < get_number_of_snps(); i++)
 	{
@@ -132,41 +132,6 @@ void strip_directory_from_filename(char * input_filename, char * output_filename
     current_index++;
   }
   output_filename[current_index] = '\0';
-}
-
-// return new number of snps
-int refilter_existing_snps(char * reference_bases, int get_number_of_snps(), char ** column_names, int number_of_columns,int * snp_locations, int * filtered_snp_locations)
-{
-	// go through each snp column and check to see if there is still variation
-	int i;
-	int number_of_filtered_snps = get_number_of_snps();
-	for(i = 0; i < get_number_of_snps(); i++)
-	{
-		if( does_column_contain_snps(i, reference_bases[i]) == 0)
-		{
-			snp_locations[i] = -1;
-			reference_bases[i] = '*';
-			
-			number_of_filtered_snps--;
-		}
-	}
-	
-	remove_filtered_snp_locations(filtered_snp_locations, snp_locations, get_number_of_snps());
-	return number_of_filtered_snps;
-}
-
-void remove_filtered_snp_locations(int * filtered_snp_locations, int * snp_locations, int get_number_of_snps())
-{
-	int i;
-	int filtered_counter=0;
-	for(i = 0; i< get_number_of_snps(); i++)
-	{
-		if(snp_locations[i] != -1)
-		{
-			filtered_snp_locations[filtered_counter] = snp_locations[i];
-			filtered_counter++;
-		}
-	}
 }
 
 

@@ -24,8 +24,6 @@
 #include <stdio.h>
 
 int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_vcf_file, int output_phylip_file, char output_filename[]);
-int refilter_existing_snps(char * reference_bases, int number_of_snps, char ** column_names, int number_of_columns,int * snp_locations, int * filtered_snp_locations);
-void remove_filtered_snp_locations(int * filtered_snp_locations, int * snp_locations, int number_of_snps);
 void strip_directory_from_filename(char * input_filename, char * output_filename);
 
 #endif
