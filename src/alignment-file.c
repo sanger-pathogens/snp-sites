@@ -186,6 +186,7 @@ int is_unknown(char base)
   switch (toupper(base)) {
     case 'N':
     case '-':
+    case '?':
       return 1;
     default:
       return 0;
