@@ -108,39 +108,45 @@ void detect_snps(char filename[])
   number_of_snps = 0;
   number_of_samples = 0; 
   length_of_genome = 0;
+  char * first_sequence;
   
   gzFile fp;
   kseq_t *seq;
-  kseq_t *first_sequence;
   
   fp = gzopen(filename, "r");
-  seq_init(fp);  
-  // First sequence is the reference sequence so skip it
-  kseq_read(first_sequence);
-  length_of_genome = first_sequence->seq.l;
-  number_of_samples++; 
-  sequence_names = calloc(number_of_samples, sizeof(char*));
-  sequence_names[number_of_samples-1] = calloc(MAX_SAMPLE_NAME_SIZE,sizeof(char));
-  strcpy(sequence_names[number_of_samples-1], first_sequence->name.s);
-  
+  seq = kseq_init(fp);
+
+  sequence_names = calloc(1, sizeof(char*));
+
   while ((l = kseq_read(seq)) >= 0) {
+    if(number_of_samples == 0)
+    {
+        length_of_genome = seq->seq.l;
+        first_sequence = calloc(length_of_genome + 1, sizeof(char));
+
+        for(i = 0; i < length_of_genome; i++)
+        {
+            first_sequence[i] = 'N';
+        }
+    }
+
     for(i = 0; i < length_of_genome; i++)
     {
-	  // If there is an indel in the reference sequence, replace with the first proper base you find
-	  if((first_sequence->seq.s[i] == '-' && seq->seq.s[i] != '-' ) || (toupper(first_sequence->seq.s[i]) == 'N' && seq->seq.s[i] != 'N' ))
+	  // If there is missing data in the reference sequence, replace with the first proper base you find
+	  if((first_sequence[i] == '-' && seq->seq.s[i] != '-' ) || (toupper(first_sequence[i]) == 'N' && toupper(seq->seq.s[i]) != 'N' ))
 	  {
-	      first_sequence->seq.s[i] = toupper(seq->seq.s[i]);
+	      first_sequence[i] = toupper(seq->seq.s[i]);
 	  }
 	  
-	  if(first_sequence->seq.s[i] != '*' && seq->seq.s[i] != '-' && toupper(first_sequence->seq.s[i]) != 'N' && toupper(first_sequence->seq.s[i]) != toupper(seq->seq.s[i]))
+	  if(first_sequence[i] != '*' && seq->seq.s[i] != '-' && toupper(seq->seq.s[i]) != 'N' && toupper(first_sequence[i]) != 'N' && toupper(first_sequence[i]) != toupper(seq->seq.s[i]))
 	  {
-	      first_sequence->seq.s[i] = '*';
+	      first_sequence[i] = '*';
 	      number_of_snps++;
 	  }
    }
-   sequence_names = realloc(sequence_names, number_of_samples * sizeof(char*));
-   sequence_names[number_of_samples-1] = calloc(MAX_SAMPLE_NAME_SIZE,sizeof(char));
-   strcpy(sequence_names[number_of_samples-1], seq->name.s);
+   sequence_names = realloc(sequence_names, (number_of_samples + 1) * sizeof(char*));
+   sequence_names[number_of_samples] = calloc(MAX_SAMPLE_NAME_SIZE,sizeof(char));
+   strcpy(sequence_names[number_of_samples], seq->name.s);
    
    number_of_samples++;
   }
@@ -149,17 +155,14 @@ void detect_snps(char filename[])
   snp_locations = calloc(number_of_snps, sizeof(int));
   for(i = 0; i < length_of_genome; i++)
   {
-      if(first_sequence->seq.s[i] == '*')
+      if(first_sequence[i] == '*')
       {
           snp_locations[current_snp_index] = i;
           current_snp_index++;
       }
   }
-  
-  kseq_destroy(first_sequence);
+  free(first_sequence);
   kseq_destroy(seq);
   gzclose(fp);
-
   return;
 }
-
