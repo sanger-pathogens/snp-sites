@@ -186,7 +186,6 @@ int is_unknown(char base)
   switch (toupper(base)) {
     case 'N':
     case '-':
-    case '*':
       return 1;
     default:
       return 0;
@@ -216,7 +215,7 @@ int detect_snps(char reference_sequence[], char filename[], size_t length_of_gen
 	    reference_sequence[i] = toupper(seq->seq.s[i]);
 	  }
 	
-	if(! is_unknown(reference_sequence[i]) && ! is_unknown(seq->seq.s[i]) && (reference_sequence[i] != toupper(seq->seq.s[i])))
+	if(! is_unknown(reference_sequence[i]) && reference_sequence[i] != '*' && ! is_unknown(seq->seq.s[i]) && (reference_sequence[i] != toupper(seq->seq.s[i])))
 	  {
 	    reference_sequence[i] = '*';
 	    number_of_snps++;
