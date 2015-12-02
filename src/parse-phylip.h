@@ -23,11 +23,4 @@
 
 int does_column_contain_snps(int snp_column, char reference_base);
 
-#define MAX_READ_BUFFER 65536
-#define MAX_SAMPLE_NAME_SIZE 1024
-
 #endif
-
-
-
-

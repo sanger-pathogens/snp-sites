@@ -31,36 +31,37 @@
 
 KSEQ_INIT(gzFile, gzread)
 
-// Given a file handle, return the length of the current line
-int line_length(FILE * alignment_file_pointer)
+int length_of_genome;
+int number_of_samples;
+int number_of_snps;
+char * sequence_names;
+int * snp_locations;
+
+
+int get_length_of_genome()
 {
-	char szBuffer[MAX_READ_BUFFER] = {0};  
-	char *pcRes         = NULL; 
-	int  length_of_line    = 0;    
-	int total_length_of_line = 0;
-	
-	while((pcRes = fgets(szBuffer, sizeof(szBuffer), alignment_file_pointer))  != NULL){
-		length_of_line = strlen(szBuffer) - 1;
-		total_length_of_line = total_length_of_line + length_of_line;
-		if((szBuffer)[length_of_line] == '\n'){
-			break;
-		}
-	}
-	return total_length_of_line;
+    return length_of_genome;
 }
 
-void advance_to_sequence(FILE * alignment_file_pointer)
+int get_number_of_samples()
 {
-	// Skip first line since its a comment, ToDo make this better by doing a regex on the line
-	line_length(alignment_file_pointer);
+    return number_of_samples;
 }
 
-void advance_to_sequence_name(FILE * alignment_file_pointer)
+int get_number_of_snps()
 {
-	// Skip sequence line, TODO make this work properly
-	line_length(alignment_file_pointer);
+    return number_of_snps;
 }
 
+char * get_sequence_names()
+{
+    return sequence_names;
+}
+
+int * get_snp_locations()
+{
+    return snp_locations;
+}
 
 void get_bases_for_each_snp(char filename[], int snp_locations[], char ** bases_for_snps, size_t length_of_genome, int number_of_snps)
 {
@@ -100,194 +101,65 @@ void get_bases_for_each_snp(char filename[], int snp_locations[], char ** bases_
   gzclose(fp);
 }
 
-int genome_length(char filename[])
-{
-	size_t length_of_genome;
-	
-	if( access( filename, F_OK ) == -1 ) {
-		printf("Cannot calculate genome_length because file '%s' doesnt exist\n",filename);
-		exit(0);
-  }
-
-	gzFile fp;
-	kseq_t *seq;
-	
-	fp = gzopen(filename, "r");
-	seq = kseq_init(fp);
-  kseq_read(seq);
-
-  length_of_genome = seq->seq.l;
-
-	kseq_destroy(seq);
-	gzclose(fp);
-	return length_of_genome;
-}
-
-
-int number_of_sequences_in_file(char filename[])
-{
-  int number_of_sequences = 0;
-  int l;
-	
-	gzFile fp;
-	kseq_t *seq;
-	
-	fp = gzopen(filename, "r");
-	seq = kseq_init(fp);
-  
-	while ((l = kseq_read(seq)) >= 0) {
-    number_of_sequences++;
-	}
-	kseq_destroy(seq);
-	gzclose(fp);
-	return number_of_sequences;
-}
-
-int build_reference_sequence(char reference_sequence[], char filename[])
-{
-  return build_reference_sequence_and_truncate(reference_sequence,filename,0);
-}
-
-
-int build_reference_sequence_and_truncate(char reference_sequence[], char filename[], size_t buffer_length)
-{
-  int i;
-  
-  size_t length_of_genome;
-  
-  gzFile fp;
-  kseq_t *seq;
-  
-  fp = gzopen(filename, "r");
-  seq = kseq_init(fp);
-  kseq_read(seq);
-
-  length_of_genome = seq->seq.l;
-  //printf("%zd\n", length_of_genome);
-  //printf("%zd\n", buffer_length);
-
-
-  for(i = 0; i < seq->seq.l ; i++)
-    {
-      if( buffer_length != 0  && i >= buffer_length - 1 )
-	  break;
-
-      reference_sequence[i] = toupper(seq->seq.s[i]);
-    }
-  reference_sequence[i] = '\0';
-  //printf("%s\n", reference_sequence);
-  kseq_destroy(seq);
-  gzclose(fp);
-  return 1;
-}
-
-int detect_snps(char reference_sequence[], char filename[], size_t length_of_genome)
+void detect_snps(char filename[])
 {
   int i;
   int l;
-  int number_of_snps = 0;
+  number_of_snps = 0;
+  number_of_samples = 0; 
+  length_of_genome = 0;
   
   gzFile fp;
   kseq_t *seq;
+  kseq_t *first_sequence;
   
   fp = gzopen(filename, "r");
-  seq = kseq_init(fp);
+  first_sequence = seq_init(fp);  
   // First sequence is the reference sequence so skip it
-  kseq_read(seq);
+  kseq_read(first_sequence);
+  length_of_genome = first_sequence->seq.l;
+  number_of_samples++; 
+  sequence_names = calloc(number_of_samples, sizeof(char*));
+  sequence_names[number_of_samples-1] = calloc(MAX_SAMPLE_NAME_SIZE,sizeof(char));
+  strcpy(sequence_names[number_of_samples-1], first_sequence->name.s);
   
   while ((l = kseq_read(seq)) >= 0) {
     for(i = 0; i < length_of_genome; i++)
-      {
-	// If there is an indel in the reference sequence, replace with the first proper base you find
-	if((reference_sequence[i] == '-' && seq->seq.s[i] != '-' ) || (toupper(reference_sequence[i]) == 'N' && seq->seq.s[i] != 'N' ))
+    {
+	  // If there is an indel in the reference sequence, replace with the first proper base you find
+	  if((first_sequence->seq.s[i] == '-' && seq->seq.s[i] != '-' ) || (toupper(first_sequence->seq.s[i]) == 'N' && seq->seq.s[i] != 'N' ))
 	  {
-	    reference_sequence[i] = toupper(seq->seq.s[i]);
+	      first_sequence->seq.s[i] = toupper(seq->seq.s[i]);
 	  }
-	
-	if(reference_sequence[i] != '*' && seq->seq.s[i] != '-' && toupper(seq->seq.s[i]) != 'N' && reference_sequence[i] != toupper(seq->seq.s[i]))
+	  
+	  if(first_sequence->seq.s[i] != '*' && seq->seq.s[i] != '-' && toupper(first_sequence->seq.s[i]) != 'N' && toupper(first_sequence->seq.s[i]) != toupper(seq->seq.s[i]))
 	  {
-	    reference_sequence[i] = '*';
-	    number_of_snps++;
+	      first_sequence->seq.s[i] = '*';
+	      number_of_snps++;
 	  }
-      } 
+   }
+   sequence_names = realloc(sequence_names, number_of_samples * sizeof(char*));
+   sequence_names[number_of_samples-1] = calloc(MAX_SAMPLE_NAME_SIZE,sizeof(char));
+   strcpy(sequence_names[number_of_samples-1], seq->name.s);
+   
+   number_of_samples++;
   }
+  
+  int current_snp_index = 0;
+  snp_locations = calloc(number_of_snps, sizeof(int));
+  for(i = 0; i < length_of_genome; i++)
+  {
+      if(first_sequence->seq.s[i] == '*')
+      {
+          snp_locations[current_snp_index] = i;
+          current_snp_index++;
+      }
+  }
+  
+  kseq_destroy(first_sequence);
   kseq_destroy(seq);
   gzclose(fp);
 
-  return number_of_snps;
+  return;
 }
-
-
-char * read_line(char sequence[], FILE * pFilePtr)
-{
-  char *pcRes         = NULL;  
-  long   lineLength    = 0; 
-  char current_line_buffer[MAX_READ_BUFFER] = {0};
-	
-	
-  while((pcRes = fgets(current_line_buffer, sizeof(current_line_buffer), pFilePtr))  != NULL){
-    if(strlen(sequence) > 0)
-      {
-	sequence = realloc(sequence, sizeof(char)*(strlen(sequence) + strlen(current_line_buffer) + 2) );
-      }
-    strcat(sequence,current_line_buffer);
-    current_line_buffer[0] = '\0';
-    lineLength = strlen(sequence);
-    //if end of line character is found then exit from loop
-		
-    if((sequence)[lineLength] == '\n' || (sequence)[lineLength] == '\0'){
-      break;
-    }
-  }
-	 
-	 
-  return sequence;
-}
-
-
-void get_sample_names_for_header(char filename[], char ** sequence_names, int number_of_samples)
-{
-  int l;
-  int i = 0;
-	
-	gzFile fp;
-	kseq_t *seq;
-	
-	fp = gzopen(filename, "r");
-	seq = kseq_init(fp);
-  
-	while ((l = kseq_read(seq)) >= 0) {
-		strcpy(sequence_names[i], seq->name.s);
-    i++;
-	}
-	kseq_destroy(seq);
-	gzclose(fp);
-
-}
-
-
-char filter_invalid_characters(char input_char)
-{
-	regex_t regex;
-	int reti;
-	char  input_chars[10];
-	input_chars[0] =input_char;
-	input_chars[1] = '\0';
-	
-	/* Compile regular expression */
-	reti = regcomp(&regex, "^[[:alnum:]_.]", 0);
-
-	/* Execute regular expression */
-	reti = regexec(&regex, input_chars, 0, NULL, 0);
-	if( !reti ){
-		return input_char;
-	}
-	else if( reti == REG_NOMATCH ){
-		return '\0';
-	}
-	return '\0';
-
-	regfree(&regex);
-}
-
 
