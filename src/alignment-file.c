@@ -137,7 +137,7 @@ void detect_snps(char filename[])
 	        first_sequence[i] = toupper(seq->seq.s[i]);
       }
 	  
-	  if(first_sequence[i] != '>' && !is_unknown(seq->seq.s[i]) && !is_unknown(first_sequence[i]) && toupper(first_sequence[i]) != toupper(seq->seq.s[i]))
+	  if(first_sequence[i] != '>' && !is_unknown(seq->seq.s[i]) && !is_unknown(first_sequence[i]) && first_sequence[i] != toupper(seq->seq.s[i]))
 	  {
 	      first_sequence[i] = '>';
 	      number_of_snps++;
