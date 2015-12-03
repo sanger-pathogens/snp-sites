@@ -27,7 +27,7 @@
 #include "string-cat.h"
 
 #define PROGRAM_NAME "snp-sites"
-#define PROGRAM_VERSION "2.0.2"
+#define PROGRAM_VERSION "2.0.3"
 
 static void print_usage()
 {
