@@ -132,15 +132,14 @@ void detect_snps(char filename[])
 
     for(i = 0; i < length_of_genome; i++)
     {
-	  // If there is missing data in the reference sequence, replace with the first proper base you find
-	  if((first_sequence[i] == '-' && seq->seq.s[i] != '-' ) || (toupper(first_sequence[i]) == 'N' && toupper(seq->seq.s[i]) != 'N' ))
-	  {
-	      first_sequence[i] = toupper(seq->seq.s[i]);
-	  }
+      if(is_unknown(first_sequence[i]) && !is_unknown(seq->seq.s[i]))
+      {
+	        first_sequence[i] = toupper(seq->seq.s[i]);
+      }
 	  
-	  if(first_sequence[i] != '*' && seq->seq.s[i] != '-' && toupper(seq->seq.s[i]) != 'N' && toupper(first_sequence[i]) != 'N' && toupper(first_sequence[i]) != toupper(seq->seq.s[i]))
+	  if(first_sequence[i] != '>' && !is_unknown(seq->seq.s[i]) && !is_unknown(first_sequence[i]) && toupper(first_sequence[i]) != toupper(seq->seq.s[i]))
 	  {
-	      first_sequence[i] = '*';
+	      first_sequence[i] = '>';
 	      number_of_snps++;
 	  }
    }
@@ -155,7 +154,7 @@ void detect_snps(char filename[])
   snp_locations = calloc(number_of_snps, sizeof(int));
   for(i = 0; i < length_of_genome; i++)
   {
-      if(first_sequence[i] == '*')
+      if(first_sequence[i] == '>')
       {
           snp_locations[current_snp_index] = i;
           current_snp_index++;
@@ -165,4 +164,16 @@ void detect_snps(char filename[])
   kseq_destroy(seq);
   gzclose(fp);
   return;
+}
+
+int is_unknown(char base)
+{
+  switch (toupper(base)) {
+    case 'N':
+    case '-':
+    case '?':
+      return 1;
+    default:
+      return 0;
+  }
 }
