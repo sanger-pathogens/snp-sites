@@ -79,21 +79,20 @@ void get_bases_for_each_snp(char filename[], int snp_locations[], char ** bases_
   while ((l = kseq_read(seq)) >= 0) 
     {
       if(sequence_number == 0)
-	{
-	  length_of_genome_found = seq->seq.l;
-	}
+      {
+	      length_of_genome_found = seq->seq.l;
+	    }
       for(i = 0; i< number_of_snps; i++)
-	{
-	  bases_for_snps[i][sequence_number] = toupper(((char *) seq->seq.s)[snp_locations[i]]);
-	}
+	    {
+	      bases_for_snps[i][sequence_number] = toupper(((char *) seq->seq.s)[snp_locations[i]]);
+	    }
       
       if(seq->seq.l != length_of_genome_found)
-	{
-	  fprintf(stderr, "Alignment %s contains sequences of unequal length. Expected length is %i but got %i in sequence %s\n\n",filename, (int) length_of_genome_found, (int) seq->seq.l,seq->name.s);
-	  fflush(stderr);
-	  exit(EXIT_FAILURE);
-	}
-		
+	    {
+	      fprintf(stderr, "Alignment %s contains sequences of unequal length. Expected length is %i but got %i in sequence %s\n\n",filename, (int) length_of_genome_found, (int) seq->seq.l,seq->name.s);
+	      fflush(stderr);
+	      exit(EXIT_FAILURE);
+	    }
       sequence_number++;
     }
 
@@ -137,7 +136,7 @@ void detect_snps(char filename[])
 	        first_sequence[i] = toupper(seq->seq.s[i]);
       }
 	  
-	  if(first_sequence[i] != '>' && !is_unknown(seq->seq.s[i]) && !is_unknown(first_sequence[i]) && first_sequence[i] != toupper(seq->seq.s[i]))
+	  if(first_sequence[i] != '>' && !is_unknown(seq->seq.s[i]) && first_sequence[i] != 'N' && first_sequence[i] != toupper(seq->seq.s[i]))
 	  {
 	      first_sequence[i] = '>';
 	      number_of_snps++;
@@ -173,8 +172,8 @@ void detect_snps(char filename[])
 int is_unknown(char base)
 {
   switch (base) {
-    case 'n':
     case 'N':
+    case 'n':
     case '-':
     case '?':
       return 1;
