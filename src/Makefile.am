@@ -1,19 +1,14 @@
-# ship these headers in the "make dist" target
-
-#This is how the header files were originaly being installed.
-#dist_data_DATA = alignment-file.h  vcf.h phylib-of-snp-sites.h snp-sites.h fasta-of-snp-sites.h parse-phylip.h string-cat.h kseq.h
-
-#The problem with the above is that the header files end up in /usr/share, which is far from ideal.
-#They should all be installed to /usr/include/snp-sites/.
-#Having spoken to John Marshall, this is how it should be done
 snpsitesincludedir=$(includedir)/snp-sites
 snpsitesinclude_HEADERS=alignment-file.h  vcf.h phylib-of-snp-sites.h snp-sites.h fasta-of-snp-sites.h parse-phylip.h string-cat.h kseq.h
 
-
-# snp_sites is our top level progra
 bin_PROGRAMS = snp-sites
 snp_sites_SOURCES = main.c
-snp_sites_LDADD=-lm libsnp-sites.la -lz -lpthread -lrt
+
+
+snp_sites_LDADD =-lm libsnp-sites.la -lz -lpthread
+if HOST_LINUX
+snp_sites_LDADD += -lrt
+endif
 
 # libsnp_sites.so is our library
 lib_LTLIBRARIES = libsnp-sites.la
@@ -29,4 +24,8 @@ run_all_tests_SOURCES = \
 	../tests/helper-methods.c \
 	../tests/run-all-tests.c
 run_all_tests_CFLAGS = -I../tests
-run_all_tests_LDADD = -lm -lcheck -lsubunit libsnp-sites.la -lz -lpthread -lrt
+
+run_all_tests_LDADD = -lm -lcheck libsnp-sites.la -lz -lpthread
+if HOST_LINUX
+run_all_tests_LDADD += -lsubunit -lrt
+endif
