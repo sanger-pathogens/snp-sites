@@ -116,7 +116,7 @@ void detect_snps(char filename[])
   fp = gzopen(filename, "r");
   seq = kseq_init(fp);
 
-  sequence_names = calloc(1, sizeof(char*));
+  sequence_names = calloc(DEFAULT_NUM_SAMPLES, sizeof(char*));
 
   while ((l = kseq_read(seq)) >= 0) {
     if(number_of_samples == 0)
@@ -132,7 +132,7 @@ void detect_snps(char filename[])
 
     for(i = 0; i < length_of_genome; i++)
     {
-      if(is_unknown(first_sequence[i]) && !is_unknown(seq->seq.s[i]))
+      if(first_sequence[i] == 'N' && !is_unknown(seq->seq.s[i]))
       {
 	        first_sequence[i] = toupper(seq->seq.s[i]);
       }
@@ -143,7 +143,11 @@ void detect_snps(char filename[])
 	      number_of_snps++;
 	  }
    }
-   sequence_names = realloc(sequence_names, (number_of_samples + 1) * sizeof(char*));
+   
+   if(number_of_samples >= DEFAULT_NUM_SAMPLES)
+   {
+     sequence_names = realloc(sequence_names, (number_of_samples + 1) * sizeof(char*));
+   }
    sequence_names[number_of_samples] = calloc(MAX_SAMPLE_NAME_SIZE,sizeof(char));
    strcpy(sequence_names[number_of_samples], seq->name.s);
    
@@ -168,7 +172,8 @@ void detect_snps(char filename[])
 
 int is_unknown(char base)
 {
-  switch (toupper(base)) {
+  switch (base) {
+    case 'n':
     case 'N':
     case '-':
     case '?':

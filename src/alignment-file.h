@@ -32,5 +32,5 @@ char ** get_sequence_names();
 int * get_snp_locations();
 
 #define MAX_SAMPLE_NAME_SIZE 2048
-
+#define DEFAULT_NUM_SAMPLES 65536
 #endif
