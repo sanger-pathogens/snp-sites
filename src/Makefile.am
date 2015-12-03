@@ -27,5 +27,5 @@ run_all_tests_CFLAGS = -I../tests
 
 run_all_tests_LDADD = -lm -lcheck libsnp-sites.la -lz -lpthread
 if HOST_LINUX
-run_all_tests_LDADD += -lsubunit -lrt
+run_all_tests_LDADD += -lrt
 endif
