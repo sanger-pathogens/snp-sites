@@ -27,8 +27,6 @@
 #include "alignment-file.h"
 #include "snp-sites.h"
 #include "phylib-of-snp-sites.h"
-#include "parse-phylip.h"
-#include "string-cat.h"
 #include "fasta-of-snp-sites.h"
 
 int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_vcf_file, int output_phylip_file, char output_filename[])

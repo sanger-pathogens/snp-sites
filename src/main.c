@@ -24,7 +24,6 @@
 #include <ctype.h>
 #include <unistd.h>
 #include "snp-sites.h"
-#include "string-cat.h"
 
 #define PROGRAM_NAME "snp-sites"
 #define PROGRAM_VERSION "2.1.0"

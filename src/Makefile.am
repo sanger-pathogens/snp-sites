@@ -1,5 +1,5 @@
 snpsitesincludedir=$(includedir)/snp-sites
-snpsitesinclude_HEADERS=alignment-file.h  vcf.h phylib-of-snp-sites.h snp-sites.h fasta-of-snp-sites.h parse-phylip.h string-cat.h kseq.h
+snpsitesinclude_HEADERS=alignment-file.h  vcf.h phylib-of-snp-sites.h snp-sites.h fasta-of-snp-sites.h kseq.h
 
 bin_PROGRAMS = snp-sites
 snp_sites_SOURCES = main.c
@@ -12,7 +12,7 @@ endif
 
 # libsnp_sites.so is our library
 lib_LTLIBRARIES = libsnp-sites.la
-libsnp_sites_la_SOURCES = alignment-file.c vcf.c phylib-of-snp-sites.c snp-sites.c fasta-of-snp-sites.c parse-phylip.c string-cat.c
+libsnp_sites_la_SOURCES = alignment-file.c vcf.c phylib-of-snp-sites.c snp-sites.c fasta-of-snp-sites.c
 libsnp_sites_la_LDFLAGS= -version-info 1:0
 
 # "make check" target
