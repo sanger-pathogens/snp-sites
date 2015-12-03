@@ -36,7 +36,7 @@ void create_vcf_file(char filename[], int snp_locations[],int number_of_snps, ch
 	strcpy(base_filename, filename);
 	
 	vcf_file_pointer=fopen(base_filename, "w");
-	output_vcf_header(vcf_file_pointer,sequence_names, number_of_samples, length_of_genome);
+	output_vcf_header(vcf_file_pointer,sequence_names, number_of_samples, (int) length_of_genome);
 	output_vcf_snps(vcf_file_pointer, bases_for_snps, snp_locations, number_of_snps, number_of_samples);
   fclose(vcf_file_pointer);
 	free(base_filename);
@@ -55,7 +55,7 @@ void output_vcf_header( FILE * vcf_file_pointer, char ** sequence_names, int num
 {
 	int i;
 	fprintf( vcf_file_pointer, "##fileformat=VCFv4.1\n" );	
-	fprintf( vcf_file_pointer, "##contig=<ID=1,length=%i>\n", length_of_genome );	
+	fprintf( vcf_file_pointer, "##contig=<ID=1,length=%i>\n", (int) length_of_genome );	
 	fprintf( vcf_file_pointer, "##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">\n" );	
 	fprintf( vcf_file_pointer, "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT" );
 	

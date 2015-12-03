@@ -141,70 +141,54 @@ END_TEST
 
 START_TEST (valid_genome_length)
 {
-  fail_unless( genome_length("../tests/data/alignment_file_one_line_per_sequence.aln") == 2000 );
+  detect_snps("../tests/data/alignment_file_one_line_per_sequence.aln");
+  fail_unless( get_length_of_genome() == 2000 );
 }
 END_TEST
 
 START_TEST (valid_genome_length_with_multiple_lines_per_sequence)
 {
-  fail_unless( genome_length("../tests/data/alignment_file_multiple_lines_per_sequence.aln") == 2000 );
+  detect_snps("../tests/data/alignment_file_multiple_lines_per_sequence.aln");
+  fail_unless( get_length_of_genome() == 2000 );
 }
 END_TEST
 
 START_TEST (valid_number_of_sequences_in_file)
 {
-  fail_unless( number_of_sequences_in_file("../tests/data/alignment_file_one_line_per_sequence.aln") == 109 );
+  detect_snps("../tests/data/alignment_file_one_line_per_sequence.aln");
+  fail_unless( get_number_of_samples() == 109 );
 }
 END_TEST
 
 START_TEST (valid_number_of_sequences_in_file_with_multiple_lines_per_sequence)
 {
-  fail_unless( number_of_sequences_in_file("../tests/data/alignment_file_multiple_lines_per_sequence.aln") == 109 );
+  detect_snps("../tests/data/alignment_file_multiple_lines_per_sequence.aln");
+  fail_unless( get_number_of_samples() == 109 );
 }
-END_TEST
-
-START_TEST (valid_initial_reference_sequence)
-{
-  char actual_reference_sequence[actual_ref_seq_length1];
-  char *expected_reference_sequence = "-------------------------CTATATAGAGATCTTTTTATTAGATCTACTATTAAGGAGCAGGATCTTTGTGGATAAGTGAAAAATGATCAACAAGATCATGCGATTCAGAAGGATCAGATCGTGTGATCAACCACTGATCTGTTCAAGGATTAGCTGGGATCAAAAACCTATGTTATACACAGCCACCTTGGGATCTAAAACTTGTTATATGGATAACTATAGGAAGATCACCGGATAATCGTATAGTTATCCACATGAGATTTGATTGAAAAAGCATCAATCAATTTTTTCACTACCGTTAAATTTATCCACAATCCAAAAAAAAGAGCGGCATTAAGCCGCTCTGCATGGAATAGGTCATTATTTAGAAGCGATTGATGACGCGTTTGAGCCAAGCTTCAGCGGCATCTTCAGGCACTGGGTGCTCTTGTACATCGATGGTAAAGCAGTTGGCCAGAGGTTTAGCACCAATATCCCCCAGCAGCTGATAGGCATGTTTACCTGCCGCGCAGAAAGTATCGTAGCTTGAATCACCAATCGCGACCACGGCATAACGTAGTGCAGAGGTATTCGGTGGTGTATTCTGCAGAGCCTGAATAAAGGGCTGGATATTATCCGGGTACTCACCAGCCCCGTGGGTTGAGGTGATGATCAGCCAAGTCCCTTTAGCAGGGATCTCACTCATGTTGGGCTGGTTATGAATTTTGGTGTCAAAGCCTTGTTCTTGCAGTAAATCACTCAGGTGGTCACCCACATATTCCGCACCGCCTAGGGTGCTGCCAGTAATGATATGAATCATAGCGTTACTCTATTTCCCAATACAGAATGATGAAAAAATGCGGCCAAGCAGATCATCGGAGCTGAACTCGCCCGTAATTTCGTTAAGGTGTTGCTGGGCTATACGCAGCTCTTCGGCGAGGATTTCTCCGGCCATATAGCCTTCAAGTTGTTGCTGGCCAATCGCTAAGTGCTCTGCGGCTCGCTCTAGGGCATCGAGATGACGGCGGCGTGCCATAAAGCCACCTTCCTGATTGCCTGAAAAACCCATGCACTCTTTGAGGTGCTGACGCAAGGCATCGACCCCTTGGCCTGTTTTGGCTGATAGGCGGATCAAGGTGGGTTGATTAACATGGCAGATCCCAAGGGGCTCACCAGTTTGATCGGCTTTATTACGGATCACAGTGATCCCAATATTCTCTGGCAGTTTGTCAACAAAATCAGGCCAGATGTCCTGTGGATCGGTGGCCTCTGTGGTGGTGCCATCGACCATAAACAGTACGCGATCGGCTTGGCGGATCTCTTCCCATGCGCGCTCAATACCAATTTTTTCTACCGCATCAGAAGCGTCTCGTAGTCCCGCAGTATCGATGATGTGCAGCGGCATCCCATCAATATGGATATGCTCACGCAGAACATCACGGGTGGTACCGGCAATGTCGGTAACGATGGCAGACTCTTTACCTGAAAGCGCATTGAGTAGGCTCGATTTACCCGCATTAGGACGCCCAGCAATCACCACCTTCATCCCTTCGCGCATAATGGCGCCTTGGTTGGCTTCACGGCGCACTGCGGCAAGATTATCTATGATGGTTTGCAGATCAGCGGAAACCTTACCATCGGCCAGAAAATCGATCTCTTCTTCTGGGAAATCAATTGCGGCTTCAACATAGATGCGCAGGTGAATCAGCGATTCCACCAAGGTATGGATGCGTTTAGAAAACTCGCCTTGCAGTGATTGCAGCGCGGATTTCGCGGCTTGCTCAGAGCTGGCATCAATCAGGTCTGCGATGGCTTCCGCTTGGGTTAAATCCATCTTGTCATTGAGGAAAGCGCGTTCTGAGAATTCACCGGGACGGGCTGGGCGCACTCCTTTAATCTGCAAAATACGGCGGATCAGCATATCCATGACGACCGGGCCACCGTGACCTTGCAGCTCAAGCACATCTTCACCGGTAAATGAATGAGGATTGGGGAAAAACAGCGCAATGCCTTG";
-  build_reference_sequence_and_truncate(actual_reference_sequence, "../tests/data/alignment_file_multiple_lines_per_sequence.aln",actual_ref_seq_length1) ;
-  fail_unless( strcmp(actual_reference_sequence,expected_reference_sequence) == 0 );
-}
-END_TEST  
+END_TEST 
 
 START_TEST (number_of_snps_detected)
 {
-  char actual_reference_sequence[actual_ref_seq_length1];
-  build_reference_sequence_and_truncate(actual_reference_sequence, "../tests/data/alignment_file_multiple_lines_per_sequence.aln",actual_ref_seq_length1);
-  fail_unless(  detect_snps(actual_reference_sequence, "../tests/data/alignment_file_multiple_lines_per_sequence.aln", 2000) == 5);
+detect_snps("../tests/data/alignment_file_multiple_lines_per_sequence.aln");
+  fail_unless( get_number_of_snps()  == 5);
 }
 END_TEST
 
 START_TEST (number_of_snps_detected_small)
 {
-  char actual_reference_sequence[actual_ref_seq_length2];
-  build_reference_sequence_and_truncate(actual_reference_sequence, "../tests/data/small_alignment.aln",actual_ref_seq_length2);
-  fail_unless(  detect_snps(actual_reference_sequence, "../tests/data/small_alignment.aln", 8) == 1);
+  detect_snps("../tests/data/small_alignment.aln");
+  fail_unless(  get_number_of_snps()  == 1);
 }
 END_TEST
 
-
 START_TEST (sample_names_from_alignment_file)
 {
-  char *expected_sequence_names[] ={"reference_sequence","comparison_sequence","another_comparison_sequence"};
-  char* sequence_names[3];
-  int i = 0;
-	sequence_names[3-1] = '\0';
-  for(i = 0; i < 3; i++)
-	{
-		sequence_names[i] = malloc(30*sizeof(char));
-	}
-  get_sample_names_for_header("../tests/data/small_alignment.aln",sequence_names, 3);
-  
-  for(i =0; i< 3; i++)
-  {
-    fail_unless( strcmp(expected_sequence_names[i], sequence_names[i]) ==0 );
-  }
+  detect_snps("../tests/data/small_alignment.aln");
+  char ** current_sequence_names = get_sequence_names();
+
+  fail_unless(strcmp(current_sequence_names[0],"reference_sequence") == 0);
+  fail_unless(strcmp(current_sequence_names[1],"comparison_sequence") == 0);
+  fail_unless(strcmp(current_sequence_names[2],"another_comparison_sequence") == 0);
 }
 END_TEST
 
@@ -237,12 +221,11 @@ Suite * snp_sites_suite (void)
   tcase_add_test (tc_alignment_file, valid_genome_length_with_multiple_lines_per_sequence);
   tcase_add_test (tc_alignment_file, valid_number_of_sequences_in_file);
   tcase_add_test (tc_alignment_file, valid_number_of_sequences_in_file_with_multiple_lines_per_sequence);
-  tcase_add_test (tc_alignment_file, valid_initial_reference_sequence);
   tcase_add_test (tc_alignment_file, number_of_snps_detected_small);
   tcase_add_test (tc_alignment_file, number_of_snps_detected);
   tcase_add_test (tc_alignment_file, sample_names_from_alignment_file);
   tcase_add_test (tc_alignment_file, check_strip_directory_from_filename_without_directory);
-	tcase_add_test (tc_alignment_file, check_strip_directory_from_filename_with_directory);
+  tcase_add_test (tc_alignment_file, check_strip_directory_from_filename_with_directory);
   suite_add_tcase (s, tc_alignment_file);
 
   TCase *tc_snp_sites = tcase_create ("snp_sites");
@@ -253,10 +236,10 @@ Suite * snp_sites_suite (void)
   tcase_add_test (tc_snp_sites, valid_with_only_aln_file_output);
   tcase_add_test (tc_snp_sites, valid_with_only_aln_file_output_with_custom_name);
   tcase_add_test (tc_snp_sites, valid_with_all_outputted_with_custom_name);
-	tcase_add_test (tc_snp_sites, valid_with_only_aln_file_output_default);
-	tcase_add_test (tc_snp_sites, valid_with_phylip_outputted_with_custom_name);
-	tcase_add_exit_test(tc_snp_sites, invalid_with_uneven_file_lengths,EXIT_FAILURE);
-	remove("uneven_alignment.aln.snp_sites.aln");
+  tcase_add_test (tc_snp_sites, valid_with_only_aln_file_output_default);
+  tcase_add_test (tc_snp_sites, valid_with_phylip_outputted_with_custom_name);
+  tcase_add_exit_test(tc_snp_sites, invalid_with_uneven_file_lengths,EXIT_FAILURE);
+  remove("uneven_alignment.aln.snp_sites.aln");
   suite_add_tcase (s, tc_snp_sites);
 
   return s;
