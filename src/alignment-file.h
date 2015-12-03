@@ -23,7 +23,7 @@
 #include "kseq.h"
 
 void detect_snps( char filename[]);
-void get_bases_for_each_snp(char filename[], int snp_locations[], char ** bases_for_snps, size_t length_of_genome, int number_of_snps);
+void get_bases_for_each_snp(char filename[], char ** bases_for_snps);
 int is_unknown(char base);
 int get_length_of_genome();
 int get_number_of_samples();

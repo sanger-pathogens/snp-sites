@@ -42,7 +42,7 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 		bases_for_snps[i] = calloc(get_number_of_samples()+1 ,sizeof(char));
 	}
 	
-	get_bases_for_each_snp(filename, get_snp_locations(), bases_for_snps, get_length_of_genome(), get_number_of_snps());
+	get_bases_for_each_snp(filename, bases_for_snps);
 	
 	char output_filename_base[FILENAME_MAX];
 	char filename_without_directory[FILENAME_MAX];

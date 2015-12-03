@@ -63,7 +63,7 @@ int * get_snp_locations()
     return snp_locations;
 }
 
-void get_bases_for_each_snp(char filename[], int snp_locations[], char ** bases_for_snps, size_t length_of_genome, int number_of_snps)
+void get_bases_for_each_snp(char filename[], char ** bases_for_snps)
 {
   int l;
   int i = 0;
