@@ -9,6 +9,9 @@ snp_sites_LDADD =-lm libsnp-sites.la -lz -lpthread
 if HOST_LINUX
 snp_sites_LDADD += -lrt
 endif
+if HOST_FREEBSD
+snp_sites_LDADD += -lrt
+endif
 
 # libsnp_sites.so is our library
 lib_LTLIBRARIES = libsnp-sites.la
@@ -27,5 +30,8 @@ run_all_tests_CFLAGS = -I../tests
 
 run_all_tests_LDADD = -lm -lcheck libsnp-sites.la -lz -lpthread
 if HOST_LINUX
+run_all_tests_LDADD += -lrt
+endif
+if HOST_FREEBSD
 run_all_tests_LDADD += -lrt
 endif
