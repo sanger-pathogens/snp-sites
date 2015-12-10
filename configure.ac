@@ -6,20 +6,13 @@ AC_CONFIG_MACRO_DIR([m4])
 
 AC_CANONICAL_HOST
 
-case $host_os in
-	*linux*)
-		HOST_OS=linux
-		;;
-	*freebsd*)
-		HOST_OS=freebsd
-		;;
-	*) ;;
-esac
-
-AM_CONDITIONAL([HOST_LINUX],[test x$HOST_OS = xlinux])
-AM_CONDITIONAL([HOST_FREEBSD],[test x$HOST_OS = xfreebsd])
+PKG_CHECK_MODULES([CHECK],[check >= 0.8.2],[have_check="yes"],
+  AC_MSG_WARN(['Check' unit testing framework not found. It would be impossible to run unit tests!"])
+  [have_check="no"])
 
 AC_CHECK_HEADERS([zlib.h math.h])
+AC_CHECK_LIB(m, floor)
+AX_CHECK_ZLIB
 
 AC_PROG_LIBTOOL
 AC_PROG_CC
