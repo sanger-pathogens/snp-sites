@@ -24,9 +24,10 @@
 #include <ctype.h>
 #include <unistd.h>
 #include "snp-sites.h"
+#include "config.h"
 
 #define PROGRAM_NAME "snp-sites"
-#define PROGRAM_VERSION "2.1.0"
+#define PROGRAM_VERSION PACKAGE_VERSION
 
 static void print_usage()
 {
