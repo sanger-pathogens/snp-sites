@@ -117,16 +117,16 @@ void detect_snps(char filename[])
 
   sequence_names = calloc(DEFAULT_NUM_SAMPLES, sizeof(char*));
 
+  first_sequence = calloc(seq->seq.l + 1, sizeof(char));
+  memset(first_sequence, 'N', length_of_genome);
+
   while ((l = kseq_read(seq)) >= 0) {
     if(number_of_samples == 0)
     {
         length_of_genome = seq->seq.l;
         first_sequence = calloc(length_of_genome + 1, sizeof(char));
 
-        for(i = 0; i < length_of_genome; i++)
-        {
-            first_sequence[i] = 'N';
-        }
+        memset(first_sequence, 'N', length_of_genome);
     }
 
     for(i = 0; i < length_of_genome; i++)
