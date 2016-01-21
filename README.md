@@ -20,6 +20,26 @@ This application takes in a multi fasta alignment, finds all the SNP sites, then
 - VCF, 
 - relaxed phylip format.
 
+### Example input
+For the given input file:
+```
+>sample1
+AGACACAGTCAC
+>sample1
+AGACAC----AC
+>sample1
+AAACGCATTCAN
+```
+the output is:
+```
+>sample1
+GAG
+>sample1
+GA-
+>sample1
+AGT
+```
+
 ### Example usage
 
 ```
