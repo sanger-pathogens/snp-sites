@@ -1,0 +1,96 @@
+#!/usr/bin/env perl
+
+package GenerateAlignment;
+
+=head1 NAME
+
+Generate simulated multi-FASTA alignment data
+
+=head1 DESCRIPTION
+
+This script will allow you to generate simulated multi-FASTA alignment files.
+
+=head1 LICENSE
+
+Wellcome Trust Sanger Institute
+Copyright (C) 2016  Wellcome Trust Sanger Institute
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+=head1 AUTHOR
+
+Wellcome Trust Sanger Institute
+
+=cut
+
+use Moose;
+use Cwd qw(abs_path); 
+use Getopt::Long;
+use Bio::SeqIO;
+
+my($output_filename, $num_snps, $num_samples, $genome_length, $help);
+GetOptions(
+       'o|output=s'        => \$output_filename,
+       'a|num_snps=i'      => \$num_snps,
+       'b|num_samples=i'   => \$num_samples,
+       'c|genome_length=i' => \$genome_length,
+			 'h|help'            => \$help
+   );
+	 
+	 if(!defined($output_filename) || !defined($num_snps) || !defined($num_samples) || !defined($genome_length) || defined($help))
+	 {
+     print <<USAGE;
+Usage:   snp_sites_create_simulated_data [options]
+Create a simulated multi-FASTA alignment file
+
+Options: -a INT    Number of SNP sites in the alignment
+         -b INT    Number of samples
+         -c INT    Number of bases in each genome
+         -o STR    Output file name
+         -h        this help message
+
+Example: Create an alignment with 10 SNP sites, 20 samples and 30 bases in each genome
+
+     snp_sites_create_simulated_data -o output.aln -a 10 -b 20 -c 30
+
+USAGE
+   exit();
+	 }
+   
+my $snp_interval = int(($genome_length)/($num_snps));
+my $out_seq_io = Bio::SeqIO->new( -file => ">" . $output_filename, -format => 'Fasta' );
+
+for(my $sample_index = 0; $sample_index < $num_samples; $sample_index++)
+{
+	my $sample_name = "sample_$sample_index";
+	
+	my $output_sequence = "";
+	for(my $base_index = 0; $base_index < $genome_length; $base_index++)
+	{
+		if($sample_index == 0)
+		{
+			$output_sequence .= "A";
+		}
+		elsif($base_index % $snp_interval == 0)
+		{
+			$output_sequence .= "C";
+		}
+		else
+		{
+			$output_sequence .= "A";
+		}
+	}
+	
+    $out_seq_io->write_seq( Bio::Seq->new( -display_id => $sample_name, -seq => $output_sequence ) );
+}
