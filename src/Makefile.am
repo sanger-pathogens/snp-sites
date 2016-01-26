@@ -3,6 +3,7 @@ snpsitesinclude_HEADERS=alignment-file.h  vcf.h phylib-of-snp-sites.h snp-sites.
 
 bin_PROGRAMS = snp-sites
 snp_sites_SOURCES = main.c
+snp_sites_CFLAGS = --std=c99
 snp_sites_LDADD = libsnp-sites.la -lpthread
 
 # libsnp_sites.so is our library

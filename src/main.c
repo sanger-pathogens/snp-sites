@@ -23,6 +23,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <unistd.h>
+#include <getopt.h>
 #include "snp-sites.h"
 #include "config.h"
 
@@ -91,7 +92,7 @@ int main (int argc, char **argv) {
   {
     print_usage();
   }
-    
+
 	return 0;
 }
 
