@@ -82,6 +82,13 @@ int main (int argc, char **argv) {
       default:
         output_multi_fasta_file = 1;
       }
+      
+      
+  // check to see if the input alignment file exists
+  if( access( argv[optind], F_OK ) == -1 ) {
+    printf("ERROR: cannot access input alignment file '%s'\n", argv[optind]);
+    return EXIT_FAILURE;
+  }
   
   if(optind < argc)
   {
