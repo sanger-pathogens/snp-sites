@@ -36,7 +36,7 @@ int number_of_samples;
 int number_of_snps;
 char ** sequence_names;
 int * snp_locations;
-
+char * pseudo_reference_sequence;
 
 int get_length_of_genome()
 {
@@ -61,6 +61,11 @@ char ** get_sequence_names()
 int * get_snp_locations()
 {
     return snp_locations;
+}
+
+char * get_pseudo_reference_sequence()
+{
+    return pseudo_reference_sequence;
 }
 
 void get_bases_for_each_snp(char filename[], char ** bases_for_snps)
@@ -116,29 +121,29 @@ void detect_snps(char filename[])
   seq = kseq_init(fp);
 
   sequence_names = calloc(DEFAULT_NUM_SAMPLES, sizeof(char*));
-
-  first_sequence = calloc(seq->seq.l + 1, sizeof(char));
-  memset(first_sequence, 'N', length_of_genome);
-
+  
   while ((l = kseq_read(seq)) >= 0) {
     if(number_of_samples == 0)
     {
         length_of_genome = seq->seq.l;
         first_sequence = calloc(length_of_genome + 1, sizeof(char));
+        pseudo_reference_sequence = calloc(length_of_genome + 1, sizeof(char));
 
         memset(first_sequence, 'N', length_of_genome);
+        memset(pseudo_reference_sequence, 'N', length_of_genome);
     }
-
     for(i = 0; i < length_of_genome; i++)
     {
       if(first_sequence[i] == 'N' && !is_unknown(seq->seq.s[i]))
       {
 	        first_sequence[i] = toupper(seq->seq.s[i]);
+          pseudo_reference_sequence[i] = toupper(seq->seq.s[i]);
       }
 	  
 	  if(first_sequence[i] != '>' && !is_unknown(seq->seq.s[i]) && first_sequence[i] != 'N' && first_sequence[i] != toupper(seq->seq.s[i]))
 	  {
 	      first_sequence[i] = '>';
+        pseudo_reference_sequence[i] = seq->seq.s[i];
 	      number_of_snps++;
 	  }
    }

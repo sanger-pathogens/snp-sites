@@ -24,7 +24,7 @@
 #include <regex.h>
 #include "fasta-of-snp-sites.h"
 
-void create_fasta_of_snp_sites(char filename[], int number_of_snps, char ** bases_for_snps, char ** sequence_names, int number_of_samples)
+void create_fasta_of_snp_sites(char filename[], int number_of_snps, char ** bases_for_snps, char ** sequence_names, int number_of_samples, int output_consensus, char * pseudo_reference_sequence,  int snp_locations[])
 {
 	FILE *fasta_file_pointer;
 	int sample_counter;
@@ -41,5 +41,16 @@ void create_fasta_of_snp_sites(char filename[], int number_of_snps, char ** base
 		}
 		fprintf( fasta_file_pointer, "\n");
 	}
+  
+  if(output_consensus == 1)
+  {
+    fprintf( fasta_file_pointer, ">pseudo_reference_sequence\n");
+		for(snp_counter=0; snp_counter< number_of_snps; snp_counter++)
+		{
+      fputc( pseudo_reference_sequence[snp_locations[snp_counter]], fasta_file_pointer );      
+    }
+    fprintf( fasta_file_pointer, "\n");
+  }
+  
   fclose(fasta_file_pointer);
 }
