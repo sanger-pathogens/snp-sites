@@ -28,7 +28,7 @@
 #include "snp-sites.h"
 #include <assert.h>
 
-void create_vcf_file(char filename[], int snp_locations[],int number_of_snps, char ** bases_for_snps, char ** sequence_names, int number_of_samples, size_t length_of_genome)
+void create_vcf_file(char filename[], int snp_locations[],int number_of_snps, char ** bases_for_snps, char ** sequence_names, int number_of_samples, size_t length_of_genome, char pseudo_reference_sequence[])
 {
 	FILE *vcf_file_pointer;
 	char * base_filename;
@@ -37,17 +37,17 @@ void create_vcf_file(char filename[], int snp_locations[],int number_of_snps, ch
 	
 	vcf_file_pointer=fopen(base_filename, "w");
 	output_vcf_header(vcf_file_pointer,sequence_names, number_of_samples, (int) length_of_genome);
-	output_vcf_snps(vcf_file_pointer, bases_for_snps, snp_locations, number_of_snps, number_of_samples);
+	output_vcf_snps(vcf_file_pointer, bases_for_snps, snp_locations, number_of_snps, number_of_samples,pseudo_reference_sequence);
   fclose(vcf_file_pointer);
 	free(base_filename);
 }
 
-void output_vcf_snps(FILE * vcf_file_pointer, char ** bases_for_snps, int * snp_locations, int number_of_snps, int number_of_samples)
+void output_vcf_snps(FILE * vcf_file_pointer, char ** bases_for_snps, int * snp_locations, int number_of_snps, int number_of_samples, char pseudo_reference_sequence[])
 {
 	int i;
 	for(i=0; i < number_of_snps; i++)
 	{
-		output_vcf_row(vcf_file_pointer, bases_for_snps[i], snp_locations[i], number_of_samples);
+		output_vcf_row(vcf_file_pointer, bases_for_snps[i], snp_locations[i], number_of_samples,pseudo_reference_sequence);
 	}
 }
 
@@ -66,12 +66,14 @@ void output_vcf_header( FILE * vcf_file_pointer, char ** sequence_names, int num
 	fprintf( vcf_file_pointer, "\n");
 }
 
-void output_vcf_row(FILE * vcf_file_pointer, char * bases_for_snp, int snp_location, int number_of_samples)
+void output_vcf_row(FILE * vcf_file_pointer, char * bases_for_snp, int snp_location, int number_of_samples, char pseudo_reference_sequence[])
 {
-	char reference_base =  bases_for_snp[0];
+	char reference_base =  pseudo_reference_sequence[snp_location];
 	if(reference_base == '\0')
 	{
-		return;	
+    fprintf(stderr, "Couldnt get the reference base for coordinate %d\n",snp_location);
+    fflush(stderr);
+    exit(EXIT_FAILURE);
 	}
 	
 	// Chromosome

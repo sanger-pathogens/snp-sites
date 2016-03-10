@@ -62,7 +62,7 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 			strcat(vcf_output_filename, ".vcf");
 		}
 		
-	  create_vcf_file(vcf_output_filename, get_snp_locations(), get_number_of_snps(), bases_for_snps, get_sequence_names(), get_number_of_samples(), get_length_of_genome());
+	  create_vcf_file(vcf_output_filename, get_snp_locations(), get_number_of_snps(), bases_for_snps, get_sequence_names(), get_number_of_samples(), get_length_of_genome(), get_pseudo_reference_sequence());
   }
 
   
