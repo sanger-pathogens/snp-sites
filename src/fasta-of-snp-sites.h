@@ -23,6 +23,6 @@
 
 #include <stdio.h>
 
-void create_fasta_of_snp_sites(char filename[], int number_of_snps, char ** bases_for_snps, char ** sequence_names, int number_of_samples, int output_consensus, char * pseudo_reference_sequence,  int snp_locations[]);
+void create_fasta_of_snp_sites(char filename[], int number_of_snps, char ** bases_for_snps, char ** sequence_names, int number_of_samples, int output_reference, char * pseudo_reference_sequence,  int snp_locations[]);
 
 #endif

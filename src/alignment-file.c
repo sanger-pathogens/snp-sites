@@ -143,7 +143,6 @@ void detect_snps(char filename[])
 	  if(first_sequence[i] != '>' && !is_unknown(seq->seq.s[i]) && first_sequence[i] != 'N' && first_sequence[i] != toupper(seq->seq.s[i]))
 	  {
 	      first_sequence[i] = '>';
-        pseudo_reference_sequence[i] = seq->seq.s[i];
 	      number_of_snps++;
 	  }
    }

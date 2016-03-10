@@ -138,6 +138,23 @@ START_TEST (valid_with_all_outputted_with_custom_name)
 }
 END_TEST
 
+  
+START_TEST (valid_aln_plus_reference)
+{
+	    generate_snp_sites("../tests/data/alignment_file_one_line_per_sequence.aln",1,0,0,"",1);
+	    fail_unless( compare_files("../tests/data/alignment_file_one_line_per_sequence_reference.snp_sites.aln","alignment_file_one_line_per_sequence.aln.snp_sites.aln" ) == 1 ,"Invalid ALN file for multiple lines per seq");
+	    remove("alignment_file_one_line_per_sequence.aln.snp_sites.aln");
+}
+END_TEST
+
+START_TEST (valid_phylip_plus_reference)
+{
+  generate_snp_sites("../tests/data/alignment_file_one_line_per_sequence.aln",0,0,1,"",1);
+  fail_unless( compare_files("../tests/data/alignment_file_one_line_per_sequence_reference.aln.phylip", "alignment_file_one_line_per_sequence.aln.phylip" ) == 1, "invalid phylib with reference" );
+  remove("alignment_file_one_line_per_sequence.aln.phylip");
+
+}
+END_TEST
 
 START_TEST (valid_genome_length)
 {
@@ -238,12 +255,13 @@ Suite * snp_sites_suite (void)
   tcase_add_test (tc_snp_sites, valid_with_all_outputted_with_custom_name);
   tcase_add_test (tc_snp_sites, valid_with_only_aln_file_output_default);
   tcase_add_test (tc_snp_sites, valid_with_phylip_outputted_with_custom_name);
+  tcase_add_test (tc_snp_sites, valid_aln_plus_reference);
+  tcase_add_test (tc_snp_sites, valid_phylip_plus_reference);
+  
   tcase_add_exit_test(tc_snp_sites, invalid_with_uneven_file_lengths,EXIT_FAILURE);
   remove("uneven_alignment.aln.snp_sites.aln");
   suite_add_tcase (s, tc_snp_sites);
 
   return s;
 }
-
-
 
