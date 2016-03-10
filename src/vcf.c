@@ -123,9 +123,16 @@ char * alternative_bases(char reference_base, char * bases_for_snp, int number_o
 	char * alt_bases = calloc(MAXIMUM_NUMBER_OF_ALT_BASES+1, sizeof(char));
 	for(i=0; i< number_of_samples; i++ )
 	{
-		if(!is_unknown(bases_for_snp[i]) && (bases_for_snp[i] != reference_base))
+    char current_base = bases_for_snp[i];
+		if(current_base != reference_base)
 		{
-			if(check_if_char_in_string(alt_bases, bases_for_snp[i], num_alt_bases) == 0)
+      if(is_unknown(current_base))
+      {
+        // VCF spec only allows ACGTN* for alts
+        current_base = '*';
+      }
+      
+			if(check_if_char_in_string(alt_bases, current_base, num_alt_bases) == 0)
 			{
 				if (num_alt_bases >= MAXIMUM_NUMBER_OF_ALT_BASES)
 				{
@@ -133,7 +140,7 @@ char * alternative_bases(char reference_base, char * bases_for_snp, int number_o
 					fflush(stderr);
 					exit(EXIT_FAILURE);
 				}
-				alt_bases[num_alt_bases] = bases_for_snp[i];
+				alt_bases[num_alt_bases] = current_base;
 				num_alt_bases++;
 			}
 		}
@@ -147,7 +154,13 @@ char * format_allele_index(char base, char reference_base, char * alt_bases)
 	assert(length_of_alt_bases < 100);
 	char * result = calloc(3, sizeof(char));
 	int index;
-	if (reference_base == base || is_unknown(base))
+  
+  if(is_unknown(base))
+  {
+    base = '*';
+  }
+  
+	if (reference_base == base)
 	{
 		sprintf(result, "0");
 	}

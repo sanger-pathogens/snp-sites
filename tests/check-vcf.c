@@ -38,7 +38,7 @@ void check_alternative_bases(char reference_base, char * bases_for_snp, int numb
 
 START_TEST (alternative_bases_test)
 {
-  check_alternative_bases('A', "AGCT-nN", 6, "GCT");
+  check_alternative_bases('A', "AGCT-nN", 6, "GCT*");
 }
 END_TEST
 
@@ -81,9 +81,9 @@ START_TEST (format_allele_index_test)
 
   check_format_allele_index('A', 'B', "CDEFGHIJKLMNOPAQRST", "15");
 
-  check_format_allele_index('-', 'A', "C", "0");
-  check_format_allele_index('N', 'A', "C", "0");
-  check_format_allele_index('n', 'A', "C", "0");
+  check_format_allele_index('-', 'A', "C*", "2");
+  check_format_allele_index('N', 'A', "C*", "2");
+  check_format_allele_index('n', 'A', "C*", "2");
 }
 END_TEST
 
