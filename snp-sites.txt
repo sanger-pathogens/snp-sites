@@ -9,7 +9,7 @@ snp-sites - finds snp sites from a multi fasta alignment file
 
 SYNOPSIS
 --------
-snp_sites [-mvph] [-o output_filename] [input file]
+snp-sites [-mvph] [-o output_filename] [input file]
 
 DESCRIPTION
 -----------
@@ -57,7 +57,7 @@ AACCGGTT
 AACCGCTT
 
 For more examples, visit:
-https://github.com/sanger-pathogens/snp_sites/tree/master/tests/data
+https://github.com/sanger-pathogens/snp-sites/tree/master/tests/data
 
 AUTHOR
 ------

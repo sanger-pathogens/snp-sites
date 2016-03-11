@@ -25,3 +25,11 @@ missing
 src/Makefile.in
 stamp-h1
 test-driver
+compile
+m4/*.m4
+.Tpo
+libsnp-sites.la
+run-all-tests*
+src/snp-sites
+tests/.deps/*
+tests/.dirstamp

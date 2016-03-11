@@ -23,7 +23,7 @@
 
 #include <stdio.h>
 
-int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_vcf_file, int output_phylip_file, char output_filename[]);
+int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_vcf_file, int output_phylip_file, char output_filename[], int output_reference);
 void strip_directory_from_filename(char * input_filename, char * output_filename);
 
 #endif

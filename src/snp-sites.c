@@ -29,10 +29,9 @@
 #include "phylib-of-snp-sites.h"
 #include "fasta-of-snp-sites.h"
 
-int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_vcf_file, int output_phylip_file, char output_filename[])
+int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_vcf_file, int output_phylip_file, char output_filename[], int output_reference)
 {
 	int i;
-	
 	detect_snps(filename);
 
 	char* bases_for_snps[get_number_of_snps()];
@@ -63,9 +62,10 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 			strcat(vcf_output_filename, ".vcf");
 		}
 		
-	  create_vcf_file(vcf_output_filename, get_snp_locations(), get_number_of_snps(), bases_for_snps, get_sequence_names(), get_number_of_samples(), get_length_of_genome());
+	  create_vcf_file(vcf_output_filename, get_snp_locations(), get_number_of_snps(), bases_for_snps, get_sequence_names(), get_number_of_samples(), get_length_of_genome(), get_pseudo_reference_sequence());
   }
 
+  
   if(output_phylip_file)
   {
 		char phylip_output_filename[FILENAME_MAX];
@@ -74,7 +74,7 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 		{
 			strcat(phylip_output_filename, ".phylip");
 		}
-	  create_phylib_of_snp_sites(phylip_output_filename, get_number_of_snps(), bases_for_snps, get_sequence_names(), get_number_of_samples());
+	  create_phylib_of_snp_sites(phylip_output_filename, get_number_of_snps(), bases_for_snps, get_sequence_names(), get_number_of_samples(), output_reference, get_pseudo_reference_sequence(),get_snp_locations());
   }
 
   if((output_multi_fasta_file) || (output_vcf_file ==0 && output_phylip_file == 0 && output_multi_fasta_file == 0))
@@ -85,7 +85,7 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 		{
 			strcat(multi_fasta_output_filename, ".snp_sites.aln");
 		}
-	  create_fasta_of_snp_sites(multi_fasta_output_filename, get_number_of_snps(), bases_for_snps, get_sequence_names(), get_number_of_samples());
+	  create_fasta_of_snp_sites(multi_fasta_output_filename, get_number_of_snps(), bases_for_snps, get_sequence_names(), get_number_of_samples(), output_reference, get_pseudo_reference_sequence(),get_snp_locations());
   }
 
   // free memory
@@ -98,7 +98,7 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
 	{
 		free(bases_for_snps[i]);
 	}
-	
+  free(get_pseudo_reference_sequence());
 
 	return 1;
 }
