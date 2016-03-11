@@ -1,6 +1,6 @@
 /*
  *  Wellcome Trust Sanger Institute
- *  Copyright (C) 2013  Wellcome Trust Sanger Institute
+ *  Copyright (C) 2013-2016  Wellcome Trust Sanger Institute
  *  
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -23,7 +23,17 @@
 
 #include <stdio.h>
 
-int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_vcf_file, int output_phylip_file, char output_filename[], int output_reference);
-void strip_directory_from_filename(char * input_filename, char * output_filename);
+int generate_snp_sites(char filename[],
+                       int output_multi_fasta_file,
+                       int output_vcf_file,
+                       int output_phylip_file,
+                       char output_filename[]);
+int generate_snp_sites_with_ref(char filename[],
+                                int output_multi_fasta_file,
+                                int output_vcf_file,
+                                int output_phylip_file,
+                                char output_filename[]);
+void strip_directory_from_filename(char *input_filename,
+                                   char *output_filename);
 
 #endif
