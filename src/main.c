@@ -27,12 +27,12 @@
 #include "snp-sites.h"
 #include "config.h"
 
-#define PROGRAM_NAME "snp_sites"
+#define PROGRAM_NAME "snp-sites"
 #define PROGRAM_VERSION PACKAGE_VERSION
 
 static void print_usage()
 {
-	printf("Usage: snp_sites [-mvph] [-o output_filename] <file>\n");
+	printf("Usage: snp-sites [-mvph] [-o output_filename] <file>\n");
 	printf("This program finds snp sites from a multi FASTA alignment file.\n");
 	printf(" -r		output internal pseudo reference sequence\n");
   printf(" -m		output a multi fasta alignment file (default)\n");
@@ -99,7 +99,8 @@ int main (int argc, char **argv) {
   {  
     // check to see if the input alignment file exists
     if( access( argv[optind], F_OK ) == -1 ) {
-      printf("ERROR: cannot access input alignment file '%s'\n", argv[optind]);
+      fprintf(stderr,"ERROR: cannot access input alignment file '%s'\n", argv[optind]);
+      fflush(stderr);
       exit(EXIT_FAILURE);
     }
     

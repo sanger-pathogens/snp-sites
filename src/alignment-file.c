@@ -157,6 +157,13 @@ void detect_snps(char filename[])
    number_of_samples++;
   }
   
+  if(number_of_snps == 0)
+  {
+    fprintf(stderr, "Warning: No SNPs were detected so there is nothing to output.\n");
+    fflush(stderr);
+    exit(EXIT_FAILURE);
+  }
+  
   int current_snp_index = 0;
   snp_locations = calloc(number_of_snps, sizeof(int));
   for(i = 0; i < length_of_genome; i++)

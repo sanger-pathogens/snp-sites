@@ -7,8 +7,8 @@ $ make install
 
 == Installing from a released source tarball ==
 
-$ tar xzvf snp_sites-1.0.tar.gz
-$ cd snp_sites-1.0
+$ tar xzvf snp-sites-1.0.tar.gz
+$ cd snp-sites-1.0
 $ ./configure
 $ make
 $ su -
