@@ -1,5 +1,5 @@
-SNP-SITESDOC(1)
-==============
+SNP-SITES(1)
+============
 :doctype: manpage
 
 
@@ -15,10 +15,15 @@ DESCRIPTION
 -----------
 This application takes in a multi fasta alignment, finds all the SNP sites, then outputs the SNP sites in either of the following formats:
 
-a multi fasta alignment, VCF, relaxed phylip format.
+ - multi fasta alignment
+ - VCF
+ - relaxed phylip format
 
 OPTIONS
 -------
+*-r*::
+	Output internal pseudo reference sequence
+
 *-m*::
 	Output a multi fasta alignment file (default)
 
@@ -32,16 +37,18 @@ OPTIONS
 	Specify an output filename
 
 *-h*::
-	This document
+	Show help message
 
 *-V*::
 	Show version and exit
 
+
 EXAMPLES
 --------
-snp-sites my-alignment.aln
 
-snp-sites my-gzipped-alignment.aln.gz
+ snp-sites my-alignment.aln
+
+ snp-sites my-gzipped-alignment.aln.gz
 
 
 FORMAT OF THE INPUT FILE
@@ -49,12 +56,12 @@ FORMAT OF THE INPUT FILE
 
 Input files should look like this:
 
->reference_sequence
-aaccggtt
->comparison_sequence
-AACCGGTT
->another_comparison_sequence
-AACCGCTT
+    >reference_sequence
+    aaccggtt
+    >comparison_sequence
+    AACCGGTT
+    >another_comparison_sequence
+    AACCGCTT
 
 For more examples, visit:
 https://github.com/sanger-pathogens/snp_sites/tree/master/tests/data
@@ -62,6 +69,13 @@ https://github.com/sanger-pathogens/snp_sites/tree/master/tests/data
 AUTHOR
 ------
 snp-sites was originally written by Andrew Page (ap13@sanger.ac.uk)
+
+CITATION
+--------
+If you use this program, please cite:
+"SNP-sites: rapid efficient extraction of SNPs from multi-FASTA alignments",
+Andrew J. Page, Ben Taylor, Aidan J. Delaney, Jorge Soares, Torsten Seemann, Jacqueline A. Keane, Simon R. Harris (2016),
+bioRxiv doi: http://dx.doi.org/10.1101/038190
 
 COPYING
 -------
