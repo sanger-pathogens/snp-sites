@@ -105,7 +105,16 @@ int main (int argc, char **argv) {
     }
     
     strncpy(multi_fasta_filename, argv[optind], FILENAME_MAX); 
-    generate_snp_sites(multi_fasta_filename, output_multi_fasta_file, output_vcf_file, output_phylip_file, output_filename, output_reference);
+    if (output_reference) {
+      generate_snp_sites_with_ref(multi_fasta_filename,
+                                  output_multi_fasta_file,
+                                  output_vcf_file, output_phylip_file,
+                                  output_filename);
+    } else {
+      generate_snp_sites(multi_fasta_filename, output_multi_fasta_file,
+                         output_vcf_file, output_phylip_file,
+                         output_filename);
+    }
   }
   else
   {

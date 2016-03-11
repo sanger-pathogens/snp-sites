@@ -1,6 +1,6 @@
 /*
  *  Wellcome Trust Sanger Institute
- *  Copyright (C) 2013  Wellcome Trust Sanger Institute
+ *  Copyright (C) 2013-2016 Wellcome Trust Sanger Institute
  *  
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -17,8 +17,6 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -29,7 +27,12 @@
 #include "phylib-of-snp-sites.h"
 #include "fasta-of-snp-sites.h"
 
-int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_vcf_file, int output_phylip_file, char output_filename[], int output_reference)
+static int generate_snp_sites_generic(char filename[],
+                                      int output_multi_fasta_file,
+                                      int output_vcf_file,
+                                      int output_phylip_file,
+                                      char output_filename[],
+                                      int output_reference)
 {
 	int i;
 	detect_snps(filename);
@@ -101,6 +104,24 @@ int generate_snp_sites(char filename[],int output_multi_fasta_file, int output_v
   free(get_pseudo_reference_sequence());
 
 	return 1;
+}
+
+int generate_snp_sites(char filename[], int output_multi_fasta_file,
+                       int output_vcf_file, int output_phylip_file,
+                       char output_filename[])
+{
+  return generate_snp_sites_generic(filename, output_multi_fasta_file,
+                                    output_vcf_file, output_phylip_file,
+                                    output_filename, 0);
+}
+
+int generate_snp_sites_with_ref(char filename[], int output_multi_fasta_file,
+                                int output_vcf_file, int output_phylip_file,
+                                char output_filename[])
+{
+    return generate_snp_sites_generic(filename, output_multi_fasta_file,
+                                      output_vcf_file, output_phylip_file,
+                                      output_filename, 1);
 }
 
 // Inefficient
