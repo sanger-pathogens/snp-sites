@@ -32,10 +32,10 @@ static int generate_snp_sites_generic(char filename[],
                                       int output_vcf_file,
                                       int output_phylip_file,
                                       char output_filename[],
-                                      int output_reference)
+                                      int output_reference, int pure_mode, int output_monomorphic)
 {
 	int i;
-	detect_snps(filename);
+	detect_snps(filename, pure_mode, output_monomorphic);
 
 	char* bases_for_snps[get_number_of_snps()];
 	
@@ -112,7 +112,7 @@ int generate_snp_sites(char filename[], int output_multi_fasta_file,
 {
   return generate_snp_sites_generic(filename, output_multi_fasta_file,
                                     output_vcf_file, output_phylip_file,
-                                    output_filename, 0);
+                                    output_filename, 0,0,0);
 }
 
 int generate_snp_sites_with_ref(char filename[], int output_multi_fasta_file,
@@ -121,8 +121,23 @@ int generate_snp_sites_with_ref(char filename[], int output_multi_fasta_file,
 {
     return generate_snp_sites_generic(filename, output_multi_fasta_file,
                                       output_vcf_file, output_phylip_file,
-                                      output_filename, 1);
+                                      output_filename, 1,0,0);
 }
+
+int generate_snp_sites_with_ref_pure_mono(char filename[],
+                                int output_multi_fasta_file,
+                                int output_vcf_file,
+                                int output_phylip_file,
+                                char output_filename[],
+                                int output_reference,
+                                int pure_mode,
+                                int output_monomorphic)
+{
+  return generate_snp_sites_generic(filename, output_multi_fasta_file,
+                                    output_vcf_file, output_phylip_file,
+                                    output_filename, output_reference, pure_mode, output_monomorphic);
+}
+
 
 // Inefficient
 void strip_directory_from_filename(char * input_filename, char * output_filename)

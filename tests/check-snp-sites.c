@@ -85,6 +85,31 @@ START_TEST (valid_alignment_with_multiple_lines_per_sequence)
 }
 END_TEST
 
+START_TEST (valid_alignment_with_pure_mode)
+{
+    generate_snp_sites_with_ref_pure_mono("../tests/data/pure_mode_alignment.aln",1,1,1,"",0,1,0);
+    fail_unless( compare_files("../tests/data/pure_mode_alignment.aln.vcf", "pure_mode_alignment.aln.vcf" ) == 1, "Invalid VCF file for multiple lines per seq" );
+    fail_unless( compare_files("../tests/data/pure_mode_alignment.aln.phylip", "pure_mode_alignment.aln.phylip" ) == 1, "Invalid Phylip file for multiple lines per seq" );
+    fail_unless( compare_files("../tests/data/pure_mode_alignment.aln.snp_sites.aln","pure_mode_alignment.aln.snp_sites.aln" ) == 1 ,"Invalid ALN file for multiple lines per seq");
+    remove("pure_mode_alignment.aln.vcf");
+    remove("pure_mode_alignment.aln.phylip");
+    remove("pure_mode_alignment.aln.snp_sites.aln");
+}
+END_TEST
+  
+START_TEST (valid_alignment_with_monomorphic_sites)
+{
+    generate_snp_sites_with_ref_pure_mono("../tests/data/pure_mode_monomorphic_alignment.aln",1,1,1,"",0,1,1);
+    fail_unless( compare_files("../tests/data/pure_mode_monomorphic_alignment.aln.vcf", "pure_mode_monomorphic_alignment.aln.vcf" ) == 1, "Invalid VCF file for multiple lines per seq" );
+    fail_unless( compare_files("../tests/data/pure_mode_monomorphic_alignment.aln.phylip", "pure_mode_monomorphic_alignment.aln.phylip" ) == 1, "Invalid Phylip file for multiple lines per seq" );
+    fail_unless( compare_files("../tests/data/pure_mode_monomorphic_alignment.aln.snp_sites.aln","pure_mode_monomorphic_alignment.aln.snp_sites.aln" ) == 1 ,"Invalid ALN file for multiple lines per seq");
+    remove("pure_mode_monomorphic_alignment.aln.vcf");
+    remove("pure_mode_monomorphic_alignment.aln.phylip");
+    remove("pure_mode_monomorphic_alignment.aln.snp_sites.aln");
+}
+END_TEST
+  
+
 START_TEST (valid_with_only_aln_file_output_default)
 {
 	    generate_snp_sites("../tests/data/alignment_file_one_line_per_sequence.aln",0,0,0,"");
@@ -158,49 +183,64 @@ END_TEST
 
 START_TEST (valid_genome_length)
 {
-  detect_snps("../tests/data/alignment_file_one_line_per_sequence.aln");
+  detect_snps("../tests/data/alignment_file_one_line_per_sequence.aln",0,0);
   fail_unless( get_length_of_genome() == 2000 );
 }
 END_TEST
 
 START_TEST (valid_genome_length_with_multiple_lines_per_sequence)
 {
-  detect_snps("../tests/data/alignment_file_multiple_lines_per_sequence.aln");
+  detect_snps("../tests/data/alignment_file_multiple_lines_per_sequence.aln",0,0);
   fail_unless( get_length_of_genome() == 2000 );
 }
 END_TEST
 
 START_TEST (valid_number_of_sequences_in_file)
 {
-  detect_snps("../tests/data/alignment_file_one_line_per_sequence.aln");
+  detect_snps("../tests/data/alignment_file_one_line_per_sequence.aln",0,0);
   fail_unless( get_number_of_samples() == 109 );
 }
 END_TEST
 
 START_TEST (valid_number_of_sequences_in_file_with_multiple_lines_per_sequence)
 {
-  detect_snps("../tests/data/alignment_file_multiple_lines_per_sequence.aln");
+  detect_snps("../tests/data/alignment_file_multiple_lines_per_sequence.aln",0,0);
   fail_unless( get_number_of_samples() == 109 );
 }
 END_TEST 
 
 START_TEST (number_of_snps_detected)
 {
-detect_snps("../tests/data/alignment_file_multiple_lines_per_sequence.aln");
+  detect_snps("../tests/data/alignment_file_multiple_lines_per_sequence.aln",0,0);
   fail_unless( get_number_of_snps()  == 5);
 }
 END_TEST
 
 START_TEST (number_of_snps_detected_small)
 {
-  detect_snps("../tests/data/small_alignment.aln");
+  detect_snps("../tests/data/small_alignment.aln",0,0);
   fail_unless(  get_number_of_snps()  == 1);
+}
+END_TEST
+  
+START_TEST (detect_snps_pure_mode)
+{
+  detect_snps("../tests/data/pure_mode_alignment.aln",1,0);
+  fail_unless(  get_number_of_snps()  == 2);
+}
+END_TEST
+  
+  
+START_TEST (detect_snps_pure_mode_monomorphic)
+{
+  detect_snps("../tests/data/pure_mode_monomorphic_alignment.aln",1,1);
+  fail_unless(  get_number_of_snps()  == 3);
 }
 END_TEST
 
 START_TEST (sample_names_from_alignment_file)
 {
-  detect_snps("../tests/data/small_alignment.aln");
+  detect_snps("../tests/data/small_alignment.aln",0,0);
   char ** current_sequence_names = get_sequence_names();
 
   fail_unless(strcmp(current_sequence_names[0],"reference_sequence") == 0);
@@ -241,8 +281,11 @@ Suite * snp_sites_suite (void)
   tcase_add_test (tc_alignment_file, number_of_snps_detected_small);
   tcase_add_test (tc_alignment_file, number_of_snps_detected);
   tcase_add_test (tc_alignment_file, sample_names_from_alignment_file);
+  tcase_add_test (tc_alignment_file, detect_snps_pure_mode);
   tcase_add_test (tc_alignment_file, check_strip_directory_from_filename_without_directory);
   tcase_add_test (tc_alignment_file, check_strip_directory_from_filename_with_directory);
+  tcase_add_test (tc_alignment_file, detect_snps_pure_mode_monomorphic);
+  
   suite_add_tcase (s, tc_alignment_file);
 
   TCase *tc_snp_sites = tcase_create ("snp_sites");
@@ -257,6 +300,8 @@ Suite * snp_sites_suite (void)
   tcase_add_test (tc_snp_sites, valid_with_phylip_outputted_with_custom_name);
   tcase_add_test (tc_snp_sites, valid_aln_plus_reference);
   tcase_add_test (tc_snp_sites, valid_phylip_plus_reference);
+  tcase_add_test (tc_snp_sites, valid_alignment_with_pure_mode);
+  tcase_add_test (tc_alignment_file, valid_alignment_with_monomorphic_sites);
   
   tcase_add_exit_test(tc_snp_sites, invalid_with_uneven_file_lengths,EXIT_FAILURE);
   remove("uneven_alignment.aln.snp_sites.aln");
