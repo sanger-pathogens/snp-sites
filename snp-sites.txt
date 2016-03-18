@@ -5,7 +5,7 @@ SNP-SITES(1)
 
 NAME
 ----
-snp-sites - finds snp sites from a multi fasta alignment file
+snp-sites - finds SNP sites from a multi FASTA alignment file
 
 SYNOPSIS
 --------
@@ -33,6 +33,12 @@ OPTIONS
 *-p*::
 	Output a phylip file
 
+*-c*::
+	Only output columns containing exclusively ACGT
+
+*-b*::
+	Output monomorphic sites, useful for BEAST
+
 *-o*::
 	Specify an output filename
 
@@ -49,6 +55,8 @@ EXAMPLES
  snp-sites my-alignment.aln
 
  snp-sites my-gzipped-alignment.aln.gz
+ 
+ snp-sites -cb -o output_beast_format.aln inputfile.aln
 
 
 FORMAT OF THE INPUT FILE
