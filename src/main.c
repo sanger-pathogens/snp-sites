@@ -32,18 +32,21 @@
 
 static void print_usage()
 {
-  printf("Usage: snp-sites [-mvph] [-o output_filename] <file>\n");
+  printf("Usage: snp-sites [-rmvpcbhV] [-o output_filename] <file>\n");
   printf("This program finds snp sites from a multi FASTA alignment file.\n");
-  printf(" -r		output internal pseudo reference sequence\n");
-  printf(" -m		output a multi fasta alignment file (default)\n");
-  printf(" -v		output a VCF file\n");
-  printf(" -p		output a phylip file\n");
-  printf(" -o		specify an output filename\n");
-  printf(" -c   only output columns containing exclusively ACGT\n");
-  printf(" -b   output monomorphic sites, used for BEAST\n");
-  printf(" -h		this help message\n");
-  printf(" -V		print version and exit\n");
-  printf(" <file>		input alignment file which can optionally be gzipped\n\n");
+  printf(" -r     output internal pseudo reference sequence\n");
+  printf(" -m     output a multi fasta alignment file (default)\n");
+  printf(" -v     output a VCF file\n");
+  printf(" -p     output a phylip file\n");
+  printf(" -o STR specify an output filename\n");
+  printf(" -c     only output columns containing exclusively ACGT\n");
+  printf(" -b     output monomorphic sites, used for BEAST\n");
+  printf(" -h     this help message\n");
+  printf(" -V     print version and exit\n");
+  printf(" <file> input alignment file which can optionally be gzipped\n\n");
+  
+  printf("Example: creating files for BEAST\n");
+  printf(" snp-sites -cb -o outputfile.aln inputfile.aln\n\n");
 
   printf("If you use this program, please cite:\n");
   printf("\"SNP-sites: rapid efficient extraction of SNPs from multi-FASTA alignments\",\n");
