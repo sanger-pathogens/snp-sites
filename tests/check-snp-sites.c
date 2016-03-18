@@ -301,7 +301,7 @@ Suite * snp_sites_suite (void)
   tcase_add_test (tc_snp_sites, valid_aln_plus_reference);
   tcase_add_test (tc_snp_sites, valid_phylip_plus_reference);
   tcase_add_test (tc_snp_sites, valid_alignment_with_pure_mode);
-  tcase_add_test (tc_alignment_file, valid_alignment_with_monomorphic_sites);
+  tcase_add_test (tc_snp_sites, valid_alignment_with_monomorphic_sites);
   
   tcase_add_exit_test(tc_snp_sites, invalid_with_uneven_file_lengths,EXIT_FAILURE);
   remove("uneven_alignment.aln.snp_sites.aln");
