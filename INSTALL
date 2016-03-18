@@ -1,11 +1,19 @@
 # Installation
 There are a few ways to install snp-sites. The simpliest way is using apt (Debian/Ubuntu), HomeBrew (OSX) or LinuxBrew.
 
+* Linux - Ubuntu/Debian
+* Linux - CentOS/RHEL
+* Linux - using LinuxBrew
+* OSX - using HomeBrew
+* OSX/Linux - from source
+* OSX/Linux - from a release tarball
+
 ## Linux - Ubuntu/Debian
 If you have a recent version of Ubuntu or Debian then you can install it using apt.
-
+```
    apt-get install snp-sites
-   
+```
+
 ## Linux - CentOS/RHEL
 The easiest way to install on CentOS/RHEL is to use [LinuxBrew](http://brew.sh/linuxbrew/). Enable EPEL and make sure compilers are installed.
 ```
