@@ -113,6 +113,7 @@ void output_vcf_row(FILE * vcf_file_pointer, char * bases_for_snp, int snp_locat
 	free(alt_bases);
 	
 	fprintf( vcf_file_pointer, "\n");	
+  
 }
 
 
@@ -145,6 +146,7 @@ char * alternative_bases(char reference_base, char * bases_for_snp, int number_o
 			}
 		}
 	}
+  alt_bases[num_alt_bases] = '\0';
 	return alt_bases;
 }
 
@@ -152,7 +154,7 @@ char * format_allele_index(char base, char reference_base, char * alt_bases)
 {
 	int length_of_alt_bases = strlen(alt_bases);
 	assert(length_of_alt_bases < 100);
-	char * result = calloc(3, sizeof(char));
+	char * result = calloc(5, sizeof(char));
 	int index;
   
   if(is_unknown(base))
@@ -183,6 +185,14 @@ char * format_alternative_bases(char * alt_bases)
 {
 	int number_of_alt_bases = strlen(alt_bases);
 	assert( number_of_alt_bases < MAXIMUM_NUMBER_OF_ALT_BASES );
+  
+  if(number_of_alt_bases ==0)
+  {
+    char * formatted_alt_bases = calloc(2 + 1, sizeof(char));
+    formatted_alt_bases[0] = '.';
+    return formatted_alt_bases;
+  }
+
 	char * formatted_alt_bases = calloc(number_of_alt_bases*2 + 1, sizeof(char));
 	int i;
 	formatted_alt_bases[0] = alt_bases[0];

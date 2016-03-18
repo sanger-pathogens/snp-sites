@@ -22,7 +22,7 @@
 
 #include "kseq.h"
 
-void detect_snps( char filename[]);
+void detect_snps( char filename[], int pure_mode, int output_monomorphic);
 void get_bases_for_each_snp(char filename[], char ** bases_for_snps);
 int is_unknown(char base);
 int get_length_of_genome();
@@ -31,6 +31,7 @@ int get_number_of_snps();
 char ** get_sequence_names();
 int * get_snp_locations();
 char * get_pseudo_reference_sequence();
+int is_pure(char base);
 
 #define MAX_SAMPLE_NAME_SIZE 2048
 #define DEFAULT_NUM_SAMPLES 65536

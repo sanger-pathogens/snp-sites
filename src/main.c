@@ -32,16 +32,21 @@
 
 static void print_usage()
 {
-	printf("Usage: snp-sites [-mvph] [-o output_filename] <file>\n");
-	printf("This program finds snp sites from a multi FASTA alignment file.\n");
-	printf(" -r		output internal pseudo reference sequence\n");
-  printf(" -m		output a multi fasta alignment file (default)\n");
-	printf(" -v		output a VCF file\n");
-	printf(" -p		output a phylip file\n");
-	printf(" -o		specify an output filename\n");
-	printf(" -h		this help message\n");
-	printf(" -V		print version and exit\n");
-	printf(" <file>		input alignment file which can optionally be gzipped\n\n");
+  printf("Usage: snp-sites [-rmvpcbhV] [-o output_filename] <file>\n");
+  printf("This program finds snp sites from a multi FASTA alignment file.\n");
+  printf(" -r     output internal pseudo reference sequence\n");
+  printf(" -m     output a multi fasta alignment file (default)\n");
+  printf(" -v     output a VCF file\n");
+  printf(" -p     output a phylip file\n");
+  printf(" -o STR specify an output filename\n");
+  printf(" -c     only output columns containing exclusively ACGT\n");
+  printf(" -b     output monomorphic sites, used for BEAST\n");
+  printf(" -h     this help message\n");
+  printf(" -V     print version and exit\n");
+  printf(" <file> input alignment file which can optionally be gzipped\n\n");
+  
+  printf("Example: creating files for BEAST\n");
+  printf(" snp-sites -cb -o outputfile.aln inputfile.aln\n\n");
 
   printf("If you use this program, please cite:\n");
   printf("\"SNP-sites: rapid efficient extraction of SNPs from multi-FASTA alignments\",\n");
@@ -65,8 +70,10 @@ int main (int argc, char **argv) {
   int output_vcf_file = 0;
   int output_phylip_file = 0;
   int output_reference = 0;
-	
-	 while ((c = getopt (argc, argv, "mvrpo:V")) != -1)
+	int pure_mode = 0;
+  int output_monomorphic =0;
+  
+	 while ((c = getopt (argc, argv, "mvrbpco:V")) != -1)
       switch (c)
         {
         case 'm':
@@ -83,6 +90,12 @@ int main (int argc, char **argv) {
           break;
         case 'r':
           output_reference = 1;
+          break;
+        case 'c':
+          pure_mode = 1;
+          break;
+        case 'b':
+          output_monomorphic = 1;
           break;
 	      case 'o':
           strncpy(output_filename, optarg, FILENAME_MAX);
@@ -105,7 +118,15 @@ int main (int argc, char **argv) {
     }
     
     strncpy(multi_fasta_filename, argv[optind], FILENAME_MAX); 
-    if (output_reference) {
+    
+    if( pure_mode || output_monomorphic)
+    {
+      generate_snp_sites_with_ref_pure_mono(multi_fasta_filename,
+                                  output_multi_fasta_file,
+                                  output_vcf_file, output_phylip_file,
+                                  output_filename,output_reference,pure_mode,output_monomorphic);
+    }
+    else if(output_reference ) {
       generate_snp_sites_with_ref(multi_fasta_filename,
                                   output_multi_fasta_file,
                                   output_vcf_file, output_phylip_file,

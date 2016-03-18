@@ -52,7 +52,7 @@ void check_format_alternative_bases(char * test_case, char * expected_result)
 
 START_TEST (format_alternative_bases_test)
 {
-  check_format_alternative_bases("", "");
+  check_format_alternative_bases("", ".");
   check_format_alternative_bases("A", "A");
   check_format_alternative_bases("AC", "A,C");
   check_format_alternative_bases("ACT", "A,C,T");

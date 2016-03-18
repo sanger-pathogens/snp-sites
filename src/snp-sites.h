@@ -33,6 +33,16 @@ int generate_snp_sites_with_ref(char filename[],
                                 int output_vcf_file,
                                 int output_phylip_file,
                                 char output_filename[]);
+                                
+int generate_snp_sites_with_ref_pure_mono(char filename[],
+                                int output_multi_fasta_file,
+                                int output_vcf_file,
+                                int output_phylip_file,
+                                char output_filename[],
+                                int output_reference,
+                                int pure_mode,
+                                int output_monomorphic);
+                                
 void strip_directory_from_filename(char *input_filename,
                                    char *output_filename);
 

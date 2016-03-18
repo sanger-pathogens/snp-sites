@@ -105,7 +105,7 @@ void get_bases_for_each_snp(char filename[], char ** bases_for_snps)
   gzclose(fp);
 }
 
-void detect_snps(char filename[])
+void detect_snps(char filename[], int pure_mode, int output_monomorphic)
 {
   int i;
   int l;
@@ -134,16 +134,27 @@ void detect_snps(char filename[])
     }
     for(i = 0; i < length_of_genome; i++)
     {
+      if(first_sequence[i] == '#')
+      {
+        continue;
+      }
+        
       if(first_sequence[i] == 'N' && !is_unknown(seq->seq.s[i]))
       {
 	        first_sequence[i] = toupper(seq->seq.s[i]);
           pseudo_reference_sequence[i] = toupper(seq->seq.s[i]);
       }
-	  
-	  if(first_sequence[i] != '>' && !is_unknown(seq->seq.s[i]) && first_sequence[i] != 'N' && first_sequence[i] != toupper(seq->seq.s[i]))
+     
+      // in pure mode we only want /ACGT/i, if any other base is found the whole column is excluded
+      if(pure_mode && !is_pure(seq->seq.s[i]))
+      {
+        first_sequence[i] = '#';
+        continue;
+      }
+      
+	 	  if(first_sequence[i] != '>' && !is_unknown(seq->seq.s[i]) && first_sequence[i] != 'N' && first_sequence[i] != toupper(seq->seq.s[i]))
 	  {
 	      first_sequence[i] = '>';
-	      number_of_snps++;
 	  }
    }
    
@@ -157,18 +168,26 @@ void detect_snps(char filename[])
    number_of_samples++;
   }
   
+  for(i = 0; i < length_of_genome; i++)
+  {
+    if(first_sequence[i] == '>' || (output_monomorphic && first_sequence[i] != '#'))
+    {
+      number_of_snps++;
+    }
+  }
+  
   if(number_of_snps == 0)
   {
     fprintf(stderr, "Warning: No SNPs were detected so there is nothing to output.\n");
     fflush(stderr);
     exit(EXIT_FAILURE);
   }
-  
+
   int current_snp_index = 0;
   snp_locations = calloc(number_of_snps, sizeof(int));
   for(i = 0; i < length_of_genome; i++)
   {
-      if(first_sequence[i] == '>')
+      if(first_sequence[i] == '>' || (output_monomorphic && first_sequence[i] != '#'))
       {
           snp_locations[current_snp_index] = i;
           current_snp_index++;
@@ -187,6 +206,23 @@ int is_unknown(char base)
     case 'n':
     case '-':
     case '?':
+      return 1;
+    default:
+      return 0;
+  }
+}
+
+int is_pure(char base)
+{
+  switch (base) {
+    case 'A':
+    case 'C':
+    case 'G':
+    case 'T':
+    case 'a':
+    case 'c':
+    case 'g':
+    case 't':
       return 1;
     default:
       return 0;
