@@ -4,7 +4,7 @@ Rapidly decreasing genome sequencing costs have led to a proportionate increase 
 
 The software can be cited as:
 
-[Andrew J. Page, Ben Taylor, Aidan J. Delaney, Jorge Soares, Torsten Seemann, Jacqueline A. Keane, Simon R. Harris, "SNP-sites: rapid efficient extraction of SNPs from multi-FASTA alignments", bioRxiv, doi: http://dx.doi.org/10.1101/038190 (2016).](http://biorxiv.org/content/early/2016/01/29/038190)
+["SNP-sites: rapid efficient extraction of SNPs from multi-FASTA alignments", Andrew J. Page, Ben Taylor, Aidan J. Delaney, Jorge Soares, Torsten Seemann, Jacqueline A. Keane, Simon R. Harris, Microbial Genomics 2(4), (2016)](http://dx.doi.org/10.1099/mgen.0.000056)
 
 ```
 Usage: snp-sites [-mvph] [-o output_filename] <file>
@@ -70,6 +70,7 @@ There are a few ways to install snp-sites. The simpliest way is using apt (Debia
 * OSX - using HomeBrew
 * OSX/Linux - from source
 * OSX/Linux - from a release tarball
+* Windows/OSX/Linux - using a Virtual Machine
 
 ## Linux - Ubuntu/Debian
 If you have a recent version of Ubuntu or Debian then you can install it using apt.
@@ -124,3 +125,5 @@ make
 sudo make install
 ```
 
+## Windows/OSX/Linux - using a Virtual Machine
+A virtual machine (VM) is available containing the software. More details can be found on [the Pathogen VM page](http://sanger-pathogens.github.io/pathogens-vm/).

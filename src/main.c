@@ -50,8 +50,8 @@ static void print_usage()
 
   printf("If you use this program, please cite:\n");
   printf("\"SNP-sites: rapid efficient extraction of SNPs from multi-FASTA alignments\",\n");
-  printf("Andrew J. Page, Ben Taylor, Aidan J. Delaney, Jorge Soares, Torsten Seemann, Jacqueline A. Keane, Simon R. Harris (2016),\n");
-  printf("bioRxiv doi: http://dx.doi.org/10.1101/038190\n");
+  printf("Andrew J. Page, Ben Taylor, Aidan J. Delaney, Jorge Soares, Torsten Seemann, Jacqueline A. Keane, Simon R. Harris,\n");
+  printf("Microbial Genomics 2(4), (2016). http://dx.doi.org/10.1099/mgen.0.000056\n");
   
 }
 
