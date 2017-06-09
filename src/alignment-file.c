@@ -184,7 +184,7 @@ void detect_snps(char filename[], int pure_mode, int output_monomorphic)
   }
 
   int current_snp_index = 0;
-  snp_locations = calloc(number_of_snps, sizeof(int));
+  snp_locations = calloc(number_of_snps +1, sizeof(int));
   for(i = 0; i < length_of_genome; i++)
   {
       if(first_sequence[i] == '>' || (output_monomorphic && first_sequence[i] != '#'))
