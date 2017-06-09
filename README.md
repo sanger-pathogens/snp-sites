@@ -62,15 +62,18 @@ This contains the position of each SNP in the reference sequence, and the occurr
 All the SNP sites in a format for RAxML and other tree building applications.
 
 # Installation
-There are a few ways to install snp-sites. The simpliest way is using apt (Debian/Ubuntu), HomeBrew (OSX) or LinuxBrew.
+There are a few ways to install snp-sites. The simpliest way is using apt (Debian/Ubuntu), Bioconda, HomeBrew (OSX) or LinuxBrew.
 
 * Linux - Ubuntu/Debian
 * Linux - CentOS/RHEL
 * Linux - using LinuxBrew
 * OSX - using HomeBrew
+* OSX/Linux - using Bioconda
 * OSX/Linux - from source
 * OSX/Linux - from a release tarball
 * Windows/OSX/Linux - using a Virtual Machine
+* Windows/OSX/Linux - using Docker
+
 
 ## Linux - Ubuntu/Debian
 If you have a recent version of Ubuntu or Debian then you can install it using apt.
@@ -104,6 +107,18 @@ Install [HomeBrew](http://brew.sh/). It requires a minimum of Xcode 5.1.1 (xcode
 brew tap homebrew/science
 brew install snp-sites
 ```
+
+## OSX/Linux - using Bioconda
+Install Conda and install the bioconda channels.
+```
+conda config --add channels conda-forge
+conda config --add channels defaults
+conda config --add channels r
+conda config --add channels bioconda
+conda install snp-sites
+```
+
+
 ## OSX/Linux - from source
 This is a difficult method and is only suitable for someone with advanced unix skills. No support is provided with this method, since you have advanced unix skills. Please consider using HomeBrew/LinuxBrew instead. First install a standard development environment (e.g. gcc, automake, autoconf, libtool). Download the software from [GitHub](https://github.com/sanger-pathogens/snp-sites).
 
@@ -127,3 +142,6 @@ sudo make install
 
 ## Windows/OSX/Linux - using a Virtual Machine
 A virtual machine (VM) is available containing the software. More details can be found on [the Pathogen VM page](http://sanger-pathogens.github.io/pathogens-vm/).
+
+## All platforms - Docker
+Bioconda produce a Docker container so you can use the software out of the box. Install Docker and then pull the container from Bioconda https://quay.io/repository/biocontainers/snp-sites
