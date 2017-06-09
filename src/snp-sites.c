@@ -27,6 +27,8 @@
 #include "phylib-of-snp-sites.h"
 #include "fasta-of-snp-sites.h"
 
+char ** bases_for_snps;
+
 static int generate_snp_sites_generic(char filename[],
                                       int output_multi_fasta_file,
                                       int output_vcf_file,
@@ -37,20 +39,20 @@ static int generate_snp_sites_generic(char filename[],
 	int i;
 	detect_snps(filename, pure_mode, output_monomorphic);
 
-	char* bases_for_snps[get_number_of_snps()];
-	
+  bases_for_snps =  calloc(get_number_of_snps()+1, sizeof(char*));
+  
 	for(i = 0; i < get_number_of_snps(); i++)
 	{
-		bases_for_snps[i] = calloc(get_number_of_samples()+1 ,sizeof(char));
+		bases_for_snps[i] = calloc(get_number_of_samples()+1, sizeof(char));
 	}
-	
+  
 	get_bases_for_each_snp(filename, bases_for_snps);
-	
+  
 	char output_filename_base[FILENAME_MAX];
 	char filename_without_directory[FILENAME_MAX];
 	strip_directory_from_filename(filename, filename_without_directory);
 	strncpy(output_filename_base, filename_without_directory, FILENAME_MAX);
-	
+  
 	if(output_filename != NULL && *output_filename != '\0')
 	{
 		strncpy(output_filename_base, output_filename, FILENAME_MAX);
