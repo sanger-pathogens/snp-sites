@@ -62,50 +62,17 @@ This contains the position of each SNP in the reference sequence, and the occurr
 All the SNP sites in a format for RAxML and other tree building applications.
 
 # Installation
-There are a few ways to install snp-sites. The simpliest way is using apt (Debian/Ubuntu), Bioconda, HomeBrew (OSX) or LinuxBrew.
+There are a few ways to install snp-sites. The simpliest way is using apt (Debian/Ubuntu) or Conda.
 
 * Linux - Ubuntu/Debian
-* Linux - CentOS/RHEL
-* Linux - using LinuxBrew
-* OSX - using HomeBrew
 * OSX/Linux - using Bioconda
 * OSX/Linux - from source
 * OSX/Linux - from a release tarball
-* Windows/OSX/Linux - using a Virtual Machine
-* Windows/OSX/Linux - using Docker
-
 
 ## Linux - Ubuntu/Debian
 If you have a recent version of Ubuntu or Debian then you can install it using apt.
 ```
    apt-get install snp-sites
-```
-
-## Linux - CentOS/RHEL
-The easiest way to install on CentOS/RHEL is to use [LinuxBrew](http://brew.sh/linuxbrew/). Enable EPEL and make sure compilers are installed.
-```
-sudo yum install epel-release gcc gcc-c++ automake ruby-irb
-```
-Install [LinuxBrew](http://brew.sh/linuxbrew/).
-```
-brew tap homebrew/science
-ln -s $(which gcc) ~/.linuxbrew/bin/gcc-4.4
-ln -s $(which g++) ~/.linuxbrew/bin/g++-4.4
-brew install snp-sites
-```
-
-## Linux - using LinuxBrew
-Install [LinuxBrew](http://brew.sh/linuxbrew/).
-```
-brew tap homebrew/science
-brew install snp-sites
-```
-
-## OSX - using HomeBrew
-Install [HomeBrew](http://brew.sh/). It requires a minimum of Xcode 5.1.1 (xcodebuild -version). Then run:
-```
-brew tap homebrew/science
-brew install snp-sites
 ```
 
 ## OSX/Linux - using Bioconda
@@ -118,9 +85,8 @@ conda config --add channels bioconda
 conda install snp-sites
 ```
 
-
 ## OSX/Linux - from source
-This is a difficult method and is only suitable for someone with advanced unix skills. No support is provided with this method, since you have advanced unix skills. Please consider using HomeBrew/LinuxBrew instead. First install a standard development environment (e.g. gcc, automake, autoconf, libtool). Download the software from [GitHub](https://github.com/sanger-pathogens/snp-sites).
+This is a difficult method and is only suitable for someone with advanced unix skills. No support is provided with this method, since you have advanced unix skills. Please consider using Conda instead. First install a standard development environment (e.g. gcc, automake, autoconf, libtool). Download the software from [GitHub](https://github.com/sanger-pathogens/snp-sites).
 
 ```
 autoreconf -i -f
@@ -130,7 +96,7 @@ sudo make install
 ```
 
 ## OSX/Linux - from a release tarball
-This is a difficult method and is only suitable for someone with advanced unix skills. No support is provided with this method, since you have advanced unix skills. Please consider using HomeBrew/LinuxBrew instead. First install a standard development environment (e.g. gcc, automake, autoconf, libtool).
+This is a difficult method and is only suitable for someone with advanced unix skills. No support is provided with this method, since you have advanced unix skills. Please consider using Conda instead. First install a standard development environment (e.g. gcc, automake, autoconf, libtool).
 
 ```
 tar xzvf snp-sites-x.y.z.tar.gz
@@ -139,9 +105,6 @@ cd snp-sites-x.y.z
 make
 sudo make install
 ```
-
-## Windows/OSX/Linux - using a Virtual Machine
-A virtual machine (VM) is available containing the software. More details can be found on [the Pathogen VM page](http://sanger-pathogens.github.io/pathogens-vm/).
 
 ## All platforms - Docker
 Bioconda produce a Docker container so you can use the software out of the box. Install Docker and then pull the container from Bioconda https://quay.io/repository/biocontainers/snp-sites
