@@ -38,7 +38,7 @@ static void print_usage()
   printf(" -m     output a multi fasta alignment file (default)\n");
   printf(" -v     output a VCF file\n");
   printf(" -p     output a phylip file\n");
-  printf(" -o STR specify an output filename\n");
+  printf(" -o STR specify an output filename [STDOUT]\n");
   printf(" -c     only output columns containing exclusively ACGT\n");
   printf(" -b     output monomorphic sites, used for BEAST\n");
   printf(" -h     this help message\n");
@@ -62,7 +62,7 @@ static void print_version()
 
 int main (int argc, char **argv) {
 	char multi_fasta_filename[FILENAME_MAX] = {""};
-	char output_filename[FILENAME_MAX] = {""};
+	char output_filename[FILENAME_MAX] = {"/dev/stdout"};
 
 	int c;
 	int index;

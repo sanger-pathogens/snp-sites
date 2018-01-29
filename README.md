@@ -79,14 +79,16 @@ Bioconda produce a Docker container so you can use the software out of the box. 
 ```
 Usage: snp-sites [-mvph] [-o output_filename] <file>
 This program finds snp sites from a multi fasta alignment file.
- -r		    output internal pseudo reference sequence
- -m		    output a multi fasta alignment file (default)
- -v		    output a VCF file
- -p		    output a phylip file
- -o		    specify an output filename
- -h		    this help message
- -V		    print version and exit
- <file>		input alignment file which can optionally be gzipped
+ -r     output internal pseudo reference sequence
+ -m     output a multi fasta alignment file (default)
+ -v     output a VCF file
+ -p     output a phylip file
+ -o STR specify an output filename [STDOUT]
+ -c     only output columns containing exclusively ACGT
+ -b     output monomorphic sites, used for BEAST
+ -h     this help message
+ -V     print version and exit
+ <file> input alignment file which can optionally be gzipped
 ```
 
 This application takes in a multi fasta alignment, finds all the SNP sites, then outputs the SNP sites in the following formats:
