@@ -14,6 +14,6 @@ MAINTAINER ap13@sanger.ac.uk
 RUN apt-get update -qq
 
 #
-# Install Roary
+# Install SNP-sites
 #
 RUN apt-get install snp-sites
