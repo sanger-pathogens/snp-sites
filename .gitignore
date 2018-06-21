@@ -33,3 +33,6 @@ run-all-tests*
 src/snp-sites
 tests/.deps/*
 tests/.dirstamp
+# vagrant runtime stuff
+.vagrant
+ubuntu-*-cloudimg-console.log
