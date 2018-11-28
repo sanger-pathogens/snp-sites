@@ -18,6 +18,7 @@ Rapidly extracts SNPs from a multi-FASTA alignment.
   * [OSX/Linux \- from source](#osxlinux---from-source)
   * [OSX/Linux \- from a release tarball](#osxlinux---from-a-release-tarball)
   * [All platforms \- Docker](#all-platforms---docker)
+  * [Running the tests](#running-the-tests)
 * [Usage](#usage)
   * [Example input](#example-input)
   * [Example usage](#example-usage)
@@ -78,6 +79,16 @@ sudo make install
 
 ### All platforms - Docker
 Bioconda produce a Docker container so you can use the software out of the box. Install Docker and then pull the container from Bioconda https://quay.io/repository/biocontainers/snp-sites
+
+### Running the tests
+The test can be run from the top level directory:  
+
+```
+autoreconf -i
+./configure
+make
+make check
+```
 
 ## Usage
 
