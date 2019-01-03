@@ -12,6 +12,6 @@ before_install:
  - sudo apt-get update -qq
  - sudo pip install codecov
 script: 
- - autoreconf -i && ./configure --enable-code-coverage && make && make check-code-coverage
+ - autoreconf -i && ./configure --enable-maintainer-mode CFLAGS='-O0 --coverage' && make && make check
 after_success:
-  - codecov
+  - bash <(curl -s https://codecov.io/bash)
