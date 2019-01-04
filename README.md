@@ -8,6 +8,7 @@ Rapidly extracts SNPs from a multi-FASTA alignment.
 [![Container ready](https://img.shields.io/badge/container-ready-brightgreen.svg)](https://quay.io/repository/biocontainers/gubbins)  
 [![Docker Build Status](https://img.shields.io/docker/build/sangerpathogens/gubbins.svg)](https://hub.docker.com/r/sangerpathogens/gubbins)  
 [![Docker Pulls](https://img.shields.io/docker/pulls/sangerpathogens/gubbins.svg)](https://hub.docker.com/r/sangerpathogens/gubbins)  
+[![codecov](https://codecov.io/gh/sanger-pathogens/snp-sites/branch/master/graph/badge.svg)](https://codecov.io/gh/sanger-pathogens/snp-sites)   
 
 
 ## Contents
