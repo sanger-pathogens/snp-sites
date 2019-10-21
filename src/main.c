@@ -24,6 +24,7 @@
 #include <ctype.h>
 #include <unistd.h>
 #include <getopt.h>
+#include "alignment-file.h"
 #include "snp-sites.h"
 #include "config.h"
 
