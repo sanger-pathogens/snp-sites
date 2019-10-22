@@ -24,7 +24,6 @@
 #include <ctype.h>
 #include <unistd.h>
 #include <getopt.h>
-#include "alignment-file.h"
 #include "snp-sites.h"
 #include "config.h"
 
@@ -126,7 +125,7 @@ int main (int argc, char **argv) {
     strncpy(multi_fasta_filename, argv[optind], FILENAME_MAX); 
 
     if (output_constant_site_counts) {
-        detect_snps(multi_fasta_filename, pure_mode, output_monomorphic, output_constant_site_counts);
+        count_constant_sites(multi_fasta_filename, output_filename);
     } else if( pure_mode || output_monomorphic)
     {
       generate_snp_sites_with_ref_pure_mono(multi_fasta_filename,
