@@ -24,6 +24,7 @@
 #include <ctype.h>
 #include <unistd.h>
 #include <getopt.h>
+#include "alignment-file.h"
 #include "snp-sites.h"
 #include "config.h"
 
@@ -40,6 +41,7 @@ static void print_usage()
   printf(" -p     output a phylip file\n");
   printf(" -o STR specify an output filename [STDOUT]\n");
   printf(" -c     only output columns containing exclusively ACGT\n");
+  printf(" -C     only output count of constant sites (suitable for IQ-TREE -fconst) and nothing else\n");
   printf(" -b     output monomorphic sites, used for BEAST\n");
   printf(" -h     this help message\n");
   printf(" -V     print version and exit\n");
@@ -70,10 +72,11 @@ int main (int argc, char **argv) {
   int output_vcf_file = 0;
   int output_phylip_file = 0;
   int output_reference = 0;
+  int output_constant_site_counts = 0;
 	int pure_mode = 0;
   int output_monomorphic =0;
   
-	 while ((c = getopt (argc, argv, "mvrbpco:V")) != -1)
+	 while ((c = getopt (argc, argv, "mvrbpcCo:V")) != -1)
       switch (c)
         {
         case 'm':
@@ -93,6 +96,9 @@ int main (int argc, char **argv) {
           break;
         case 'c':
           pure_mode = 1;
+          break;
+        case 'C':
+          output_constant_site_counts = 1;
           break;
         case 'b':
           output_monomorphic = 1;
@@ -118,8 +124,10 @@ int main (int argc, char **argv) {
     }
     
     strncpy(multi_fasta_filename, argv[optind], FILENAME_MAX); 
-    
-    if( pure_mode || output_monomorphic)
+
+    if (output_constant_site_counts) {
+        detect_snps(multi_fasta_filename, pure_mode, output_monomorphic, output_constant_site_counts);
+    } else if( pure_mode || output_monomorphic)
     {
       generate_snp_sites_with_ref_pure_mono(multi_fasta_filename,
                                   output_multi_fasta_file,

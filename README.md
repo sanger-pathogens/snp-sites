@@ -91,6 +91,8 @@ make
 make check
 ```
 
+This requires libcheck (the `check` package in Ubuntu) to be installed.
+
 ## Usage
 
 ```

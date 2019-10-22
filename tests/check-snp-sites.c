@@ -183,49 +183,49 @@ END_TEST
 
 START_TEST (valid_genome_length)
 {
-  detect_snps("../tests/data/alignment_file_one_line_per_sequence.aln",0,0);
+  detect_snps("../tests/data/alignment_file_one_line_per_sequence.aln",0,0,0);
   fail_unless( get_length_of_genome() == 2000 );
 }
 END_TEST
 
 START_TEST (valid_genome_length_with_multiple_lines_per_sequence)
 {
-  detect_snps("../tests/data/alignment_file_multiple_lines_per_sequence.aln",0,0);
+  detect_snps("../tests/data/alignment_file_multiple_lines_per_sequence.aln",0,0,0);
   fail_unless( get_length_of_genome() == 2000 );
 }
 END_TEST
 
 START_TEST (valid_number_of_sequences_in_file)
 {
-  detect_snps("../tests/data/alignment_file_one_line_per_sequence.aln",0,0);
+  detect_snps("../tests/data/alignment_file_one_line_per_sequence.aln",0,0,0);
   fail_unless( get_number_of_samples() == 109 );
 }
 END_TEST
 
 START_TEST (valid_number_of_sequences_in_file_with_multiple_lines_per_sequence)
 {
-  detect_snps("../tests/data/alignment_file_multiple_lines_per_sequence.aln",0,0);
+  detect_snps("../tests/data/alignment_file_multiple_lines_per_sequence.aln",0,0,0);
   fail_unless( get_number_of_samples() == 109 );
 }
 END_TEST 
 
 START_TEST (number_of_snps_detected)
 {
-  detect_snps("../tests/data/alignment_file_multiple_lines_per_sequence.aln",0,0);
+  detect_snps("../tests/data/alignment_file_multiple_lines_per_sequence.aln",0,0,0);
   fail_unless( get_number_of_snps()  == 5);
 }
 END_TEST
 
 START_TEST (number_of_snps_detected_small)
 {
-  detect_snps("../tests/data/small_alignment.aln",0,0);
+  detect_snps("../tests/data/small_alignment.aln",0,0,0);
   fail_unless(  get_number_of_snps()  == 1);
 }
 END_TEST
   
 START_TEST (detect_snps_pure_mode)
 {
-  detect_snps("../tests/data/pure_mode_alignment.aln",1,0);
+  detect_snps("../tests/data/pure_mode_alignment.aln",1,0,0);
   fail_unless(  get_number_of_snps()  == 2);
 }
 END_TEST
@@ -233,14 +233,14 @@ END_TEST
   
 START_TEST (detect_snps_pure_mode_monomorphic)
 {
-  detect_snps("../tests/data/pure_mode_monomorphic_alignment.aln",1,1);
+  detect_snps("../tests/data/pure_mode_monomorphic_alignment.aln",1,1,0);
   fail_unless(  get_number_of_snps()  == 3);
 }
 END_TEST
 
 START_TEST (sample_names_from_alignment_file)
 {
-  detect_snps("../tests/data/small_alignment.aln",0,0);
+  detect_snps("../tests/data/small_alignment.aln",0,0,0);
   char ** current_sequence_names = get_sequence_names();
 
   fail_unless(strcmp(current_sequence_names[0],"reference_sequence") == 0);

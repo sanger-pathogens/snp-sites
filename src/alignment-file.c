@@ -105,7 +105,7 @@ void get_bases_for_each_snp(char filename[], char ** bases_for_snps)
   gzclose(fp);
 }
 
-void detect_snps(char filename[], int pure_mode, int output_monomorphic)
+void detect_snps(char filename[], int pure_mode, int output_monomorphic, int output_constant_site_counts)
 {
   int i;
   int l;
@@ -113,8 +113,12 @@ void detect_snps(char filename[], int pure_mode, int output_monomorphic)
   number_of_samples = 0; 
   length_of_genome = 0;
   char * first_sequence;
-  
-  gzFile fp;
+  int base_counts[] = {0, 0, 0, 0};
+  /* array below allows quick mapping of A, C, T and G characters to indices in base_counts array */
+  const int char_to_base_count_index[] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, -1, 1, -1, -1, -1, 2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 3};
+
+
+    gzFile fp;
   kseq_t *seq;
   
   fp = gzopen(filename, "r");
@@ -191,8 +195,15 @@ void detect_snps(char filename[], int pure_mode, int output_monomorphic)
       {
           snp_locations[current_snp_index] = i;
           current_snp_index++;
+      } else if (is_pure(first_sequence[i])) {
+          base_counts[char_to_base_count_index[(int) toupper(first_sequence[i])]]++;
       }
+
   }
+
+  if (output_constant_site_counts)
+    printf("%d,%d,%d,%d\n", base_counts[0], base_counts[1], base_counts[2], base_counts[3]);
+
   free(first_sequence);
   kseq_destroy(seq);
   gzclose(fp);

@@ -34,10 +34,11 @@ static int generate_snp_sites_generic(char filename[],
                                       int output_vcf_file,
                                       int output_phylip_file,
                                       char output_filename[],
-                                      int output_reference, int pure_mode, int output_monomorphic)
+                                      int output_reference, int pure_mode,
+                                      int output_monomorphic)
 {
 	int i;
-	detect_snps(filename, pure_mode, output_monomorphic);
+	detect_snps(filename, pure_mode, output_monomorphic, 0);
 
   bases_for_snps =  calloc(get_number_of_snps()+1, sizeof(char*));
   
