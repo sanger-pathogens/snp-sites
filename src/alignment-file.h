@@ -22,7 +22,8 @@
 
 #include "kseq.h"
 
-void detect_snps( char filename[], int pure_mode, int output_monomorphic, int output_constant_site_counts);
+void detect_snps( char filename[], int pure_mode, int output_monomorphic);
+void detect_snps_count_constant_sites(char filename[], int pure_mode, int output_monomorphic, int *constant_site_counts);
 void get_bases_for_each_snp(char filename[], char ** bases_for_snps);
 int is_unknown(char base);
 int get_length_of_genome();

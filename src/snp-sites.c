@@ -38,7 +38,7 @@ static int generate_snp_sites_generic(char filename[],
                                       int output_monomorphic)
 {
 	int i;
-	detect_snps(filename, pure_mode, output_monomorphic, 0);
+	detect_snps(filename, pure_mode, output_monomorphic);
 
   bases_for_snps =  calloc(get_number_of_snps()+1, sizeof(char*));
   
@@ -141,7 +141,32 @@ int generate_snp_sites_with_ref_pure_mono(char filename[],
                                     output_filename, output_reference, pure_mode, output_monomorphic);
 }
 
+void count_constant_sites(char multi_fasta_filename[], char output_filename[]) {
+    char cwd[100];
+    FILE *input_file;
+    FILE *output_file;
+    int *constant_site_counts = NULL;
 
+    output_file = (FILE *) fopen(output_filename, "w");
+    if (!output_file) {
+        fprintf(stderr, "ERROR: cannot open %s for writing: %s\n", output_filename, strerror(errno));
+        exit(EXIT_FAILURE);
+    }
+
+    constant_site_counts = (int *) calloc(4, sizeof(int));
+    if (constant_site_counts == NULL) {
+        fprintf(stderr, "ERROR: cannot allocated memory for constant_site_counts");
+        exit(EXIT_FAILURE);
+    }
+
+    detect_snps_count_constant_sites(multi_fasta_filename, 0, 0, constant_site_counts);
+
+
+    fprintf(output_file, "%d,%d,%d,%d\n", constant_site_counts[0], constant_site_counts[1],
+            constant_site_counts[2], constant_site_counts[3]);
+    fclose(output_file);
+    free(constant_site_counts);
+}
 // Inefficient
 void strip_directory_from_filename(char * input_filename, char * output_filename)
 {
