@@ -27,7 +27,8 @@
 #include "helper-methods.h"
 
 
-int compare_files(char expected_output_filename[], char actual_output_filename[]) {
+int compare_files(char expected_output_filename[], char actual_output_filename[])
+{
     FILE *expected_output_fh;
     FILE *actual_output_fh;
 

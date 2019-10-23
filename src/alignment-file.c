@@ -38,31 +38,38 @@ char **sequence_names;
 int *snp_locations;
 char *pseudo_reference_sequence;
 
-int get_length_of_genome() {
+int get_length_of_genome()
+{
     return length_of_genome;
 }
 
-int get_number_of_samples() {
+int get_number_of_samples()
+{
     return number_of_samples;
 }
 
-int get_number_of_snps() {
+int get_number_of_snps()
+{
     return number_of_snps;
 }
 
-char **get_sequence_names() {
+char **get_sequence_names()
+{
     return sequence_names;
 }
 
-int *get_snp_locations() {
+int *get_snp_locations()
+{
     return snp_locations;
 }
 
-char *get_pseudo_reference_sequence() {
+char *get_pseudo_reference_sequence()
+{
     return pseudo_reference_sequence;
 }
 
-void get_bases_for_each_snp(char filename[], char **bases_for_snps) {
+void get_bases_for_each_snp(char filename[], char **bases_for_snps)
+{
     int l;
     int i = 0;
     int sequence_number = 0;
@@ -96,12 +103,14 @@ void get_bases_for_each_snp(char filename[], char **bases_for_snps) {
     gzclose(fp);
 }
 
-void detect_snps(char filename[], int pure_mode, int output_monomorphic) {
+void detect_snps(char filename[], int pure_mode, int output_monomorphic)
+{
     detect_snps_count_constant_sites(filename, pure_mode, output_monomorphic, NULL);
 }
 
 void
-detect_snps_count_constant_sites(char filename[], int pure_mode, int output_monomorphic, int *constant_site_counts) {
+detect_snps_count_constant_sites(char filename[], int pure_mode, int output_monomorphic, int *constant_site_counts)
+{
     int i;
     int l;
     number_of_snps = 0;
@@ -194,7 +203,8 @@ detect_snps_count_constant_sites(char filename[], int pure_mode, int output_mono
     return;
 }
 
-int is_unknown(char base) {
+int is_unknown(char base)
+{
     switch (base) {
         case 'N':
         case 'n':
@@ -206,7 +216,8 @@ int is_unknown(char base) {
     }
 }
 
-int is_pure(char base) {
+int is_pure(char base)
+{
     switch (base) {
         case 'A':
         case 'C':

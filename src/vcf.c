@@ -30,7 +30,8 @@
 
 void
 create_vcf_file(char filename[], int snp_locations[], int number_of_snps, char **bases_for_snps, char **sequence_names,
-                int number_of_samples, size_t length_of_genome, char pseudo_reference_sequence[]) {
+                int number_of_samples, size_t length_of_genome, char pseudo_reference_sequence[])
+{
     FILE *vcf_file_pointer;
     char *base_filename;
     base_filename = (char *) malloc(FILENAME_MAX * sizeof(char));
@@ -45,7 +46,8 @@ create_vcf_file(char filename[], int snp_locations[], int number_of_snps, char *
 }
 
 void output_vcf_snps(FILE *vcf_file_pointer, char **bases_for_snps, int *snp_locations, int number_of_snps,
-                     int number_of_samples, char pseudo_reference_sequence[]) {
+                     int number_of_samples, char pseudo_reference_sequence[])
+{
     int i;
     for (i = 0; i < number_of_snps; i++) {
         output_vcf_row(vcf_file_pointer, bases_for_snps[i], snp_locations[i], number_of_samples,
@@ -53,7 +55,8 @@ void output_vcf_snps(FILE *vcf_file_pointer, char **bases_for_snps, int *snp_loc
     }
 }
 
-void output_vcf_header(FILE *vcf_file_pointer, char **sequence_names, int number_of_samples, size_t length_of_genome) {
+void output_vcf_header(FILE *vcf_file_pointer, char **sequence_names, int number_of_samples, size_t length_of_genome)
+{
     int i;
     fprintf(vcf_file_pointer, "##fileformat=VCFv4.1\n");
     fprintf(vcf_file_pointer, "##contig=<ID=1,length=%i>\n", (int) length_of_genome);
@@ -67,7 +70,8 @@ void output_vcf_header(FILE *vcf_file_pointer, char **sequence_names, int number
 }
 
 void output_vcf_row(FILE *vcf_file_pointer, char *bases_for_snp, int snp_location, int number_of_samples,
-                    char pseudo_reference_sequence[]) {
+                    char pseudo_reference_sequence[])
+{
     char reference_base = pseudo_reference_sequence[snp_location];
     if (reference_base == '\0') {
         fprintf(stderr, "Couldnt get the reference base for coordinate %d\n", snp_location);
@@ -116,7 +120,8 @@ void output_vcf_row(FILE *vcf_file_pointer, char *bases_for_snp, int snp_locatio
 }
 
 
-char *alternative_bases(char reference_base, char *bases_for_snp, int number_of_samples) {
+char *alternative_bases(char reference_base, char *bases_for_snp, int number_of_samples)
+{
     int i;
     int num_alt_bases = 0;
     char *alt_bases = calloc(MAXIMUM_NUMBER_OF_ALT_BASES + 1, sizeof(char));
@@ -144,7 +149,8 @@ char *alternative_bases(char reference_base, char *bases_for_snp, int number_of_
     return alt_bases;
 }
 
-char *format_allele_index(char base, char reference_base, char *alt_bases) {
+char *format_allele_index(char base, char reference_base, char *alt_bases)
+{
     int length_of_alt_bases = strlen(alt_bases);
     assert(length_of_alt_bases < 100);
     char *result = calloc(5, sizeof(char));
@@ -168,7 +174,8 @@ char *format_allele_index(char base, char reference_base, char *alt_bases) {
     return result;
 }
 
-char *format_alternative_bases(char *alt_bases) {
+char *format_alternative_bases(char *alt_bases)
+{
     int number_of_alt_bases = strlen(alt_bases);
     assert(number_of_alt_bases < MAXIMUM_NUMBER_OF_ALT_BASES);
 
@@ -188,7 +195,8 @@ char *format_alternative_bases(char *alt_bases) {
     return formatted_alt_bases;
 }
 
-int check_if_char_in_string(char search_string[], char target_char, int search_string_length) {
+int check_if_char_in_string(char search_string[], char target_char, int search_string_length)
+{
     int i;
     for (i = 0; i < search_string_length; i++) {
         if (search_string[i] == target_char) {
@@ -199,7 +207,8 @@ int check_if_char_in_string(char search_string[], char target_char, int search_s
 }
 
 void output_vcf_row_samples_bases(FILE *vcf_file_pointer, char reference_base, char *alt_bases, char *bases_for_snp,
-                                  int number_of_samples) {
+                                  int number_of_samples)
+{
     int i;
     char *format;
 

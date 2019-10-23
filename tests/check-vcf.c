@@ -28,7 +28,8 @@
 #include "check-vcf.h"
 #include "vcf.h"
 
-void check_alternative_bases(char reference_base, char *bases_for_snp, int number_of_samples, char *expected_result) {
+void check_alternative_bases(char reference_base, char *bases_for_snp, int number_of_samples, char *expected_result)
+{
     char *result;
     result = alternative_bases(reference_base, bases_for_snp, number_of_samples);
     ck_assert_str_eq(result, expected_result);
@@ -42,7 +43,8 @@ START_TEST (alternative_bases_test)
 
 END_TEST
 
-void check_format_alternative_bases(char *test_case, char *expected_result) {
+void check_format_alternative_bases(char *test_case, char *expected_result)
+{
     char *result;
     result = format_alternative_bases(test_case);
     ck_assert_str_eq(result, expected_result);
@@ -59,7 +61,8 @@ START_TEST (format_alternative_bases_test)
 
 END_TEST
 
-void check_format_allele_index(char test_base, char reference_base, char *alt_bases, char *expected_result) {
+void check_format_allele_index(char test_base, char reference_base, char *alt_bases, char *expected_result)
+{
     char *result;
     result = format_allele_index(test_base, reference_base, alt_bases);
     ck_assert_str_eq(result, expected_result);
@@ -89,7 +92,8 @@ END_TEST
         Suite
 *
 
-vcf_suite(void) {
+vcf_suite(void)
+{
     Suite * s = suite_create("Creating_VCF_file");
 
     TCase *tc_vcf_file = tcase_create("vcf_file");

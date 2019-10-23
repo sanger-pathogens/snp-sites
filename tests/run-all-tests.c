@@ -25,7 +25,8 @@
 #include "check-vcf.h"
 
 
-int main(void) {
+int main(void)
+{
     int number_failed;
     Suite *s;
     SRunner *sr;

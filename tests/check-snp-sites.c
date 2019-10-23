@@ -48,7 +48,8 @@ START_TEST (valid_alignment_with_one_line_per_sequence)
 END_TEST
 
 
-START_TEST(valid_alignment_with_n_as_gap) {
+START_TEST(valid_alignment_with_n_as_gap)
+{
     generate_snp_sites("../tests/data/alignment_file_with_n.aln", 1, 1, 1, "");
     fail_unless(compare_files("../tests/data/alignment_file_with_n.aln.vcf", "alignment_file_with_n.aln.vcf") == 1,
                 "Invalid VCF file for 1 line per seq");
@@ -65,7 +66,8 @@ START_TEST(valid_alignment_with_n_as_gap) {
 END_TEST
 
 
-START_TEST(valid_alignment_with_one_line_per_sequence_gzipped) {
+START_TEST(valid_alignment_with_one_line_per_sequence_gzipped)
+{
     generate_snp_sites("../tests/data/alignment_file_one_line_per_sequence.aln.gz", 1, 1, 1, NULL);
     fail_unless(compare_files("../tests/data/alignment_file_one_line_per_sequence.aln.vcf",
                               "alignment_file_one_line_per_sequence.aln.gz.vcf") == 1,
@@ -83,7 +85,8 @@ START_TEST(valid_alignment_with_one_line_per_sequence_gzipped) {
 
 END_TEST
 
-START_TEST(valid_alignment_with_multiple_lines_per_sequence) {
+START_TEST(valid_alignment_with_multiple_lines_per_sequence)
+{
     generate_snp_sites("../tests/data/alignment_file_multiple_lines_per_sequence.aln", 1, 1, 1, "");
     fail_unless(compare_files("../tests/data/alignment_file_one_line_per_sequence.aln.vcf",
                               "alignment_file_multiple_lines_per_sequence.aln.vcf") == 1,
@@ -101,7 +104,8 @@ START_TEST(valid_alignment_with_multiple_lines_per_sequence) {
 
 END_TEST
 
-START_TEST(valid_alignment_with_pure_mode) {
+START_TEST(valid_alignment_with_pure_mode)
+{
     generate_snp_sites_with_ref_pure_mono("../tests/data/pure_mode_alignment.aln", 1, 1, 1, "", 0, 1, 0);
     fail_unless(compare_files("../tests/data/pure_mode_alignment.aln.vcf", "pure_mode_alignment.aln.vcf") == 1,
                 "Invalid VCF file for multiple lines per seq");
@@ -117,7 +121,8 @@ START_TEST(valid_alignment_with_pure_mode) {
 
 END_TEST
 
-START_TEST(valid_alignment_with_monomorphic_sites) {
+START_TEST(valid_alignment_with_monomorphic_sites)
+{
     generate_snp_sites_with_ref_pure_mono("../tests/data/pure_mode_monomorphic_alignment.aln", 1, 1, 1, "", 0, 1, 1);
     fail_unless(compare_files("../tests/data/pure_mode_monomorphic_alignment.aln.vcf",
                               "pure_mode_monomorphic_alignment.aln.vcf") == 1,
@@ -136,7 +141,8 @@ START_TEST(valid_alignment_with_monomorphic_sites) {
 END_TEST
 
 
-START_TEST(valid_with_only_aln_file_output_default) {
+START_TEST(valid_with_only_aln_file_output_default)
+{
     generate_snp_sites("../tests/data/alignment_file_one_line_per_sequence.aln", 0, 0, 0, "");
     fail_unless(compare_files("../tests/data/alignment_file_one_line_per_sequence.aln.snp_sites.aln",
                               "alignment_file_one_line_per_sequence.aln.snp_sites.aln") == 1,
@@ -146,7 +152,8 @@ START_TEST(valid_with_only_aln_file_output_default) {
 
 END_TEST
 
-START_TEST(valid_with_only_aln_file_output) {
+START_TEST(valid_with_only_aln_file_output)
+{
     generate_snp_sites("../tests/data/alignment_file_one_line_per_sequence.aln", 1, 0, 0, "");
     fail_unless(compare_files("../tests/data/alignment_file_one_line_per_sequence.aln.snp_sites.aln",
                               "alignment_file_one_line_per_sequence.aln.snp_sites.aln") == 1,
@@ -156,7 +163,8 @@ START_TEST(valid_with_only_aln_file_output) {
 
 END_TEST
 
-START_TEST(valid_with_only_aln_file_output_with_custom_name) {
+START_TEST(valid_with_only_aln_file_output_with_custom_name)
+{
     char output_filename[100] = {"some_custom_name"};
     generate_snp_sites("../tests/data/alignment_file_multiple_lines_per_sequence.aln", 1, 0, 0, output_filename);
     fail_unless(
@@ -167,7 +175,8 @@ START_TEST(valid_with_only_aln_file_output_with_custom_name) {
 
 END_TEST
 
-START_TEST(valid_with_phylip_outputted_with_custom_name) {
+START_TEST(valid_with_phylip_outputted_with_custom_name)
+{
     generate_snp_sites("../tests/data/alignment_file_one_line_per_sequence.aln", 0, 0, 1, "some_custom_name");
     fail_unless(compare_files("../tests/data/alignment_file_one_line_per_sequence.aln.phylip", "some_custom_name") == 1,
                 "Custom name needs extra extension for phylip");
@@ -177,14 +186,16 @@ START_TEST(valid_with_phylip_outputted_with_custom_name) {
 
 END_TEST
 
-START_TEST(invalid_with_uneven_file_lengths) {
+START_TEST(invalid_with_uneven_file_lengths)
+{
     generate_snp_sites("../tests/data/uneven_alignment.aln", 1, 0, 0, "");
 }
 
 END_TEST
 
 
-START_TEST(valid_with_all_outputted_with_custom_name) {
+START_TEST(valid_with_all_outputted_with_custom_name)
+{
     generate_snp_sites("../tests/data/alignment_file_one_line_per_sequence.aln", 1, 1, 1, "some_custom_name");
     fail_unless(
             compare_files("../tests/data/alignment_file_one_line_per_sequence.aln.vcf", "some_custom_name.vcf") == 1,
@@ -202,7 +213,8 @@ START_TEST(valid_with_all_outputted_with_custom_name) {
 END_TEST
 
 
-START_TEST(valid_aln_plus_reference) {
+START_TEST(valid_aln_plus_reference)
+{
     generate_snp_sites_with_ref("../tests/data/alignment_file_one_line_per_sequence.aln", 1, 0, 0, "");
     fail_unless(compare_files("../tests/data/alignment_file_one_line_per_sequence_reference.snp_sites.aln",
                               "alignment_file_one_line_per_sequence.aln.snp_sites.aln") == 1,
@@ -212,7 +224,8 @@ START_TEST(valid_aln_plus_reference) {
 
 END_TEST
 
-START_TEST(valid_phylip_plus_reference) {
+START_TEST(valid_phylip_plus_reference)
+{
     generate_snp_sites_with_ref("../tests/data/alignment_file_one_line_per_sequence.aln", 0, 0, 1, "");
     fail_unless(compare_files("../tests/data/alignment_file_one_line_per_sequence_reference.aln.phylip",
                               "alignment_file_one_line_per_sequence.aln.phylip") == 1, "invalid phylib with reference");
@@ -222,49 +235,56 @@ START_TEST(valid_phylip_plus_reference) {
 
 END_TEST
 
-START_TEST(valid_genome_length) {
+START_TEST(valid_genome_length)
+{
     detect_snps("../tests/data/alignment_file_one_line_per_sequence.aln", 0, 0);
     fail_unless(get_length_of_genome() == 2000);
 }
 
 END_TEST
 
-START_TEST(valid_genome_length_with_multiple_lines_per_sequence) {
+START_TEST(valid_genome_length_with_multiple_lines_per_sequence)
+{
     detect_snps("../tests/data/alignment_file_multiple_lines_per_sequence.aln", 0, 0);
     fail_unless(get_length_of_genome() == 2000);
 }
 
 END_TEST
 
-START_TEST(valid_number_of_sequences_in_file) {
+START_TEST(valid_number_of_sequences_in_file)
+{
     detect_snps("../tests/data/alignment_file_one_line_per_sequence.aln", 0, 0);
     fail_unless(get_number_of_samples() == 109);
 }
 
 END_TEST
 
-START_TEST(valid_number_of_sequences_in_file_with_multiple_lines_per_sequence) {
+START_TEST(valid_number_of_sequences_in_file_with_multiple_lines_per_sequence)
+{
     detect_snps("../tests/data/alignment_file_multiple_lines_per_sequence.aln", 0, 0);
     fail_unless(get_number_of_samples() == 109);
 }
 
 END_TEST
 
-START_TEST(number_of_snps_detected) {
+START_TEST(number_of_snps_detected)
+{
     detect_snps("../tests/data/alignment_file_multiple_lines_per_sequence.aln", 0, 0);
     fail_unless(get_number_of_snps() == 5);
 }
 
 END_TEST
 
-START_TEST(number_of_snps_detected_small) {
+START_TEST(number_of_snps_detected_small)
+{
     detect_snps("../tests/data/small_alignment.aln", 0, 0);
     fail_unless(get_number_of_snps() == 1);
 }
 
 END_TEST
 
-START_TEST(detect_snps_pure_mode) {
+START_TEST(detect_snps_pure_mode)
+{
     detect_snps("../tests/data/pure_mode_alignment.aln", 1, 0);
     fail_unless(get_number_of_snps() == 2);
 }
@@ -272,14 +292,16 @@ START_TEST(detect_snps_pure_mode) {
 END_TEST
 
 
-START_TEST(detect_snps_pure_mode_monomorphic) {
+START_TEST(detect_snps_pure_mode_monomorphic)
+{
     detect_snps("../tests/data/pure_mode_monomorphic_alignment.aln", 1, 1);
     fail_unless(get_number_of_snps() == 3);
 }
 
 END_TEST
 
-START_TEST(sample_names_from_alignment_file) {
+START_TEST(sample_names_from_alignment_file)
+{
     detect_snps("../tests/data/small_alignment.aln", 0, 0);
     char **current_sequence_names = get_sequence_names();
 
@@ -290,7 +312,8 @@ START_TEST(sample_names_from_alignment_file) {
 
 END_TEST
 
-START_TEST(check_strip_directory_from_filename_without_directory) {
+START_TEST(check_strip_directory_from_filename_without_directory)
+{
     char *input_filename_without_directory = "my_file_name.aln";
     char output_filename[30];
     memset(output_filename, '\0', 30);
@@ -300,7 +323,8 @@ START_TEST(check_strip_directory_from_filename_without_directory) {
 
 END_TEST
 
-START_TEST(check_strip_directory_from_filename_with_directory) {
+START_TEST(check_strip_directory_from_filename_with_directory)
+{
     char *input_filename_without_directory = "/some/directory/name/my_file_name.aln";
     char output_filename[30];
     memset(output_filename, '\0', 30);
@@ -310,7 +334,8 @@ START_TEST(check_strip_directory_from_filename_with_directory) {
 
 END_TEST
 
-START_TEST(check_count_constant_sites) {
+START_TEST(check_count_constant_sites)
+{
     count_constant_sites("../tests/data/small_alignment.aln", "small_alignment.constant_site_counts.txt");
     fail_unless(compare_files("../tests/data/small_alignment.constant_site_counts.txt",
                               "small_alignment.constant_site_counts.txt"));
@@ -322,7 +347,8 @@ END_TEST
         Suite
 *
 
-snp_sites_suite(void) {
+snp_sites_suite(void)
+{
     Suite * s = suite_create("Creating_SNP_Sites");
 
     TCase *tc_alignment_file = tcase_create("alignment_file");

@@ -30,7 +30,8 @@
 #define PROGRAM_NAME "snp-sites"
 #define PROGRAM_VERSION PACKAGE_VERSION
 
-static void print_usage() {
+static void print_usage()
+{
     printf("Usage: snp-sites [-rmvpcbhV] [-o output_filename] <file>\n");
     printf("This program finds snp sites from a multi FASTA alignment file.\n");
     printf(" -r     output internal pseudo reference sequence\n");
@@ -55,11 +56,13 @@ static void print_usage() {
 
 }
 
-static void print_version() {
+static void print_version()
+{
     printf("%s %s\n", PROGRAM_NAME, PROGRAM_VERSION);
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     char multi_fasta_filename[FILENAME_MAX] = {""};
     char output_filename[FILENAME_MAX] = {"/dev/stdout"};
 

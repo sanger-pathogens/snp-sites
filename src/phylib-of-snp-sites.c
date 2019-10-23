@@ -27,7 +27,8 @@
 
 void create_phylib_of_snp_sites(char filename[], int number_of_snps, char **bases_for_snps, char **sequence_names,
                                 int number_of_samples, int output_reference, char *pseudo_reference_sequence,
-                                int snp_locations[]) {
+                                int snp_locations[])
+{
     FILE *phylip_file_pointer;
     int sample_counter;
     int snp_counter;

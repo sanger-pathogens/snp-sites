@@ -35,7 +35,8 @@ static int generate_snp_sites_generic(char filename[],
                                       int output_phylip_file,
                                       char output_filename[],
                                       int output_reference, int pure_mode,
-                                      int output_monomorphic) {
+                                      int output_monomorphic)
+{
     int i;
     detect_snps(filename, pure_mode, output_monomorphic);
 
@@ -110,7 +111,8 @@ static int generate_snp_sites_generic(char filename[],
 
 int generate_snp_sites(char filename[], int output_multi_fasta_file,
                        int output_vcf_file, int output_phylip_file,
-                       char output_filename[]) {
+                       char output_filename[])
+{
     return generate_snp_sites_generic(filename, output_multi_fasta_file,
                                       output_vcf_file, output_phylip_file,
                                       output_filename, 0, 0, 0);
@@ -118,7 +120,8 @@ int generate_snp_sites(char filename[], int output_multi_fasta_file,
 
 int generate_snp_sites_with_ref(char filename[], int output_multi_fasta_file,
                                 int output_vcf_file, int output_phylip_file,
-                                char output_filename[]) {
+                                char output_filename[])
+{
     return generate_snp_sites_generic(filename, output_multi_fasta_file,
                                       output_vcf_file, output_phylip_file,
                                       output_filename, 1, 0, 0);
@@ -131,13 +134,15 @@ int generate_snp_sites_with_ref_pure_mono(char filename[],
                                           char output_filename[],
                                           int output_reference,
                                           int pure_mode,
-                                          int output_monomorphic) {
+                                          int output_monomorphic)
+{
     return generate_snp_sites_generic(filename, output_multi_fasta_file,
                                       output_vcf_file, output_phylip_file,
                                       output_filename, output_reference, pure_mode, output_monomorphic);
 }
 
-void count_constant_sites(char multi_fasta_filename[], char output_filename[]) {
+void count_constant_sites(char multi_fasta_filename[], char output_filename[])
+{
     char cwd[100];
     FILE *input_file;
     FILE *output_file;
@@ -165,7 +170,8 @@ void count_constant_sites(char multi_fasta_filename[], char output_filename[]) {
 }
 
 // Inefficient
-void strip_directory_from_filename(char *input_filename, char *output_filename) {
+void strip_directory_from_filename(char *input_filename, char *output_filename)
+{
     int i;
     int end_index = 0;
     int last_forward_slash_index = -1;
