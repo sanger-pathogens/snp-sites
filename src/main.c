@@ -30,124 +30,116 @@
 #define PROGRAM_NAME "snp-sites"
 #define PROGRAM_VERSION PACKAGE_VERSION
 
-static void print_usage()
-{
-  printf("Usage: snp-sites [-rmvpcbhV] [-o output_filename] <file>\n");
-  printf("This program finds snp sites from a multi FASTA alignment file.\n");
-  printf(" -r     output internal pseudo reference sequence\n");
-  printf(" -m     output a multi fasta alignment file (default)\n");
-  printf(" -v     output a VCF file\n");
-  printf(" -p     output a phylip file\n");
-  printf(" -o STR specify an output filename [STDOUT]\n");
-  printf(" -c     only output columns containing exclusively ACGT\n");
-  printf(" -C     only output count of constant sites (suitable for IQ-TREE -fconst) and nothing else\n");
-  printf(" -b     output monomorphic sites, used for BEAST\n");
-  printf(" -h     this help message\n");
-  printf(" -V     print version and exit\n");
-  printf(" <file> input alignment file which can optionally be gzipped\n\n");
-  
-  printf("Example: creating files for BEAST\n");
-  printf(" snp-sites -cb -o outputfile.aln inputfile.aln\n\n");
+static void print_usage() {
+    printf("Usage: snp-sites [-rmvpcbhV] [-o output_filename] <file>\n");
+    printf("This program finds snp sites from a multi FASTA alignment file.\n");
+    printf(" -r     output internal pseudo reference sequence\n");
+    printf(" -m     output a multi fasta alignment file (default)\n");
+    printf(" -v     output a VCF file\n");
+    printf(" -p     output a phylip file\n");
+    printf(" -o STR specify an output filename [STDOUT]\n");
+    printf(" -c     only output columns containing exclusively ACGT\n");
+    printf(" -C     only output count of constant sites (suitable for IQ-TREE -fconst) and nothing else\n");
+    printf(" -b     output monomorphic sites, used for BEAST\n");
+    printf(" -h     this help message\n");
+    printf(" -V     print version and exit\n");
+    printf(" <file> input alignment file which can optionally be gzipped\n\n");
 
-  printf("If you use this program, please cite:\n");
-  printf("\"SNP-sites: rapid efficient extraction of SNPs from multi-FASTA alignments\",\n");
-  printf("Andrew J. Page, Ben Taylor, Aidan J. Delaney, Jorge Soares, Torsten Seemann, Jacqueline A. Keane, Simon R. Harris,\n");
-  printf("Microbial Genomics 2(4), (2016). http://dx.doi.org/10.1099/mgen.0.000056\n");
-  
+    printf("Example: creating files for BEAST\n");
+    printf(" snp-sites -cb -o outputfile.aln inputfile.aln\n\n");
+
+    printf("If you use this program, please cite:\n");
+    printf("\"SNP-sites: rapid efficient extraction of SNPs from multi-FASTA alignments\",\n");
+    printf("Andrew J. Page, Ben Taylor, Aidan J. Delaney, Jorge Soares, Torsten Seemann, Jacqueline A. Keane, Simon R. Harris,\n");
+    printf("Microbial Genomics 2(4), (2016). http://dx.doi.org/10.1099/mgen.0.000056\n");
+
 }
 
-static void print_version()
-{
-  printf("%s %s\n", PROGRAM_NAME, PROGRAM_VERSION);
+static void print_version() {
+    printf("%s %s\n", PROGRAM_NAME, PROGRAM_VERSION);
 }
 
-int main (int argc, char **argv) {
-	char multi_fasta_filename[FILENAME_MAX] = {""};
-	char output_filename[FILENAME_MAX] = {"/dev/stdout"};
+int main(int argc, char **argv) {
+    char multi_fasta_filename[FILENAME_MAX] = {""};
+    char output_filename[FILENAME_MAX] = {"/dev/stdout"};
 
-	int c;
-	int index;
-  int output_multi_fasta_file = 0;
-  int output_vcf_file = 0;
-  int output_phylip_file = 0;
-  int output_reference = 0;
-  int output_constant_site_counts = 0;
-	int pure_mode = 0;
-  int output_monomorphic =0;
-  
-	 while ((c = getopt (argc, argv, "mvrbpcCo:V")) != -1)
-      switch (c)
-        {
-        case 'm':
-          output_multi_fasta_file = 1;
-          break;
-        case 'v':
-          output_vcf_file = 1;
-          break;
-        case 'V':
-          print_version();
-          return 0;
-        case 'p':
-          output_phylip_file = 1;
-          break;
-        case 'r':
-          output_reference = 1;
-          break;
-        case 'c':
-          pure_mode = 1;
-          break;
-        case 'C':
-          output_constant_site_counts = 1;
-          break;
-        case 'b':
-          output_monomorphic = 1;
-          break;
-	      case 'o':
-          strncpy(output_filename, optarg, FILENAME_MAX);
-	        break;
-        case 'h':
-          print_usage();
-          exit(EXIT_SUCCESS);
-      default:
-        output_multi_fasta_file = 1;
-      }
-      
-  
-  if(optind < argc)
-  {  
-    // check to see if the input alignment file exists
-    if( access( argv[optind], F_OK ) == -1 ) {
-      fprintf(stderr,"ERROR: cannot access input alignment file '%s'\n", argv[optind]);
-      fflush(stderr);
-      exit(EXIT_FAILURE);
-    }
-    
-    strncpy(multi_fasta_filename, argv[optind], FILENAME_MAX); 
+    int c;
+    int index;
+    int output_multi_fasta_file = 0;
+    int output_vcf_file = 0;
+    int output_phylip_file = 0;
+    int output_reference = 0;
+    int output_constant_site_counts = 0;
+    int pure_mode = 0;
+    int output_monomorphic = 0;
 
-    if (output_constant_site_counts) {
-        count_constant_sites(multi_fasta_filename, output_filename);
-    } else if( pure_mode || output_monomorphic)
-    {
-      generate_snp_sites_with_ref_pure_mono(multi_fasta_filename,
-                                  output_multi_fasta_file,
-                                  output_vcf_file, output_phylip_file,
-                                  output_filename,output_reference,pure_mode,output_monomorphic);
-    }
-    else if(output_reference ) {
-      generate_snp_sites_with_ref(multi_fasta_filename,
-                                  output_multi_fasta_file,
-                                  output_vcf_file, output_phylip_file,
-                                  output_filename);
+    while ((c = getopt(argc, argv, "mvrbpcCo:V")) != -1)
+        switch (c) {
+            case 'm':
+                output_multi_fasta_file = 1;
+                break;
+            case 'v':
+                output_vcf_file = 1;
+                break;
+            case 'V':
+                print_version();
+                return 0;
+            case 'p':
+                output_phylip_file = 1;
+                break;
+            case 'r':
+                output_reference = 1;
+                break;
+            case 'c':
+                pure_mode = 1;
+                break;
+            case 'C':
+                output_constant_site_counts = 1;
+                break;
+            case 'b':
+                output_monomorphic = 1;
+                break;
+            case 'o':
+                strncpy(output_filename, optarg, FILENAME_MAX);
+                break;
+            case 'h':
+                print_usage();
+                exit(EXIT_SUCCESS);
+            default:
+                output_multi_fasta_file = 1;
+        }
+
+
+    if (optind < argc) {
+        // check to see if the input alignment file exists
+        if (access(argv[optind], F_OK) == -1) {
+            fprintf(stderr, "ERROR: cannot access input alignment file '%s'\n", argv[optind]);
+            fflush(stderr);
+            exit(EXIT_FAILURE);
+        }
+
+        strncpy(multi_fasta_filename, argv[optind], FILENAME_MAX);
+
+        if (output_constant_site_counts) {
+            count_constant_sites(multi_fasta_filename, output_filename);
+        } else if (pure_mode || output_monomorphic) {
+            generate_snp_sites_with_ref_pure_mono(multi_fasta_filename,
+                                                  output_multi_fasta_file,
+                                                  output_vcf_file, output_phylip_file,
+                                                  output_filename, output_reference, pure_mode, output_monomorphic);
+        } else if (output_reference) {
+            generate_snp_sites_with_ref(multi_fasta_filename,
+                                        output_multi_fasta_file,
+                                        output_vcf_file, output_phylip_file,
+                                        output_filename);
+        } else {
+            generate_snp_sites(multi_fasta_filename, output_multi_fasta_file,
+                               output_vcf_file, output_phylip_file,
+                               output_filename);
+        }
     } else {
-      generate_snp_sites(multi_fasta_filename, output_multi_fasta_file,
-                         output_vcf_file, output_phylip_file,
-                         output_filename);
+        print_usage();
     }
-  }
-  else
-  {
-    print_usage();
-  }
 
-	exit(EXIT_SUCCESS);
+    exit(EXIT_SUCCESS);
 }

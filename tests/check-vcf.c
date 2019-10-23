@@ -28,76 +28,77 @@
 #include "check-vcf.h"
 #include "vcf.h"
 
-void check_alternative_bases(char reference_base, char * bases_for_snp, int number_of_samples, char * expected_result)
-{
-  char * result;
-  result = alternative_bases(reference_base, bases_for_snp, number_of_samples);
-  ck_assert_str_eq(result, expected_result);
-  free(result);
+void check_alternative_bases(char reference_base, char *bases_for_snp, int number_of_samples, char *expected_result) {
+    char *result;
+    result = alternative_bases(reference_base, bases_for_snp, number_of_samples);
+    ck_assert_str_eq(result, expected_result);
+    free(result);
 }
 
 START_TEST (alternative_bases_test)
-{
-  check_alternative_bases('A', "AGCT-nN", 6, "GCT*");
-}
+        {
+                check_alternative_bases('A', "AGCT-nN", 6, "GCT*");
+        }
+
 END_TEST
 
-void check_format_alternative_bases(char * test_case, char * expected_result)
-{
-  char * result;
-  result = format_alternative_bases(test_case);
-  ck_assert_str_eq(result, expected_result);
-  free(result);
+void check_format_alternative_bases(char *test_case, char *expected_result) {
+    char *result;
+    result = format_alternative_bases(test_case);
+    ck_assert_str_eq(result, expected_result);
+    free(result);
 }
 
 START_TEST (format_alternative_bases_test)
-{
-  check_format_alternative_bases("", ".");
-  check_format_alternative_bases("A", "A");
-  check_format_alternative_bases("AC", "A,C");
-  check_format_alternative_bases("ACT", "A,C,T");
-}
+        {
+                check_format_alternative_bases("", ".");
+        check_format_alternative_bases("A", "A");
+        check_format_alternative_bases("AC", "A,C");
+        check_format_alternative_bases("ACT", "A,C,T");
+        }
+
 END_TEST
 
-void check_format_allele_index(char test_base, char reference_base, char * alt_bases, char * expected_result)
-{
-  char * result;
-  result = format_allele_index(test_base, reference_base, alt_bases);
-  ck_assert_str_eq(result, expected_result);
-  free(result);
+void check_format_allele_index(char test_base, char reference_base, char *alt_bases, char *expected_result) {
+    char *result;
+    result = format_allele_index(test_base, reference_base, alt_bases);
+    ck_assert_str_eq(result, expected_result);
+    free(result);
 }
 
 START_TEST (format_allele_index_test)
-{
-  check_format_allele_index('A', 'A', "", "0");
-  check_format_allele_index('A', 'A', "C", "0");
-  check_format_allele_index('A', 'A', "CA", "0");
+        {
+                check_format_allele_index('A', 'A', "", "0");
+        check_format_allele_index('A', 'A', "C", "0");
+        check_format_allele_index('A', 'A', "CA", "0");
 
-  check_format_allele_index('A', 'C', "A", "1");
-  check_format_allele_index('A', 'C', "GA", "2");
+        check_format_allele_index('A', 'C', "A", "1");
+        check_format_allele_index('A', 'C', "GA", "2");
 
-  check_format_allele_index('A', 'C', "", ".");
-  check_format_allele_index('A', 'C', "G", ".");
+        check_format_allele_index('A', 'C', "", ".");
+        check_format_allele_index('A', 'C', "G", ".");
 
-  check_format_allele_index('A', 'B', "CDEFGHIJKLMNOPAQRST", "15");
+        check_format_allele_index('A', 'B', "CDEFGHIJKLMNOPAQRST", "15");
 
-  check_format_allele_index('-', 'A', "C*", "2");
-  check_format_allele_index('N', 'A', "C*", "2");
-  check_format_allele_index('n', 'A', "C*", "2");
-}
+        check_format_allele_index('-', 'A', "C*", "2");
+        check_format_allele_index('N', 'A', "C*", "2");
+        check_format_allele_index('n', 'A', "C*", "2");
+        }
 END_TEST
 
-Suite * vcf_suite (void)
-{
-  Suite *s = suite_create ("Creating_VCF_file");
+        Suite
+*
 
-  TCase *tc_vcf_file = tcase_create ("vcf_file");
-  tcase_add_test (tc_vcf_file, alternative_bases_test);
-  tcase_add_test (tc_vcf_file, format_alternative_bases_test);
-  tcase_add_test (tc_vcf_file, format_allele_index_test);
-  suite_add_tcase (s, tc_vcf_file);
+vcf_suite(void) {
+    Suite * s = suite_create("Creating_VCF_file");
 
-  return s;
+    TCase *tc_vcf_file = tcase_create("vcf_file");
+    tcase_add_test(tc_vcf_file, alternative_bases_test);
+    tcase_add_test(tc_vcf_file, format_alternative_bases_test);
+    tcase_add_test(tc_vcf_file, format_allele_index_test);
+    suite_add_tcase(s, tc_vcf_file);
+
+    return s;
 }
 
 
