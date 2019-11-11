@@ -21,9 +21,13 @@
 #define _CHECK_VCF_H_
 
 void check_alternative_bases(char, char *, int, char *);
+
 void check_format_alternative_bases(char *, char *);
+
 void check_format_allele_index(char, char, char *, char *);
-Suite * vcf_suite (void);
+
+Suite *vcf_suite(void);
+
 #endif
 
 

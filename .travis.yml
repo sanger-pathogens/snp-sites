@@ -5,10 +5,10 @@ compiler:
 addons:
   apt:
     packages:
-    - check
+      - check
 before_install:
- - sudo apt-get update -qq
-script: 
- - autoreconf -i && ./configure --enable-maintainer-mode CFLAGS='-O0 --coverage' && make && make check
+  - sudo apt-get update -qq
+script:
+  - autoreconf -i && ./configure --enable-maintainer-mode CFLAGS='-O0 --coverage' && make && make check
 after_success:
   - bash <(curl -s https://codecov.io/bash)
