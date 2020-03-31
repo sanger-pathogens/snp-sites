@@ -153,7 +153,7 @@ snp-sites my_gzipped_alignment.aln.gz
 SNP-sites is free software, licensed under [GPLv3](https://github.com/sanger-pathogens/snp-sites/blob/master/LICENSE).
 
 ## Feedback/Issues
-Please report any issues to the [issues page](https://github.com/sanger-pathogens/snp-sites/issues) or email snpsites-help@sanger.ac.uk
+This software is community supported.  Please report any issues to the [issues page](https://github.com/sanger-pathogens/snp-sites/issues).
 
 ## Citation
 If you use this software please cite:
